@@ -18,3 +18,6 @@ Collate:
     'Rgdal_translate.R'
     'get_gdal_installation.R'
     'modis_hdf4_subdatasets.R'
+    'tahoe_highrez_training_data.R'
+    'tahoe_lidar_bareearth_data.R'
+    'tahoe_lidar_highesthit_data.R'
