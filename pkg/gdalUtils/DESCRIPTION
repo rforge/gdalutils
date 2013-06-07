@@ -1,0 +1,20 @@
+Package: gdalUtils
+Maintainer: Jonathan Asher Greenberg <gdalUtils@estarcion.net>
+License: GPL (>= 2)
+Title: Wrappers for the Geospatial Data Abstraction Library (GDAL)
+Type: Package
+LazyLoad: yes
+Author: Jonathan Asher Greenberg and Matteo Mattiuzzi
+Description: Wrappers for the Geospatial Data Abstraction Library (GDAL)
+Version: 0.0.1
+Date: 2013-06-07
+Depends:
+    R (>= 3.0.1)
+Suggests:
+    raster,
+    rgdal,
+    sp
+Collate:
+    'Rgdal_translate.R'
+    'get_gdal_installation.R'
+    'modis_hdf4_subdatasets.R'
