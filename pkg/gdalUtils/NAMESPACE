@@ -1,3 +1,6 @@
-export(Rgdal_translate)
+export(gdal_cmd_builder)
+export(gdal_translate)
 export(get_gdal_installation)
 export(modis_hdf4_subdatasets)
+export(qm)
+export(sample_GDAL_command)
