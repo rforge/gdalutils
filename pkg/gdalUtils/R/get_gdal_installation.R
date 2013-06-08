@@ -56,10 +56,14 @@ get_gdal_installation=function(return_drivers=TRUE,
 		setOptions=TRUE,
 		verbose=FALSE)
 {
+	#TODO: multiple steps of searching (stopping if found):
+	# 1) Search in PATH
+	# 2) Search in common install locations
+	# 3) Brute force search
+	# add a "force_search" parameter that automatically
+	#	brute force searches.
 	
-	#TODO: Search path, search common install locations.
-	
-	# First search for paths:
+	# Search for paths:
 	if (.Platform$OS=="unix")
 	{    
 		# Unix-likes

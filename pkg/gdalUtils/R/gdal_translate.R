@@ -65,7 +65,7 @@
 #' }
 #' @export
 
-Rgdal_translate <- function(src_dataset,dst_dataset,ot,strict,of="Gtiff",
+gdal_translate <- function(src_dataset,dst_dataset,ot,strict,of="Gtiff",
 		b,mask,expand,outsize,scale,unscale,srcwin,projwin,epo,eco,
 		a_srs,a_ullr,a_nodata,mo,co,gcp,q,sds,stats,
 		additional_commands,
@@ -90,6 +90,17 @@ Rgdal_translate <- function(src_dataset,dst_dataset,ot,strict,of="Gtiff",
 	base_command <- paste('"',file.path(gdal_path,"gdal_translate"),'"',sep="")
 	# Don't forget to close the "'" at the end...
 	
+	# Get defined variable names
+	
+	logical_parameters <- c("strict","unscale","epo","eco","q","sds","stats")
+	vector_parameters <- c("outsize","scale","srcwin","projwin","a_ullr","gcp")
+	scalar_parameters <- c("a_nodata")
+	character_parameters <-c("ot","of","mask","expand","a_srs")
+	repeatable_parameters <- c("b","mo","co")
+	
+	
+	
+	
 	gdal_flags <- vector()
 	# Set up flags
 	if(!missing(ot)) { gdal_flags <- paste(gdal_flags,paste("-ot",ot)) }
@@ -101,9 +112,7 @@ Rgdal_translate <- function(src_dataset,dst_dataset,ot,strict,of="Gtiff",
 	if(!missing(outsize)) { gdal_flags <- paste(gdal_flags,paste("-outsize",paste(outsize,collapse=" "))) }
 	if(!missing(scale)) { gdal_flags <- paste(gdal_flags,paste("-scale",paste(scale,collapse=" "))) }
 	if(!missing(unscale)) { if(unscale) gdal_flags <- paste(gdal_flags,"-unscale") }
-	print(gdal_flags)
 	if(!missing(srcwin)) { gdal_flags <- paste(gdal_flags,paste("-srcwin",paste(srcwin,collapse=" "))) }
-	print(gdal_flags)
 	if(!missing(projwin)) { gdal_flags <- paste(gdal_flags,paste("-projwin",paste(projwin,collapse=" "))) }
 	if(!missing(epo)) { if(epo) gdal_flags <- paste(gdal_flags,"-epo") }
 	if(!missing(eco)) { if(eco) gdal_flags <- paste(gdal_flags,"-eco") }
