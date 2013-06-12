@@ -1,5 +1,5 @@
 Package: gdalUtils
-Maintainer: Jonathan Asher Greenberg <gdalUtils@estarcion.net>
+Maintainer: Matteo Mattiuzzi <matteo.mattiuzzi@boku.ac.at>
 License: GPL (>= 2)
 Title: Wrappers for the Geospatial Data Abstraction Library (GDAL)
 Type: Package
