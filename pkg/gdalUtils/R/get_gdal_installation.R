@@ -159,6 +159,7 @@ gdal_setPath <- function(path,makePermanent=FALSE)
 {
     options(gdalUtils_gdalPath=path)
     
+    # try to write options to 'Rprofile.site' (in file.path(R.home(),"etc")), if no write permission is given, write (create if not existing) a .Rprofile in isers home path.expand("~"). 
     if (makePermanent)
     {
         f <- paste0(file.path(R.home(),"etc"),"/Rprofile.site")
@@ -188,12 +189,11 @@ gdal_setPath <- function(path,makePermanent=FALSE)
         sets  <- readLines(con)
         linec <- grep(sets,pattern="options\\(gdalUtils_gdalPath=")
 
-        if (length(linec)!=0)
+        if (length(linec)!=0) # if already existing update content
         {
             sets[linec] <- paste0("options(gdalUtils_gdalPath=c('",paste0(path,collapse="', '"),"'))") 
         } else
         {
-
             linet <- grep(sets,pattern="# Options for the 'gdalUtils' package")
             if(length(linet)!=0)
             {
@@ -336,7 +336,6 @@ gdal_getExtension <- function(dataFormat)
     #{
     #    ext <- shell(paste0(cmd, dataFormat),intern=TRUE)   
     #}
- 
    
     for(i in seq_along(path))
     {
@@ -375,12 +374,25 @@ gdal_getExtension <- function(dataFormat)
     }
 }
 
-####
+gdal_sortInstallation <- function(path)
+{
+    if (missing(path))
+    {
+        path <- options()$gdalUtils_gdalPath
+        if(is.null(path))
+        {
+            path <- gdal_path()
+        }
+    }
+    path <- path[order(as.Date(unlist(gdal_version(path)$date)), decreasing = TRUE)]
+    return(path)
+}
+
+
 gdal_installation=function(
         return_drivers=TRUE,
 		return_python_utilities=TRUE,
-		sort_most_current=TRUE,
-		setOptions=TRUE
+		sort_most_current=TRUE
         )
 {
     result <- list()
@@ -389,17 +401,15 @@ gdal_installation=function(
     if (is.null(path))
     {
         path <- gdal_path()
-        gdal_setPath(path) # exports to options()
-    }
-    if(setOptions)
-    {
-        gdal_setPath(path,makePermanent=TRUE)
-    }
-    if(sort_most_current)
-    {
-        path <- path[order(as.Date(unlist(gdal_version(path)$date)), decreasing = TRUE)]
     }
     
+    if(sort_most_current)
+    {
+        path <- gdal_sortInstallation(path)
+        result$gdal_sorted <- path
+    }
+    gdal_setPath(path) # exports to options()
+
     if(return_drivers)
     {
         result$drivers <- gdal_drivers(path)    
@@ -410,3 +420,8 @@ gdal_installation=function(
     }
     return(result)    
 }
+
+
+
+
+
