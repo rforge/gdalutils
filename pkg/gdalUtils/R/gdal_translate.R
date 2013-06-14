@@ -65,26 +65,33 @@
 #' }
 #' @export
 
-gdal_translate <- function(src_dataset,dst_dataset,ot,strict,of="Gtiff",
+gdal_translate <- function(src_dataset,dst_dataset,ot,strict,of="GTiff",
 		b,mask,expand,outsize,scale,unscale,srcwin,projwin,epo,eco,
 		a_srs,a_ullr,a_nodata,mo,co,gcp,q,sds,stats,
 		additional_commands,
 		modis_sds_index,
 		output_Raster=FALSE,verbose=FALSE)
 {
-	# Check for gdal installation
-	if(is.null(getOption("spatial.tools.gdalInstallation")))
+	# Check for gdal installation # this will be semplified ti a simple call to 'path <- gdal_path()'
+    path <- getOption("gdalUtils_gdalPath")
+    if (is.null(path))
+    {
+        path <- gdal_path()
+    }
+    path <- gdal_sortInstallation(path)
+    
+    src_dataset <- gdal_rasterToGdal(src_dataset)
+    
+    gdal_used <- gdal_supports(of,write=TRUE,path=path,stopOnFirst=TRUE) 
+    gdal_path <- names(gdal_used)
+
+    if(!unlist(gdal_used))
 	{
-		if(verbose) { message("spatial.tools.gdalInstallation not set, searching for a valid GDAL install (this may take some time)...")}
-		gdal_installation <- get_gdal_installation(required_drivers=of)
+	    stop("No GDAL found with write access to: '",of,"'! Run 'gdal_drivers()' column 'format_code' for available drivers")
 	}
 	
-	if(is.null(getOption("spatial.tools.gdalInstallation")))
-	{
-		stop("GDAL with the proper drivers was not found, please check your installation.  See ?get_gdal_installation for more hints.")	
-	}
+	ext <- gdal_getExtension(of)
 	
-	gdal_path <- getOption("spatial.tools.gdalInstallation")$gdal_path
 	
 	# Don't know if this will work on windows yet...
 	base_command <- paste('"',file.path(gdal_path,"gdal_translate"),'"',sep="")
@@ -98,9 +105,7 @@ gdal_translate <- function(src_dataset,dst_dataset,ot,strict,of="Gtiff",
 	character_parameters <-c("ot","of","mask","expand","a_srs")
 	repeatable_parameters <- c("b","mo","co")
 	
-	
-	
-	
+		
 	gdal_flags <- vector()
 	# Set up flags
 	if(!missing(ot)) { gdal_flags <- paste(gdal_flags,paste("-ot",ot)) }
