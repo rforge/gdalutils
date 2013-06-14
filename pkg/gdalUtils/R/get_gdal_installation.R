@@ -12,7 +12,7 @@
 #' @return A list with one element per GDAL installation.  See Description for parameter names.
 #' @author Jonathan A. Greenberg and Matteo Mattiuzzi
 #' @keywords format
-#' @details get_gdal_installation is designed to help determine the correct path to the
+#' @details gdal_installation is designed to help determine the correct path to the
 #' Geospatial Data Abstraction Library, even if the PATH is not set on the local computer.  It
 #' accomplishes this by brute-force searching for the gdalinfo(.exe) executable on the user's
 #' local system, starting at the root level ("/" on Unix-alikes, "C:" on Windows).  It can
@@ -37,16 +37,16 @@
 #' @references \url{http://gdal.org}
 #' @examples \dontrun{ 
 #' # Determine the most current GDAL installations:
-#' mygdals <- get_gdal_installation()
+#' mygdals <- gdal_installation()
 #' mygdals[[1]]$gdal_path
 #' mygdals[[1]]$version
 #' mygdals[[1]]$drivers
 #' mygdals[[1]]$python_utilities
 #' # Determine all available GDAL installations:
-#' mygdals <- get_gdal_installation(return_most_current=FALSE)
+#' mygdals <- gdal_installation(return_most_current=FALSE)
 #' sapply(mygdals,function(X) X$gdal_path)
 #' # Only return GDAL installs that support a given driver: 
-#' mygdals <- get_gdal_installation(required_drivers="HDF4")
+#' mygdals <- gdal_installation(required_drivers="HDF4")
 #' }
 #' @export
 
@@ -67,8 +67,10 @@ gdal_path <- function(path, verbose = FALSE, rescan = FALSE)
         
     if (missing(path))
     {
-        path <- options()$gdalUtils_gdalPath
+        path <- getOption("gdalUtils_gdalPath")
 	}
+	# This is a re-check... could be removed for performance, or driven by argument (ie. checkValidity=T/F)
+	# if (!is.null(path) & checkValidity & !rescan ) 
 	if (!is.null(path) & !rescan)
 	{
 	    inPath <- function(path, verbose)
@@ -212,7 +214,7 @@ gdal_version <- function(path,verbose=FALSE)
 {	
     if (missing(path))
     {
-        path <- options()$gdalUtils_gdalPath
+        path <- getOption("gdalUtils_gdalPath")
         if (is.null(path))
         {
             path <- getPath()
@@ -265,11 +267,11 @@ gdal_version <- function(path,verbose=FALSE)
 # 's' is appended for formats supporting subdatasets. 
 # Note: The valid formats for the output of gdalwarp are formats that support the Create() method (marked as rw+), not just the CreateCopy() method.
     
-gdal_drivers <- function(path,verbose=FALSE)   
+gdal_drivers <- function(path, verbose=FALSE)   
 {
     if (missing(path))
     {
-        path <- options()$gdalUtils_gdalPath
+        path <- getOption("gdalUtils_gdalPath")
         if (is.null(path))
         {
             path <- getPath()
@@ -282,7 +284,7 @@ gdal_drivers <- function(path,verbose=FALSE)
     drivers_raw <- lapply(cmd,system,intern=T)
     
     result <- vector(mode='list',length(path))
-    names(result)<- path
+    names(result) <- path
     for(i in seq_along(drivers_raw))
     {
         drivers_raw[[i]] <- drivers_raw[[i]][-1]
@@ -304,11 +306,63 @@ gdal_drivers <- function(path,verbose=FALSE)
 	return(result)
 }
 
-gdal_python_utilities <- function(path,verbose=FALSE)
+gdal_supports <- function(driver, read=NULL, write=NULL, update=NULL, virtualIO=NULL, subdatasets=NULL, path, stopOnFirst=FALSE)
+{
+    
+    path    <- gdal_sortInstallation(path)
+    # debug
+    # driver="HDA"; read=NULL; write=NULL; update=NULL; virtualIO=NULL; subdatasets=NULL; stopOnFirst=FALSE;path <- gdal_sortInstallation()
+    result <- vector(mode="list",length(path))
+    names(result) <- path
+    
+    if(!isTRUE(read)) {read <- NULL}
+    if(!isTRUE(write)) {write <- NULL}
+    if(!isTRUE(update)) {update <- NULL}
+    if(!isTRUE(virtualIO)) {virtualIO <- NULL}
+    if(!isTRUE(subdatasets)) {subdatasets <- NULL}
+    
+    justPrint <- sum(c(read,write,update,virtualIO,subdatasets),na.rm=TRUE)==0
+    
+    check <- 0 
+    for(i in seq_along(path))
+    {
+        drivers <- gdal_drivers(path[i])[[1]]
+        drivers <- drivers[grep(drivers$format_code,pattern=paste0("^",driver,"$"),ignore.case=TRUE),] # regex is fixed for exact match, we could also let search by regex...but it could be dangerous
+        
+        if(nrow(drivers)>0)
+        {
+            if(justPrint)
+            {
+                result[[i]] <- drivers
+            } else
+            {
+                test <- all(c(drivers$read==read, drivers$write==write, drivers$update==update, drivers$virtualIO==virtualIO, drivers$subdatasets==subdatasets))
+                
+                result[[i]] <- test
+            
+                if(stopOnFirst & test)
+                {
+                    return(result[i])
+                }
+            }
+        } else
+        {
+            result[[i]] <- FALSE
+            check <- check + 1
+        }
+    }
+    if (check==length(result))
+    {
+        warning("Driver '", driver,"' not found, run 'gdal_drivers()' column 'format_code' for available drivers.")
+    }
+    return(result)
+}
+
+gdal_python_utilities <- function(path)
 {
     if (missing(path))
     {
-        path <- options()$gdalUtils_gdalPath
+        path <- getOption("gdalUtils_gdalPath")
         if (is.null(path))
         {
             path <- getPath()
@@ -320,7 +374,7 @@ gdal_python_utilities <- function(path,verbose=FALSE)
 gdal_getExtension <- function(dataFormat)
 {
     
-    path <- options()$gdalUtils_gdalPath
+    path <- getOption("gdalUtils_gdalPath")
     if (is.null(path))
     {
         path <- getPath()
@@ -374,11 +428,12 @@ gdal_getExtension <- function(dataFormat)
     }
 }
 
+# sort GDALs by release date
 gdal_sortInstallation <- function(path)
 {
     if (missing(path))
     {
-        path <- options()$gdalUtils_gdalPath
+        path <- getOption("gdalUtils_gdalPath")
         if(is.null(path))
         {
             path <- gdal_path()
@@ -397,7 +452,7 @@ gdal_installation=function(
 {
     result <- list()
     
-    path <- options()$gdalUtils_gdalPath
+    path <- getOption("gdalUtils_gdalPath")
     if (is.null(path))
     {
         path <- gdal_path()
