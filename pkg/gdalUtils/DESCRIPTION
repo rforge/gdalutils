@@ -15,7 +15,7 @@ Suggests:
     rgdal,
     sp
 Collate:
-    'get_gdal_installation.R'
+    'gdal_installation.R'
     'modis_hdf4_subdatasets.R'
     'tahoe_highrez_training_data.R'
     'tahoe_lidar_bareearth_data.R'
@@ -24,3 +24,5 @@ Collate:
     'gdal_translate.R'
     'qm.R'
     'sample_GDAL_command.R'
+    'rasterInterface.R'
+    'gdalinfo.R'
