@@ -217,7 +217,7 @@ gdal_version <- function(path,verbose=FALSE)
         path <- getOption("gdalUtils_gdalPath")
         if (is.null(path))
         {
-            path <- getPath()
+            path <- gdal_path()
         }
     }
     
@@ -226,8 +226,8 @@ gdal_version <- function(path,verbose=FALSE)
 	
     result <- lapply(cmd,system,intern=TRUE)
 
-    # It seams that system works also in Windows (MAC?), do you confirm?
-    # Does shell work here?
+  # It seams that system works also in Windows (MAC?), do you confirm?
+  # Does shell work here?
 	#	if (.Platform$OS=="unix") 
 	#	{
 	#		gdal_version <- system(cmd,intern=TRUE) 
@@ -274,7 +274,7 @@ gdal_drivers <- function(path, verbose=FALSE)
         path <- getOption("gdalUtils_gdalPath")
         if (is.null(path))
         {
-            path <- getPath()
+            path <- gdal_path()
         }
     }
     
@@ -287,21 +287,21 @@ gdal_drivers <- function(path, verbose=FALSE)
     names(result) <- path
     for(i in seq_along(drivers_raw))
     {
-        drivers_raw[[i]] <- drivers_raw[[i]][-1]
+      drivers_raw[[i]] <- drivers_raw[[i]][-1]
 	    drivers=strsplit(drivers_raw[[i]],":")
 	    driver_names=gsub("^ ","",sapply(drivers,function(x) { x[2] })) # Need to remove spaces
     	driver_codes_perm=strsplit(sapply(drivers,function(x) { x[1] }),"\\(")
 	    driver_codes=gsub(" ","",sapply(driver_codes_perm,function(x) { x[1] }),fixed=TRUE)
 	    driver_perm=gsub("\\)","",sapply(driver_codes_perm,function(x) { x[2] }))
                 
-        r <- w <- u <- v <- s <- rep(FALSE,length(driver_perm))
-        r[grep(driver_perm, pattern="r")]   <- TRUE
-        w[grep(driver_perm, pattern="w")]   <- TRUE
-        u[grep(driver_perm, pattern="\\+")] <- TRUE
+      r <- w <- u <- v <- s <- rep(FALSE,length(driver_perm))
+      r[grep(driver_perm, pattern="r")]   <- TRUE
+      w[grep(driver_perm, pattern="w")]   <- TRUE
+      u[grep(driver_perm, pattern="\\+")] <- TRUE
     	v[grep(driver_perm, pattern="v")]   <- TRUE
     	s[grep(driver_perm, pattern="s")]   <- TRUE	
         
-        result[[i]] <- data.frame(format_code=driver_codes,read=r,write=w,update=u,virtualIO=v,subdatasets=s,format_name=driver_names)
+      result[[i]] <- data.frame(format_code=driver_codes,read=r,write=w,update=u,virtualIO=v,subdatasets=s,format_name=driver_names)
     }
 	return(result)
 }
@@ -365,7 +365,7 @@ gdal_python_utilities <- function(path)
         path <- getOption("gdalUtils_gdalPath")
         if (is.null(path))
         {
-            path <- getPath()
+            path <- gdal_path()
         }
     }
     sapply(path,list.files,pattern="\\.py") 
@@ -373,13 +373,12 @@ gdal_python_utilities <- function(path)
 
 gdal_getExtension <- function(dataFormat)
 {
-    
     path <- getOption("gdalUtils_gdalPath")
     if (is.null(path))
     {
-        path <- getPath()
+        path <- gdal_path()
     }
-    path <- path[order(as.Date(unlist(gdal_version(path)$date)), decreasing = TRUE)]
+    path <- gdal_sortInstallation(path)
         
     # cmd <- paste0(c(path,'gdalinfo --format '),collapse="/")
     
@@ -390,11 +389,13 @@ gdal_getExtension <- function(dataFormat)
     #{
     #    ext <- shell(paste0(cmd, dataFormat),intern=TRUE)   
     #}
-   
+    check <- 0
+    result <- list()
+    
     for(i in seq_along(path))
     {
         cmd <- file.path(path[i],'gdalinfo --format ')
-        cmd <- paste0(cmd,dataFormat)
+        cmd <- paste0(cmd,dataFormat) 
 
         owarn <- options()$warn
         options(warn=-2)
@@ -409,7 +410,7 @@ gdal_getExtension <- function(dataFormat)
     
             if (length(ext)>0)
             {
-                ext <- gsub(strsplit(ext,":")[[1]][2],pattern=" ",replacement="")
+                ext <- gsub(strsplit(ext,":")[[1]][2], pattern=" ", replacement="")
             
                 if (ext!="")
                 {
@@ -417,15 +418,21 @@ gdal_getExtension <- function(dataFormat)
                 }
                 names(ext) <- path[i]
                 return(ext)
-            } else if(length(ext)==0 & i==length(path))
-            {
-                return(NA)
             }
-        } else 
-        {
-            stop("'",dataFormat ,"' not recognized by GDAL, run: 'gdal_drivers()' and see in column 'format_code' for available drivers!")
         }
     }
+    warning("No extension found for '",dataFormat ,"', run: 'gdal_drivers()' and see in column 'format_code' for available drivers!")
+    return("")
+}
+
+gdal_getDriver <- function(x)
+{
+  inherits(x,"Raster")
+  {
+    x <- filename(x) 
+  }
+  x <- as.character(x)
+# ...
 }
 
 # sort GDALs by release date
@@ -445,10 +452,10 @@ gdal_sortInstallation <- function(path)
 
 
 gdal_installation=function(
-        return_drivers=TRUE,
-		return_python_utilities=TRUE,
-		sort_most_current=TRUE
-        )
+  return_drivers=TRUE,
+	return_python_utilities=TRUE,
+	sort_most_current=TRUE
+  )
 {
     result <- list()
     

@@ -35,16 +35,15 @@ gdal_rasterToGdal <- function(x,verbose=TRUE)
     if (is.character(x))
     {
         fname <- path.expand(x)
-    } 
-    else
+    } else
     {
-        datFor <- raster:::.driver(x)
+        datFor <- raster:::.driver(x,warn=FALSE)
 
         if(datFor!="gdal")
         {
             if (verbose) 
             {
-                message("Input data is in a non GDAL format and must be converted...")
+                message("Data in a non GDAL format and must be converted...")
             }
             fname <- gdalTmpFile()
             x <- writeRaster(x,filename=fname)
@@ -56,7 +55,7 @@ gdal_rasterToGdal <- function(x,verbose=TRUE)
 return(fname)
 }
 
-# the 
+
 gdal_gdalToRaster <- function(x)
 {
     if (!is.character(x))
@@ -67,6 +66,7 @@ gdal_gdalToRaster <- function(x)
     {
         stop("Could not find file:", x)     
     }
+    
     nbands <- gdalinfo(x)$nbands
     
     if(nbands==1)
