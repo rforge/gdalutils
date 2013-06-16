@@ -51,12 +51,12 @@ gdalinfo <- function(x, tryRgdal=TRUE, verbose=FALSE)
       if(length(meta)!=0)
       {
         result        <- list()
-        result$file   <- gsub(grep(meta,pattern="Files: ",value=TRUE),pattern="Files: ",replacement="")
-        result$driver <- strsplit(gsub(grep(meta,pattern="Driver: ",value=TRUE), pattern="Driver: ",replacement=""),"/")[[1]][1]
-        result$bands  <- length(grep(meta,pattern="^Band [1-9]"))
         dims          <- strsplit(gsub(grep(meta,pattern="Size is ",value=TRUE), pattern="Size is ",replacement=""),",")[[1]]
         result$rows   <- as.numeric(dims[2])
         result$columns<- as.numeric(dims[1])
+        result$bands  <- length(grep(meta,pattern="^Band [1-9]"))
+        result$driver <- strsplit(gsub(grep(meta,pattern="Driver: ",value=TRUE), pattern="Driver: ",replacement=""),"/")[[1]][1]
+        result$file   <- gsub(grep(meta,pattern="Files: ",value=TRUE),pattern="Files: ",replacement="")
             
         # result$...
                       
