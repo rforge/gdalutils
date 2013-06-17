@@ -72,29 +72,28 @@ gdal_translate <- function(src_dataset,dst_dataset,ot,strict,of="GTiff",
 		modis_sds_index,
 		output_Raster=FALSE,verbose=FALSE)
 {
-	# Check for gdal installation # this will be semplified ti a simple call to 'path <- gdal_path()'
-    path <- getOption("gdalUtils_gdalPath")
-    if (is.null(path))
-    {
-        path <- gdal_path()
-    }
-    path <- gdal_sortInstallation(path)
-    
-    src_dataset <- gdal_rasterToGdal(src_dataset)
-    
-    gdal_used <- gdal_supports(of,write=TRUE,path=path,stopOnFirst=TRUE) 
-    gdal_path <- names(gdal_used)
-
-    if(!unlist(gdal_used))
-	{
-	    stop("No GDAL found with write access to: '",of,"'! Run 'gdal_drivers()' column 'format_code' for available drivers")
-	}
-	
-	ext <- gdal_getExtension(of)
-	
+  path <- gdal_path() # get gdal's
+  path <- gdal_sortInstallation(path) # sort by release
+  
+  src_dataset <- gdal_rasterToGdal(src_dataset) # eventually convert raster* object
+  
+  ext <- extension(dst_dataset)
+  if (ext=="")
+  {
+    ext <- gdal_getExtension(of)
+  }
+  
+  path <- gdal_supports(of,write=TRUE,path=path,stopOnFirst=TRUE) # check write supports of gdal's to 'of'
+  path <- names(path[path==TRUE])
+  
+  if(length(path)==0)
+  {
+    stop("No GDAL found with write access to: '",of,"'! Run 'gdal_drivers()' column 'format_code' for available drivers")
+  }
+  
 	
 	# Don't know if this will work on windows yet...
-	base_command <- paste('"',file.path(gdal_path,"gdal_translate"),'"',sep="")
+	base_command <- paste0('"',file.path(path,"gdal_translate"),'"')
 	# Don't forget to close the "'" at the end...
 	
 	# Get defined variable names
@@ -154,7 +153,7 @@ gdal_translate <- function(src_dataset,dst_dataset,ot,strict,of="GTiff",
 	# (Optional) return Raster
 	if(output_Raster)
 	{
-		return(brick(dst_dataset))	
+		return(gdal_gdalToRaster(dst_dataset))	
 	} else
 	{
 		return(NULL)

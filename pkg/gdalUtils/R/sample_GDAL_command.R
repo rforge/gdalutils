@@ -41,7 +41,7 @@ sample_GDAL_command <- function(src_dataset,dst_dataset,ot,strict,of="Gtiff",
 	parameter_noflags <- c("src_dataset","dst_dataset")
 	
 	# Get this from get_gdal_installation
-	executable <- "pathto//gdal_translate"
+	executable <- file.path(gdal_path()[1],"gdal_translate")# [1] is prov!
 	
 	cmd <- gdal_cmd_builder(
 		executable=executable,
