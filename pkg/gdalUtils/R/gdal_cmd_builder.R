@@ -139,26 +139,29 @@ gdal_cmd_builder <- function(executable,parameter_variables,parameter_values,par
 		}
 	}
 	
-#	if(any("noflag" %in% parameter_variables_types))
-#	{
+	if(!is.null(parameter_noflags))
+	{
 #		parameter_variables_noflag <- parameter_variables$noflag[[1]]
 #		parameter_variables_noflag_defined <- defined_variables[defined_variables %in% parameter_variables_noflag]
 #		if(length(parameter_variables_noflag_defined)>0)
 #		{
-#			parameter_variables_noflag_strings <- sapply(parameter_variables_noflag_defined,
-#					function(X,parameter_values)
-#					{
-#						parameter_variables_noflag_string <- paste(
-#								parameter_values[[which(names(parameter_values)==X)]],
-#								sep="")
-#						return(parameter_variables_noflag_string)
-#					},parameter_values=parameter_values)			
+			parameter_variables_noflag_strings <- sapply(parameter_noflags,
+					function(X,parameter_values)
+					{
+						parameter_variables_noflag_string <- paste(
+								parameter_values[[which(names(parameter_values)==X)]],
+								sep="")
+						return(parameter_variables_noflag_string)
+					},parameter_values=parameter_values)			
 #		} else
 #		{
 #			parameter_variables_noflag_strings <- NULL
 #		}
-#	}
+	}
 	
+
+
+
 	parameter_vector <- c(
 			parameter_variables_logical_strings,
 			parameter_variables_vector_strings,
