@@ -58,7 +58,7 @@
 # brute force searches.
 
 
-gdal_path <- function(path, rescan = FALSE, checkValidity=FALSE, verbose = FALSE)
+gdal_path <- function(path, rescan = FALSE, checkValidity=FALSE, verbose = FALSE, checkWhich=TRUE)
 {
   owarn <- options()$warn
   options(warn=-2)
@@ -68,6 +68,13 @@ gdal_path <- function(path, rescan = FALSE, checkValidity=FALSE, verbose = FALSE
   {
     path <- getOption("gdalUtils_gdalPath")
   }
+  
+  if(checkWhich)
+  {
+	  path <- dirname(Sys.which("gdalinfo"))
+		if(path=="") { path <- NULL }
+  }
+  
   # This is a re-check... could be removed for performance, or driven by argument (ie. checkValidity=T/F)
   # if (!is.null(path) & !rescan)
   if (!is.null(path) & checkValidity & !rescan)
