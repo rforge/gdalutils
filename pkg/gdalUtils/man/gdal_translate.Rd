@@ -3,7 +3,7 @@
 \title{Rgdal_translate}
 \usage{
   gdal_translate(src_dataset, dst_dataset, ot, strict,
-    of = "Gtiff", b, mask, expand, outsize, scale, unscale,
+    of = "GTiff", b, mask, expand, outsize, scale, unscale,
     srcwin, projwin, epo, eco, a_srs, a_ullr, a_nodata, mo,
     co, gcp, q, sds, stats, additional_commands,
     modis_sds_index, output_Raster = FALSE,

@@ -16,10 +16,11 @@
 
 gdalwarp <- function(
 		#help_general,formats, # Need to fix these
+		srcfile,dstfile,
 		s_srs,t_srs,to,
 		order,et,refine_gcps,te,tr,tap,ts,wo,ot,wt,srcnodata,dstnodata,
 		dstalpha,r,wm,multi,q,cutline,cl,cwhere,csql,cblend,crop_to_cutline,
-		of,co,overwrite,nomd,cvmd,setci,srcfile,dstfile,
+		of,co,overwrite,nomd,cvmd,setci,
 		output_Raster=FALSE,verbose=FALSE)
 {
 	parameter_values <- as.list(environment())
