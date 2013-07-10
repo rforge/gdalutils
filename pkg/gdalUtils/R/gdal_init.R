@@ -58,9 +58,9 @@
 # brute force searches.
 
 
-gdal_path <- function(path, rescan = FALSE, checkValidity=FALSE, verbose = FALSE, checkWhich=TRUE)
+gdal_path <- function(path, rescan = FALSE, checkValidity = FALSE, verbose = FALSE, checkWhich = TRUE)
 {
-  owarn <- options()$warn
+  owarn <- getOption("warn")
   options(warn=-2)
   on.exit(options(warn=owarn))
   
@@ -71,12 +71,10 @@ gdal_path <- function(path, rescan = FALSE, checkValidity=FALSE, verbose = FALSE
   
   if(checkWhich)
   {
-	  path <- dirname(Sys.which("gdalinfo"))
-		if(path=="") { path <- NULL }
+    path <- dirname(Sys.which("gdalinfo"))
+    if(path=="") { path <- NULL }
   }
   
-  # This is a re-check... could be removed for performance, or driven by argument (ie. checkValidity=T/F)
-  # if (!is.null(path) & !rescan)
   if (!is.null(path) & checkValidity & !rescan)
   {
     inPath <- function(path, verbose)
@@ -95,37 +93,32 @@ gdal_path <- function(path, rescan = FALSE, checkValidity=FALSE, verbose = FALSE
       }
       return(path)
     }
-    path <- unlist(lapply(path,inPath,verbose)) # unlist removes NULL
+    path <- unlist(lapply(correctPath(path),inPath,verbose)) # unlist removes NULL
   }
   if(is.null(path)|rescan)
   {
     if (.Platform$OS=="unix")
     {
-    # Unix-likes
-      try(gdal <- system("gdalinfo --version",intern=TRUE),silent=TRUE)
+      gdal <- try(system("gdalinfo --version",intern=TRUE),silent=TRUE)
       
       if (length(grep(gdal, pattern="^GDAL "))!=1 | rescan)
       {
         if(verbose & !rescan) message("GDAL not found in PATH, trying a search... This could take some time...")
         if(verbose & rescan) message("Scanning your root-dir for available GDAL installations,... This could take some time...")
         
-        gdalinfo_paths <- dirname(system("find / -name gdalinfo",intern=TRUE))# on linux this can triggers a very long search! some restiction is required.
+        gdalinfo_paths <- dirname(system("find /usr -name gdalinfo",intern=TRUE))# on linux this can triggers a very long search! some restiction is required.
         
         if(length(path)==0)
         {
         #if(verbose) message("No GDAL was found.")
         #return(NULL)
-          stop("No GDAL was found. Please install 'gdal-bin' before continuing") # why not stop?
-          
-        } else
-        {
-          path <- dirname(system("which gdalinfo",intern=TRUE))
+          stop("No GDAL was found. Please install 'gdal Utilities' before continuing") # why not stop?
         }
       }
     } else
     {
       # Windows
-      try(gdal <- shell("gdalinfo --version",intern=TRUE),silent=TRUE)
+      gdal <- try(shell("gdalinfo --version",intern=TRUE),silent=TRUE)
       
       if (length(grep(gdal, pattern="^GDAL "))!=1 | rescan)
       {
@@ -147,7 +140,7 @@ gdal_path <- function(path, rescan = FALSE, checkValidity=FALSE, verbose = FALSE
         {
           gdalinfo_paths[[i]] <- list.files(path=progs[i],pattern="^gdalinfo.exe$", full.names=TRUE, recursive=TRUE, include.dirs=TRUE)
         }
-        path <- dirname(shortPathName(c(unlist(gdalinfo_paths),osgeos)))
+        path <- dirname(c(unlist(gdalinfo_paths),osgeos))
       }
       if(length(path)==0)
       {
@@ -156,10 +149,10 @@ gdal_path <- function(path, rescan = FALSE, checkValidity=FALSE, verbose = FALSE
       }
     }
   }
-  return(path)
+  return(correctPath(path))
 }
 
-gdal_setPath <- function(path,makePermanent=FALSE)
+gdal_setPath <- function(path, makePermanent=FALSE)
 {
   path <- gdal_path(path)
   options(gdalUtils_gdalPath=path)
@@ -411,15 +404,6 @@ gdal_getExtension <- function(dataFormat)
   path <- gdal_path()
   path <- gdal_sortInstallation(path)
   
-  # cmd <- paste0(c(path,'gdalinfo --format '),collapse="/")
-  
-  #if(.Platform$OS.type=="unix")
-  #{
-  # ext <- sapply(cmd,system,intern=TRUE)   
-  #} else
-  #{
-  #    ext <- shell(paste0(cmd, dataFormat),intern=TRUE)   
-  #}
   check <- 0
   result <- list()
   
@@ -455,16 +439,6 @@ gdal_getExtension <- function(dataFormat)
   return("")
 }
 
-gdal_getDriver <- function(x)
-{
-  inherits(x,"Raster")
-  {
-    x <- filename(x) 
-  }
-  x <- as.character(x)
-# ...
-}
-
 # sort GDALs by release date
 gdal_sortInstallation <- function(path)
 {
@@ -473,7 +447,7 @@ gdal_sortInstallation <- function(path)
   return(path)
 }
 
-gdal_installation=function(
+gdal_installation <- function(
   return_drivers=TRUE,
   return_python_utilities=TRUE,
   sort_most_current=TRUE
@@ -499,4 +473,23 @@ gdal_installation=function(
     result$python_utilities <- gdal_python_utilities(path)    
   }
   return(result)    
+}
+
+# sligly adapted from MODIS package, this function cares about the final "/" and for blanks and backslashes on Windows
+correctPath <- function(x)
+{
+  if(!is.null(x))
+  {
+    if (.Platform$OS.type=="windows")
+    {
+      x <- shortPathName(x)
+    } else
+    {
+      x <- path.expand(x)
+    }
+    x      <- gsub(x,pattern="\\\\",replacement="/") # switch "\\" to "/
+    ind    <- substr(x,nchar(x),nchar(x))!="/"       # some x without "/" at the end?
+    x[ind] <- paste0(x[ind],"/")                     # add "/" at the end
+  }
+  return(x)
 }

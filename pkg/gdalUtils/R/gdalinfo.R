@@ -52,6 +52,7 @@ gdalinfo <- function(x, tryRgdal=TRUE, verbose=FALSE)
         result$oblique.x <- NA
         result$oblique.y <- NA
         
+
         result$driver <- strsplit(gsub(grep(meta,pattern="Driver: ",value=TRUE), pattern="Driver: ",replacement=""),"/")[[1]][1]
         
         if(as.logical(gdal_version(path[i],newerThan="1.9.0")))

@@ -92,8 +92,9 @@ gdal_translate <- function(src_dataset,dst_dataset,ot,strict,of="GTiff",
   }
   
 	
-	# Don't know if this will work on windows yet...
-	base_command <- paste0('"',file.path(path,"gdal_translate"),'"')
+  # Don't know if this will work on windows yet...
+  # DeleteOnRead: gdal_path() now generates a save string (using correctPath), just a simple paste0(path,"command ") should do the job for any chase (OS,LOCAL), NOTE the blank after the command! 
+  base_command <- paste0(path,"gdal_translate ")
 	# Don't forget to close the "'" at the end...
 	
 	# Get defined variable names
@@ -104,7 +105,7 @@ gdal_translate <- function(src_dataset,dst_dataset,ot,strict,of="GTiff",
 	character_parameters <-c("ot","of","mask","expand","a_srs")
 	repeatable_parameters <- c("b","mo","co")
 	
-		
+  
 	gdal_flags <- vector()
 	# Set up flags
 	if(!missing(ot)) { gdal_flags <- paste(gdal_flags,paste("-ot",ot)) }

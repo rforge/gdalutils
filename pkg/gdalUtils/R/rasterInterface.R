@@ -1,7 +1,5 @@
 # interface to raster package
 
-# x <-raster("/home/matteo/PROCESSED/testJob2/MOD13Q1.A2002001.250m_16_days_EVI.tif")
-
 # slightly adapted from raster:::rasterTmpFile() 
 gdalTmpFile <- function(prefix='raster_tmp_', driver="GTiff", verbose=FALSE)  
 {
@@ -65,10 +63,6 @@ gdal_rasterToGdal <- function(x, verbose=TRUE)
 gdal_gdalToRaster <- function(x)
 {
   require(raster)
-  #if (!is.character(x))
-  #{
-  # x <- filename(x)
-  #}
   if(!file.exists(x))
   {
     stop("Could not find file:", x)
