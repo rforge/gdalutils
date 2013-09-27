@@ -58,247 +58,274 @@
 # brute force searches.
 
 
-gdal_path <- function(path, rescan = FALSE, checkValidity = FALSE, verbose = FALSE, checkWhich = TRUE)
+gdal_path <- function(path, rescan = FALSE, checkValidity = FALSE, 
+		verbose = FALSE, checkWhich = TRUE, checkCommonLocations=TRUE)
 {
-  owarn <- getOption("warn")
-  options(warn=-2)
-  on.exit(options(warn=owarn))
-  
-  if (missing(path))
-  {
-    path <- getOption("gdalUtils_gdalPath")
-  }
-  
-  if(checkWhich)
-  {
-    path <- dirname(Sys.which("gdalinfo"))
-    if(path=="") { path <- NULL }
-  }
-  
-  if (!is.null(path) & checkValidity & !rescan)
-  {
-    inPath <- function(path, verbose)
-    {
-      cmd <- file.path(path, "gdalinfo")
-      cmd <- paste0('"',cmd,'"'," --version")
-      
-      try(gdal <- system(cmd,intern=TRUE),silent=TRUE)
-      
-      if (length(grep(gdal, pattern="^GDAL "))!=1)
-      {
-        path <- NULL 
-      } else
-      {
-        if(verbose) message("GDAL found in: ",path.expand(path))
-      }
-      return(path)
-    }
-    path <- unlist(lapply(correctPath(path),inPath,verbose)) # unlist removes NULL
-  }
-  if(is.null(path)|rescan)
-  {
-    if (.Platform$OS=="unix")
-    {
-      gdal <- try(system("gdalinfo --version",intern=TRUE),silent=TRUE)
-      
-      if (length(grep(gdal, pattern="^GDAL "))!=1 | rescan)
-      {
-        if(verbose & !rescan) message("GDAL not found in PATH, trying a search... This could take some time...")
-        if(verbose & rescan) message("Scanning your root-dir for available GDAL installations,... This could take some time...")
-        
-        gdalinfo_paths <- dirname(system("find /usr -name gdalinfo",intern=TRUE))# on linux this can triggers a very long search! some restiction is required.
-        
-        if(length(path)==0)
-        {
-        #if(verbose) message("No GDAL was found.")
-        #return(NULL)
-          stop("No GDAL was found. Please install 'gdal Utilities' before continuing") # why not stop?
-        }
-      }
-    } else
-    {
-      # Windows
-      gdal <- try(shell("gdalinfo --version",intern=TRUE),silent=TRUE)
-      
-      if (length(grep(gdal, pattern="^GDAL "))!=1 | rescan)
-      {
-        if(verbose & !rescan) message("GDAL not found in PATH, trying a search... This could take some time...")
-        if(verbose & rescan) message("Scanning your c-drive for available GDAL installations,... This could take some time...")
-        
-        # focussed search (in c:/OSGeo4W/ and in c:/Progs*)
-        poss <- dir("c:/",full.names=TRUE)
-        
-        osgeos <- grep(poss, pattern="OSGeo", ignore.case=TRUE, value=TRUE)                
-        if(length(osgeos)!=0)                
-        {
-          osgeos <- list.files(file.path(osgeos,"bin"), pattern="^gdalinfo.exe$", full.names=TRUE,include.dirs=TRUE)
-        }
-        progs <- grep(poss, pattern="Progr*", ignore.case=TRUE, value=TRUE)
-        
-        gdalinfo_paths <- list()
-        for (i in seq_along(progs))
-        {
-          gdalinfo_paths[[i]] <- list.files(path=progs[i],pattern="^gdalinfo.exe$", full.names=TRUE, recursive=TRUE, include.dirs=TRUE)
-        }
-        path <- dirname(c(unlist(gdalinfo_paths),osgeos))
-      }
-      if(length(path)==0)
-      {
-        #add QGIS?
-        stop("No GDAL installation found. Please install 'gdal Utilities' before continuing:\n\t- www.gdal.org (no HDF4 support!)\n\t- www.trac.osgeo.org/osgeo4w/ (with HDF4 support RECOMMANDED)\n\t- www.fwtools.maptools.org (with HDF4 support)\n") # why not stop?
-      }
-    }
-  }
-  return(correctPath(path))
+	owarn <- getOption("warn")
+	options(warn=-2)
+	on.exit(options(warn=owarn))
+	
+	# Common locations for UNIX-alikes:
+	common_locations_unix <- c(
+			# UNIX systems
+			"/usr/bin",
+			"/usr/local/bin",
+			# Mac
+			# Kyngchaos frameworks:
+			"/Library/Frameworks/GDAL.framework/Programs",
+			# MacPorts:
+			"/opt/local/bin"
+	)
+	
+	# Common locations for Windows
+	
+	if (missing(path))
+	{
+		path <- getOption("gdalUtils_gdalPath")
+	}
+	
+	if(checkWhich)
+	{
+		path <- dirname(Sys.which("gdalinfo"))
+		if(path=="") { path <- NULL }
+	}
+	
+	# Explicit path definition (without a full rescan)
+	if (!is.null(path) & checkValidity & !rescan)
+	{
+		inPath <- function(path, verbose)
+		{
+			cmd <- file.path(path, "gdalinfo")
+			cmd <- paste0('"',cmd,'"'," --version")
+			
+			try(gdal <- system(cmd,intern=TRUE),silent=TRUE)
+			
+			if (length(grep(gdal, pattern="^GDAL "))!=1)
+			{
+				path <- NULL 
+			} else
+			{
+				if(verbose) message("GDAL found in: ",path.expand(path))
+			}
+			return(path)
+		}
+		path <- unlist(lapply(correctPath(path),inPath,verbose)) # unlist removes NULL
+	}
+	
+	if(checkCommonLocations)
+	{
+		
+		
+		
+	}
+	
+	
+	if(is.null(path)|rescan)
+	{
+		if (.Platform$OS=="unix")
+		{
+			gdal <- try(system("gdalinfo --version",intern=TRUE),silent=TRUE)
+			
+			if (length(grep(gdal, pattern="^GDAL "))!=1 | rescan)
+			{
+				if(verbose & !rescan) message("GDAL not found in PATH, trying a search... This could take some time...")
+				if(verbose & rescan) message("Scanning your root-dir for available GDAL installations,... This could take some time...")
+				
+				
+				
+				gdalinfo_paths <- dirname(system("find /usr -name gdalinfo",intern=TRUE))# on linux this can triggers a very long search! some restiction is required.
+				
+				if(length(path)==0)
+				{
+					#if(verbose) message("No GDAL was found.")
+					#return(NULL)
+					stop("No GDAL was found. Please install 'gdal Utilities' before continuing") # why not stop?
+				}
+			}
+		} else
+		{
+			# Windows
+			gdal <- try(shell("gdalinfo --version",intern=TRUE),silent=TRUE)
+			
+			if (length(grep(gdal, pattern="^GDAL "))!=1 | rescan)
+			{
+				if(verbose & !rescan) message("GDAL not found in PATH, trying a search... This could take some time...")
+				if(verbose & rescan) message("Scanning your c-drive for available GDAL installations,... This could take some time...")
+				
+				# focussed search (in c:/OSGeo4W/ and in c:/Progs*)
+				poss <- dir("c:/",full.names=TRUE)
+				
+				osgeos <- grep(poss, pattern="OSGeo", ignore.case=TRUE, value=TRUE)                
+				if(length(osgeos)!=0)                
+				{
+					osgeos <- list.files(file.path(osgeos,"bin"), pattern="^gdalinfo.exe$", full.names=TRUE,include.dirs=TRUE)
+				}
+				progs <- grep(poss, pattern="Progr*", ignore.case=TRUE, value=TRUE)
+				
+				gdalinfo_paths <- list()
+				for (i in seq_along(progs))
+				{
+					gdalinfo_paths[[i]] <- list.files(path=progs[i],pattern="^gdalinfo.exe$", full.names=TRUE, recursive=TRUE, include.dirs=TRUE)
+				}
+				path <- dirname(c(unlist(gdalinfo_paths),osgeos))
+			}
+			if(length(path)==0)
+			{
+				#add QGIS?
+				stop("No GDAL installation found. Please install 'gdal Utilities' before continuing:\n\t- www.gdal.org (no HDF4 support!)\n\t- www.trac.osgeo.org/osgeo4w/ (with HDF4 support RECOMMANDED)\n\t- www.fwtools.maptools.org (with HDF4 support)\n") # why not stop?
+			}
+		}
+	}
+	return(correctPath(path))
 }
 
 gdal_setPath <- function(path, makePermanent=FALSE)
 {
-  path <- gdal_path(path)
-  options(gdalUtils_gdalPath=path)
-  
-  # try to write options to 'Rprofile.site' (in file.path(R.home(),"etc")), if no write permission is given, write (create if not existing) a .Rprofile in isers home path.expand("~"). 
-  if (makePermanent)
-  {
-    f <- paste0(file.path(R.home(),"etc"),"/Rprofile.site")
-    
-    owarn <- options()$warn
-    options(warn=-2)
-    on.exit(options(warn=owarn))
-    
-    con  <- try( file(f,"r+b"),silen=TRUE)
-    
-    if(inherits(con,"try-error"))
-    {
-      if(!file.exists("~/.Rprofile"))
-      {
-        doit <- toupper(readline(paste0("No write access to: '", paste0(file.path(R.home(),"etc"),"/Rprofile.site") ,"', should '",path.expand("~/.Rprofile") ,"' be created? [y/n]: ")))
-        if (doit %in% c("Y","YES","J","JA","SI","S"))
-        {
-         file.create("~/.Rprofile")              
-        } else 
-        {
-          return()
-        }
-      }
-      con  <- file("~/.Rprofile","r+b")       
-    }
-    
-    sets  <- readLines(con)
-    linec <- grep(sets,pattern="options\\(gdalUtils_gdalPath=")
-      
-    if (length(linec)!=0) # if already existing update content
-    {
-      sets[linec] <- paste0("options(gdalUtils_gdalPath=c('",paste0(path,collapse="', '"),"'))") 
-    } else
-    {
-      linet <- grep(sets,pattern="# Options for the 'gdalUtils' package")
-      if(length(linet)!=0)
-      {
-        sets <- append(sets,c(paste0("options(gdalUtils_gdalPath=c('",paste0(path,collapse="', '"),"'))")," "),after=linet)
-      } else
-      {
-        sets <- c(sets, " ","# Options for the 'gdalUtils' package",paste0("options(gdalUtils_gdalPath=c('",paste0(path,collapse="', '"),"'))")," ")
-      }            
-    }
-    writeLines(text=sets,con=con)
-    close(con)
-  }
+	path <- gdal_path(path)
+	options(gdalUtils_gdalPath=path)
+	
+	# try to write options to 'Rprofile.site' (in file.path(R.home(),"etc")), if no write permission is given, write (create if not existing) a .Rprofile in isers home path.expand("~"). 
+	if (makePermanent)
+	{
+		f <- paste0(file.path(R.home(),"etc"),"/Rprofile.site")
+		
+		owarn <- options()$warn
+		options(warn=-2)
+		on.exit(options(warn=owarn))
+		
+		con  <- try( file(f,"r+b"),silen=TRUE)
+		
+		if(inherits(con,"try-error"))
+		{
+			if(!file.exists("~/.Rprofile"))
+			{
+				doit <- toupper(readline(paste0("No write access to: '", paste0(file.path(R.home(),"etc"),"/Rprofile.site") ,"', should '",path.expand("~/.Rprofile") ,"' be created? [y/n]: ")))
+				if (doit %in% c("Y","YES","J","JA","SI","S"))
+				{
+					file.create("~/.Rprofile")              
+				} else 
+				{
+					return()
+				}
+			}
+			con  <- file("~/.Rprofile","r+b")       
+		}
+		
+		sets  <- readLines(con)
+		linec <- grep(sets,pattern="options\\(gdalUtils_gdalPath=")
+		
+		if (length(linec)!=0) # if already existing update content
+		{
+			sets[linec] <- paste0("options(gdalUtils_gdalPath=c('",paste0(path,collapse="', '"),"'))") 
+		} else
+		{
+			linet <- grep(sets,pattern="# Options for the 'gdalUtils' package")
+			if(length(linet)!=0)
+			{
+				sets <- append(sets,c(paste0("options(gdalUtils_gdalPath=c('",paste0(path,collapse="', '"),"'))")," "),after=linet)
+			} else
+			{
+				sets <- c(sets, " ","# Options for the 'gdalUtils' package",paste0("options(gdalUtils_gdalPath=c('",paste0(path,collapse="', '"),"'))")," ")
+			}            
+		}
+		writeLines(text=sets,con=con)
+		close(con)
+	}
 } 
 
 gdal_version <- function(path, newerThan=NULL, verbose=FALSE)
 {
-  path <- gdal_path(path)
-  
-  cmd <- file.path(path, "gdalinfo")
-  cmd <- paste0('"',cmd,'"'," --version")
-  
-  result <- lapply(cmd,system,intern=TRUE)
-  
-  # It seams that system works also in Windows (MAC?), do you confirm?
-  # Does shell work here?
-  # if (.Platform$OS=="unix") 
-  #{
-  # gdal_version <- system(cmd,intern=TRUE) 
-  # else 
-  #{
-  #gdal_version <- shell(cmd,intern=TRUE)
-  #}
-  
-  res <- sapply(result,grep,pattern=glob2rx("GDAL*"))
-  
-  if(sum(res)!=length(result))
-  {
-    message("Probably broken install of gdal at '",paste0(path[which(res!=1)],collapse= "' and '"),"'")
-  }
-  result <- result[res==1]
-  
-  date <- version <- vector(mode = "list", length = length(result))
-  
-  for(i in seq_along(result))
-  {
-    ingd         <- strsplit(result[[i]],",")[[1]]
-    version[[i]] <- gsub(ingd[1],pattern="GDAL ",replacement="")
-    ind          <- grep(ingd,pattern="releas") # should this be: glob2rx("GDAL*")?
-    date[[i]]    <- as.character(as.Date(gsub(ingd[ind],pattern=" released ",replacement=""),format="%Y/%m/%d"))
-  }
-  
-  if(!is.null(newerThan))
-  {
-    test <- try(as.Date(newerThan),silent=TRUE)
-    if(!inherits(test,"try-error"))
-    {
-      datein <- lapply(date,as.Date)
-      res    <- sapply(datein,">=",as.Date(newerThan)) 
-    } else
-    {
-      version   <- gsub(tolower(version),pattern="[a-z]",replacement="")
-      res       <- sapply(version,strsplit,"\\.") 
-      newerThan <- strsplit(newerThan,"\\.")[[1]]
-      
-      for(i in seq_along(res))
-      {
-        difs <- as.numeric(res[[i]]) - as.numeric(newerThan)
-        difs <- sign(difs)
-        
-        if(sum(difs==-1)==0)
-        {
-          res[[i]] <- TRUE
-        } else
-        {
-          if(difs[1]<0)
-          {
-            res[[i]] <- FALSE
-          } else if(difs[1]>0)
-          {
-            res[[i]] <- TRUE
-          } else if(difs[1]==0)
-          {
-            if(difs[2]<0)
-            {
-              res[[i]] <- FALSE
-            } else if(difs[2]>0)
-            {
-              res[[i]] <- FALSE
-            } else
-            {  
-              if(difs[3]>=0)
-              {
-                res[[i]] <- TRUE                  
-              } else if (difs[3]<0)
-              {
-                res[[i]] <- FALSE
-              }
-            }
-          }
-        }
-      }
-    }
-    names(res) <- path
-    return(res)
-  }
-  result <- as.data.frame(cbind(path=path[res==1],version=version,date=date), stringsAsFactors=FALSE)
-  return(result)
+	path <- gdal_path(path)
+	
+	cmd <- file.path(path, "gdalinfo")
+	cmd <- paste0('"',cmd,'"'," --version")
+	
+	result <- lapply(cmd,system,intern=TRUE)
+	
+	# It seams that system works also in Windows (MAC?), do you confirm?
+	# Does shell work here?
+	# if (.Platform$OS=="unix") 
+	#{
+	# gdal_version <- system(cmd,intern=TRUE) 
+	# else 
+	#{
+	#gdal_version <- shell(cmd,intern=TRUE)
+	#}
+	
+	res <- sapply(result,grep,pattern=glob2rx("GDAL*"))
+	
+	if(sum(res)!=length(result))
+	{
+		message("Probably broken install of gdal at '",paste0(path[which(res!=1)],collapse= "' and '"),"'")
+	}
+	result <- result[res==1]
+	
+	date <- version <- vector(mode = "list", length = length(result))
+	
+	for(i in seq_along(result))
+	{
+		ingd         <- strsplit(result[[i]],",")[[1]]
+		version[[i]] <- gsub(ingd[1],pattern="GDAL ",replacement="")
+		ind          <- grep(ingd,pattern="releas") # should this be: glob2rx("GDAL*")?
+		date[[i]]    <- as.character(as.Date(gsub(ingd[ind],pattern=" released ",replacement=""),format="%Y/%m/%d"))
+	}
+	
+	if(!is.null(newerThan))
+	{
+		test <- try(as.Date(newerThan),silent=TRUE)
+		if(!inherits(test,"try-error"))
+		{
+			datein <- lapply(date,as.Date)
+			res    <- sapply(datein,">=",as.Date(newerThan)) 
+		} else
+		{
+			version   <- gsub(tolower(version),pattern="[a-z]",replacement="")
+			res       <- sapply(version,strsplit,"\\.") 
+			newerThan <- strsplit(newerThan,"\\.")[[1]]
+			
+			for(i in seq_along(res))
+			{
+				difs <- as.numeric(res[[i]]) - as.numeric(newerThan)
+				difs <- sign(difs)
+				
+				if(sum(difs==-1)==0)
+				{
+					res[[i]] <- TRUE
+				} else
+				{
+					if(difs[1]<0)
+					{
+						res[[i]] <- FALSE
+					} else if(difs[1]>0)
+					{
+						res[[i]] <- TRUE
+					} else if(difs[1]==0)
+					{
+						if(difs[2]<0)
+						{
+							res[[i]] <- FALSE
+						} else if(difs[2]>0)
+						{
+							res[[i]] <- FALSE
+						} else
+						{  
+							if(difs[3]>=0)
+							{
+								res[[i]] <- TRUE                  
+							} else if (difs[3]<0)
+							{
+								res[[i]] <- FALSE
+							}
+						}
+					}
+				}
+			}
+		}
+		names(res) <- path
+		return(res)
+	}
+	result <- as.data.frame(cbind(path=path[res==1],version=version,date=date), stringsAsFactors=FALSE)
+	return(result)
 }
 
 # browser()
@@ -309,187 +336,187 @@ gdal_version <- function(path, newerThan=NULL, verbose=FALSE)
 # 'v' is appended for formats supporting virtual IO (/vsimem, /vsigzip, /vsizip, etc).
 # 's' is appended for formats supporting subdatasets. 
 # Note: The valid formats for the output of gdalwarp are formats that support the Create() method (marked as rw+), not just the CreateCopy() method.
-    
+
 gdal_drivers <- function(path, verbose=FALSE)   
 {
-  path <- gdal_path(path)
-  
-  cmd <- file.path(path, "gdalinfo")
-  cmd <- paste0('"',cmd,'"'," --formats")
-  
-  drivers_raw <- lapply(cmd,system,intern=TRUE)
-  
-  result <- vector(mode='list',length(path))
-  names(result) <- path
-  for(i in seq_along(drivers_raw))
-  {
-    drivers_raw[[i]] <- drivers_raw[[i]][-1]
-    drivers=strsplit(drivers_raw[[i]],":")
-    driver_names=gsub("^ ","",sapply(drivers,function(x) { x[2] })) # Need to remove spaces
-    driver_codes_perm=strsplit(sapply(drivers,function(x) { x[1] }),"\\(")
-    driver_codes=gsub(" ","",sapply(driver_codes_perm,function(x) { x[1] }),fixed=TRUE)
-    driver_perm=gsub("\\)","",sapply(driver_codes_perm,function(x) { x[2] }))
-    
-    r <- w <- u <- v <- s <- rep(FALSE,length(driver_perm))
-    r[grep(driver_perm, pattern="r")]   <- TRUE
-    w[grep(driver_perm, pattern="w")]   <- TRUE
-    u[grep(driver_perm, pattern="\\+")] <- TRUE
-    v[grep(driver_perm, pattern="v")]   <- TRUE
-    s[grep(driver_perm, pattern="s")]   <- TRUE	
-    
-    result[[i]] <- data.frame(format_code=driver_codes,read=r,write=w,update=u,virtualIO=v,subdatasets=s,format_name=driver_names)
-  }
-  return(result)
+	path <- gdal_path(path)
+	
+	cmd <- file.path(path, "gdalinfo")
+	cmd <- paste0('"',cmd,'"'," --formats")
+	
+	drivers_raw <- lapply(cmd,system,intern=TRUE)
+	
+	result <- vector(mode='list',length(path))
+	names(result) <- path
+	for(i in seq_along(drivers_raw))
+	{
+		drivers_raw[[i]] <- drivers_raw[[i]][-1]
+		drivers=strsplit(drivers_raw[[i]],":")
+		driver_names=gsub("^ ","",sapply(drivers,function(x) { x[2] })) # Need to remove spaces
+		driver_codes_perm=strsplit(sapply(drivers,function(x) { x[1] }),"\\(")
+		driver_codes=gsub(" ","",sapply(driver_codes_perm,function(x) { x[1] }),fixed=TRUE)
+		driver_perm=gsub("\\)","",sapply(driver_codes_perm,function(x) { x[2] }))
+		
+		r <- w <- u <- v <- s <- rep(FALSE,length(driver_perm))
+		r[grep(driver_perm, pattern="r")]   <- TRUE
+		w[grep(driver_perm, pattern="w")]   <- TRUE
+		u[grep(driver_perm, pattern="\\+")] <- TRUE
+		v[grep(driver_perm, pattern="v")]   <- TRUE
+		s[grep(driver_perm, pattern="s")]   <- TRUE	
+		
+		result[[i]] <- data.frame(format_code=driver_codes,read=r,write=w,update=u,virtualIO=v,subdatasets=s,format_name=driver_names)
+	}
+	return(result)
 }
 
 gdal_supports <- function(driver, read=NULL, write=NULL, update=NULL, virtualIO=NULL, subdatasets=NULL, path, stopOnFirst=FALSE)
 {
-  path <- gdal_sortInstallation(path)
-  # debug
-  # driver="HDA"; read=NULL; write=NULL; update=NULL; virtualIO=NULL; subdatasets=NULL; stopOnFirst=FALSE;path <- gdal_sortInstallation()
-  result <- vector(mode="list",length(path))
-  names(result) <- path
-  
-  if(!isTRUE(read)) {read <- NULL}
-  if(!isTRUE(write)) {write <- NULL}
-  if(!isTRUE(update)) {update <- NULL}
-  if(!isTRUE(virtualIO)) {virtualIO <- NULL}
-  if(!isTRUE(subdatasets)) {subdatasets <- NULL}
-  
-  justPrint <- sum(c(read,write,update,virtualIO,subdatasets),na.rm=TRUE)==0
-  
-  check <- 0
-  for(i in seq_along(path))
-  {
-    drivers <- gdal_drivers(path[i])[[1]]
-    drivers <- drivers[grep(drivers$format_code,pattern=paste0("^",driver,"$"),ignore.case=TRUE),] # regex is fixed for exact match, we could also let search by regex...but it could be dangerous
-    
-    if(nrow(drivers)>0)
-    {
-      if(justPrint)
-      {
-        result[[i]] <- drivers
-      } else
-      {
-        test <- all(c(drivers$read==read, drivers$write==write, drivers$update==update, drivers$virtualIO==virtualIO, drivers$subdatasets==subdatasets))
-        
-        result[[i]] <- test
-        
-        if(stopOnFirst & test)
-        {
-          return(result[i])
-        }
-      }
-    } else
-    {
-      result[[i]] <- FALSE
-      check <- check + 1
-    }
-  }
-  if (check==length(result))
-  {
-    warning("Driver '", driver,"' not found, run 'gdal_drivers()' column 'format_code' for available drivers.")
-  }
-  return(result)
+	path <- gdal_sortInstallation(path)
+	# debug
+	# driver="HDA"; read=NULL; write=NULL; update=NULL; virtualIO=NULL; subdatasets=NULL; stopOnFirst=FALSE;path <- gdal_sortInstallation()
+	result <- vector(mode="list",length(path))
+	names(result) <- path
+	
+	if(!isTRUE(read)) {read <- NULL}
+	if(!isTRUE(write)) {write <- NULL}
+	if(!isTRUE(update)) {update <- NULL}
+	if(!isTRUE(virtualIO)) {virtualIO <- NULL}
+	if(!isTRUE(subdatasets)) {subdatasets <- NULL}
+	
+	justPrint <- sum(c(read,write,update,virtualIO,subdatasets),na.rm=TRUE)==0
+	
+	check <- 0
+	for(i in seq_along(path))
+	{
+		drivers <- gdal_drivers(path[i])[[1]]
+		drivers <- drivers[grep(drivers$format_code,pattern=paste0("^",driver,"$"),ignore.case=TRUE),] # regex is fixed for exact match, we could also let search by regex...but it could be dangerous
+		
+		if(nrow(drivers)>0)
+		{
+			if(justPrint)
+			{
+				result[[i]] <- drivers
+			} else
+			{
+				test <- all(c(drivers$read==read, drivers$write==write, drivers$update==update, drivers$virtualIO==virtualIO, drivers$subdatasets==subdatasets))
+				
+				result[[i]] <- test
+				
+				if(stopOnFirst & test)
+				{
+					return(result[i])
+				}
+			}
+		} else
+		{
+			result[[i]] <- FALSE
+			check <- check + 1
+		}
+	}
+	if (check==length(result))
+	{
+		warning("Driver '", driver,"' not found, run 'gdal_drivers()' column 'format_code' for available drivers.")
+	}
+	return(result)
 }
 
 gdal_python_utilities <- function(path)
 {
-  path <- gdal_path(path)
-  sapply(path,list.files,pattern="\\.py")
+	path <- gdal_path(path)
+	sapply(path,list.files,pattern="\\.py")
 }
 
 gdal_getExtension <- function(dataFormat)
 {
-  path <- gdal_path()
-  path <- gdal_sortInstallation(path)
-  
-  check <- 0
-  result <- list()
-  
-  for(i in seq_along(path))
-  {
-    cmd <- file.path(path[i],'gdalinfo --format ')
-    cmd <- paste0(cmd,dataFormat) 
-    
-    owarn <- options()$warn
-    options(warn=-2)
-    
-    ext <- system(cmd,intern=TRUE)
-    
-    options(warn=owarn)
-    if(length(ext)>0)
-    {
-      ext <- grep(ext,pattern="Extension:",value=TRUE)
-      
-      if (length(ext)>0)
-      {
-        ext <- gsub(strsplit(ext,":")[[1]][2], pattern=" ", replacement="")
-        
-        if (ext!="")
-        {
-          ext <- paste0(".",ext)
-        }
-          names(ext) <- path[i]
-          return(ext)
-      }
-    }
-  }
-  warning("No extension found for '",dataFormat ,"', run: 'gdal_drivers()' and see in column 'format_code' for available drivers!")
-  return("")
+	path <- gdal_path()
+	path <- gdal_sortInstallation(path)
+	
+	check <- 0
+	result <- list()
+	
+	for(i in seq_along(path))
+	{
+		cmd <- file.path(path[i],'gdalinfo --format ')
+		cmd <- paste0(cmd,dataFormat) 
+		
+		owarn <- options()$warn
+		options(warn=-2)
+		
+		ext <- system(cmd,intern=TRUE)
+		
+		options(warn=owarn)
+		if(length(ext)>0)
+		{
+			ext <- grep(ext,pattern="Extension:",value=TRUE)
+			
+			if (length(ext)>0)
+			{
+				ext <- gsub(strsplit(ext,":")[[1]][2], pattern=" ", replacement="")
+				
+				if (ext!="")
+				{
+					ext <- paste0(".",ext)
+				}
+				names(ext) <- path[i]
+				return(ext)
+			}
+		}
+	}
+	warning("No extension found for '",dataFormat ,"', run: 'gdal_drivers()' and see in column 'format_code' for available drivers!")
+	return("")
 }
 
 # sort GDALs by release date
 gdal_sortInstallation <- function(path)
 {
-  path <- gdal_path(path)
-  path <- path[order(as.Date(unlist(gdal_version(path)$date)), decreasing = TRUE)]
-  return(path)
+	path <- gdal_path(path)
+	path <- path[order(as.Date(unlist(gdal_version(path)$date)), decreasing = TRUE)]
+	return(path)
 }
 
 gdal_installation <- function(
-  return_drivers=TRUE,
-  return_python_utilities=TRUE,
-  sort_most_current=TRUE
-  )
+		return_drivers=TRUE,
+		return_python_utilities=TRUE,
+		sort_most_current=TRUE
+)
 {
-  result <- list()
-  
-  path <- gdal_path()
-  
-  if(sort_most_current)
-  {
-    path <- gdal_sortInstallation(path)
-    result$gdal_sorted <- path
-  }
-  gdal_setPath(path) # exports to options()
-  
-  if(return_drivers)
-  {
-    result$drivers <- gdal_drivers(path)    
-  }
-  if(return_python_utilities)
-  {
-    result$python_utilities <- gdal_python_utilities(path)    
-  }
-  return(result)    
+	result <- list()
+	
+	path <- gdal_path()
+	
+	if(sort_most_current)
+	{
+		path <- gdal_sortInstallation(path)
+		result$gdal_sorted <- path
+	}
+	gdal_setPath(path) # exports to options()
+	
+	if(return_drivers)
+	{
+		result$drivers <- gdal_drivers(path)    
+	}
+	if(return_python_utilities)
+	{
+		result$python_utilities <- gdal_python_utilities(path)    
+	}
+	return(result)    
 }
 
 # sligly adapted from MODIS package, this function cares about the final "/" and for blanks and backslashes on Windows
 correctPath <- function(x)
 {
-  if(!is.null(x))
-  {
-    if (.Platform$OS.type=="windows")
-    {
-      x <- shortPathName(x)
-    } else
-    {
-      x <- path.expand(x)
-    }
-    x      <- gsub(x,pattern="\\\\",replacement="/") # switch "\\" to "/
-    ind    <- substr(x,nchar(x),nchar(x))!="/"       # some x without "/" at the end?
-    x[ind] <- paste0(x[ind],"/")                     # add "/" at the end
-  }
-  return(x)
+	if(!is.null(x))
+	{
+		if (.Platform$OS.type=="windows")
+		{
+			x <- shortPathName(x)
+		} else
+		{
+			x <- path.expand(x)
+		}
+		x      <- gsub(x,pattern="\\\\",replacement="/") # switch "\\" to "/
+		ind    <- substr(x,nchar(x),nchar(x))!="/"       # some x without "/" at the end?
+		x[ind] <- paste0(x[ind],"/")                     # add "/" at the end
+	}
+	return(x)
 }

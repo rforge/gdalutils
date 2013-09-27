@@ -78,8 +78,9 @@ gdalwarp <- function(
 			parameter_order=parameter_order,
 			parameter_noflags=parameter_noflags)
 	
-#	print(cmd)
-	
+	print(cmd)
+
+
 	gdal_translate_output <- system(cmd,intern=TRUE) 
 
 	if(output_Raster)
