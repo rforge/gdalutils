@@ -58,130 +58,155 @@
 # brute force searches.
 
 
-gdal_path <- function(path, rescan = FALSE, checkValidity = FALSE, 
-		verbose = FALSE, checkWhich = TRUE, checkCommonLocations=TRUE)
+gdal_path <- function(
+		search_path,
+		ignore.options=FALSE,
+		ignore.which=FALSE,
+		ignore.common=FALSE,
+		force_full_scan = FALSE, 
+		checkValidity = TRUE, 
+		search_path_recursive=FALSE,
+		verbose = FALSE)
 {
 	owarn <- getOption("warn")
 	options(warn=-2)
 	on.exit(options(warn=owarn))
 	
-	# Common locations for UNIX-alikes:
-	common_locations_unix <- c(
-			# UNIX systems
-			"/usr/bin",
-			"/usr/local/bin",
-			# Mac
-			# Kyngchaos frameworks:
-			"/Library/Frameworks/GDAL.framework/Programs",
-			# MacPorts:
-			"/opt/local/bin"
-	)
-	
-	# Common locations for Windows
-	
-	if (missing(path))
+	path <- NULL
+	# Rescan will override everything.
+	if(!force_full_scan)
 	{
-		path <- getOption("gdalUtils_gdalPath")
-	}
-	
-	if(checkWhich)
-	{
-		path <- dirname(Sys.which("gdalinfo"))
-		if(path=="") { path <- NULL }
-	}
-	
-	# Explicit path definition (without a full rescan)
-	if (!is.null(path) & checkValidity & !rescan)
-	{
-		inPath <- function(path, verbose)
+		# Check options first.
+		if(!ignore.options)
 		{
-			cmd <- file.path(path, "gdalinfo")
-			cmd <- paste0('"',cmd,'"'," --version")
-			
-			try(gdal <- system(cmd,intern=TRUE),silent=TRUE)
-			
-			if (length(grep(gdal, pattern="^GDAL "))!=1)
+			if(verbose) message("Checking the gdalUtils_gdalPath option...")
+			option_paths <- getOption("gdalUtils_gdalPath")
+			if(!is.null(option_paths) && checkValidity)
 			{
-				path <- NULL 
-			} else
-			{
-				if(verbose) message("GDAL found in: ",path.expand(path))
+				option_paths_check <- gdal_check_validity(option_paths)
+				option_paths <- option_paths[option_paths_check]
 			}
-			return(path)
+			path <- c(path,option_paths)
 		}
-		path <- unlist(lapply(correctPath(path),inPath,verbose)) # unlist removes NULL
+		
+		# Next try Sys.which unless ignored:
+		if(!ignore.options && length(path)==0)
+		{
+			if(verbose) message("Checking Sys.which...")
+			Sys.which_path <- dirname(Sys.which("gdalinfo"))
+			if(Sys.which_path=="") Sys.which_path <- NULL
+			if(!is.null(Sys.which_path) && checkValidity)
+			{
+				Sys.which_path_check <- gdal_check_validity(Sys.which_path)
+				Sys.which_path <- Sys.which_path[Sys.which_path_check]
+			}
+			path <- c(path,Sys.which_path)
+		}
+		
+		# Next, try scanning the search path
+		if(!missing(search_path) && length(path)==0)
+		{
+			if(verbose) message("Checking the search path...")
+			search_paths <- normalizePath(dirname(
+							list.files(path=search_path,pattern="gdalinfo",
+									recursive=search_path_recursive,full.names=TRUE)))
+			if(length(search_paths)==0) search_paths <- NULL
+			if(!is.null(search_paths) && checkValidity)
+			{
+				search_paths_check <- gdal_check_validity(search_paths)
+				search_paths <- search_paths[search_paths_check]
+			}
+			path <- c(path,search_paths)
+			
+		}
+		
+		# If nothing is still found, look in common locations
+		if(!ignore.common && length(path)==0)
+		{
+			if(verbose) message("Checking common locations...")
+			if (.Platform$OS=="unix")
+			{
+				common_locations <- c(
+						# UNIX systems
+						"/usr/bin",
+						"/usr/local/bin",
+						# Mac
+						# Kyngchaos frameworks:
+						"/Library/Frameworks/GDAL.framework/Programs",
+						# MacPorts:
+						"/opt/local/bin"
+				)
+			}
+			
+			if (.Platform$OS=="windows")
+			{
+				common_locations <- c(
+						"C:\\Program Files",
+						"C:\\Program Files (x86)",
+						"C:\\OSGeo4W"
+				)
+			}
+			
+			if(length(common_locations != 0))
+			{
+				common_paths <- unlist(sapply(common_locations,
+								function(x)
+								{
+									search_common_paths <- normalizePath(dirname(
+													list.files(path=x,pattern="gdalinfo",recursive=TRUE,full.names=TRUE)))
+									return(search_common_paths)
+								}))
+				if(length(common_paths)==0) common_paths <- NULL
+				if(!is.null(common_paths) && checkValidity)
+				{
+					common_paths_check <- gdal_check_validity(common_paths)
+					common_paths <- common_paths[common_paths_check]
+				}
+				path <- c(path,search_paths)
+			}
+		}
+		if(length(path)==0)
+		{
+			force_full_scan=TRUE
+		}
 	}
 	
-	if(checkCommonLocations)
+	if(force_full_scan)
 	{
-		
-		
-		
-	}
-	
-	
-	if(is.null(path)|rescan)
-	{
+		if(verbose) message("Scanning your root-dir for available GDAL installations,... This could take some time...")
 		if (.Platform$OS=="unix")
 		{
-			gdal <- try(system("gdalinfo --version",intern=TRUE),silent=TRUE)
-			
-			if (length(grep(gdal, pattern="^GDAL "))!=1 | rescan)
-			{
-				if(verbose & !rescan) message("GDAL not found in PATH, trying a search... This could take some time...")
-				if(verbose & rescan) message("Scanning your root-dir for available GDAL installations,... This could take some time...")
-				
-				
-				
-				gdalinfo_paths <- dirname(system("find /usr -name gdalinfo",intern=TRUE))# on linux this can triggers a very long search! some restiction is required.
-				
-				if(length(path)==0)
-				{
-					#if(verbose) message("No GDAL was found.")
-					#return(NULL)
-					stop("No GDAL was found. Please install 'gdal Utilities' before continuing") # why not stop?
-				}
-			}
-		} else
-		{
-			# Windows
-			gdal <- try(shell("gdalinfo --version",intern=TRUE),silent=TRUE)
-			
-			if (length(grep(gdal, pattern="^GDAL "))!=1 | rescan)
-			{
-				if(verbose & !rescan) message("GDAL not found in PATH, trying a search... This could take some time...")
-				if(verbose & rescan) message("Scanning your c-drive for available GDAL installations,... This could take some time...")
-				
-				# focussed search (in c:/OSGeo4W/ and in c:/Progs*)
-				poss <- dir("c:/",full.names=TRUE)
-				
-				osgeos <- grep(poss, pattern="OSGeo", ignore.case=TRUE, value=TRUE)                
-				if(length(osgeos)!=0)                
-				{
-					osgeos <- list.files(file.path(osgeos,"bin"), pattern="^gdalinfo.exe$", full.names=TRUE,include.dirs=TRUE)
-				}
-				progs <- grep(poss, pattern="Progr*", ignore.case=TRUE, value=TRUE)
-				
-				gdalinfo_paths <- list()
-				for (i in seq_along(progs))
-				{
-					gdalinfo_paths[[i]] <- list.files(path=progs[i],pattern="^gdalinfo.exe$", full.names=TRUE, recursive=TRUE, include.dirs=TRUE)
-				}
-				path <- dirname(c(unlist(gdalinfo_paths),osgeos))
-			}
-			if(length(path)==0)
-			{
-				#add QGIS?
-				stop("No GDAL installation found. Please install 'gdal Utilities' before continuing:\n\t- www.gdal.org (no HDF4 support!)\n\t- www.trac.osgeo.org/osgeo4w/ (with HDF4 support RECOMMANDED)\n\t- www.fwtools.maptools.org (with HDF4 support)\n") # why not stop?
-			}
+			root_dir <- "/"	
 		}
+		
+		if (.Platform$OS=="windows")
+		{
+			root_dir <- "C:\\"
+		}
+		
+		search_full_path <- normalizePath(dirname(
+						list.files(path=root_dir,pattern="gdalinfo",
+								recursive=TRUE,full.names=TRUE)))
+		if(length(search_full_path)==0) search_full_path <- NULL
+		if(!is.null(search_full_path) && checkValidity)
+		{
+			search_full_path_check <- gdal_check_validity(search_full_path)
+			search_full_path <- search_full_path[search_full_path_check]
+		}
+		path <- c(path,search_paths)
+	}
+	
+	if(length(path)==0)
+	{
+		#add QGIS?
+		stop("No GDAL installation found. Please install 'gdal' before continuing:\n\t- www.gdal.org (no HDF4 support!)\n\t- www.trac.osgeo.org/osgeo4w/ (with HDF4 support RECOMMENDED)\n\t- www.fwtools.maptools.org (with HDF4 support)\n") # why not stop?
 	}
 	return(correctPath(path))
 }
 
 gdal_setPath <- function(path, makePermanent=FALSE)
 {
-	path <- gdal_path(path)
+	path <- gdal_path(path,ignore.options=TRUE)
 	options(gdalUtils_gdalPath=path)
 	
 	# try to write options to 'Rprofile.site' (in file.path(R.home(),"etc")), if no write permission is given, write (create if not existing) a .Rprofile in isers home path.expand("~"). 
@@ -252,7 +277,7 @@ gdal_version <- function(path, newerThan=NULL, verbose=FALSE)
 	#gdal_version <- shell(cmd,intern=TRUE)
 	#}
 	
-	res <- sapply(result,grep,pattern=glob2rx("GDAL*"))
+	res <- sapply(result,length)
 	
 	if(sum(res)!=length(result))
 	{
@@ -470,7 +495,8 @@ gdal_getExtension <- function(dataFormat)
 gdal_sortInstallation <- function(path)
 {
 	path <- gdal_path(path)
-	path <- path[order(as.Date(unlist(gdal_version(path)$date)), decreasing = TRUE)]
+	path_versions <- gdal_version(path)
+	path <- path_versions[order(as.Date(unlist(path_versions$date)),decreasing=TRUE),]
 	return(path)
 }
 
@@ -488,7 +514,10 @@ gdal_installation <- function(
 	{
 		path <- gdal_sortInstallation(path)
 		result$gdal_sorted <- path
+		path <- unlist(path$path)
 	}
+	
+	
 	gdal_setPath(path) # exports to options()
 	
 	if(return_drivers)
@@ -520,3 +549,26 @@ correctPath <- function(x)
 	}
 	return(x)
 }
+
+gdal_check_validity <- function(path)
+{
+	checkValidity <- sapply(path,
+			function(x)
+			{
+				cmd <- normalizePath(
+						list.files(path=x,pattern="gdalinfo",full.names=TRUE))
+				
+				if(length(cmd)==0)
+				{
+					return(FALSE)
+				} else
+				{
+					cmd <- paste0('"',cmd,'"'," --version")
+					validity = length(try(gdal <- system(cmd,intern=TRUE),silent=TRUE))
+					
+					return(as.logical(validity))
+				}
+			}
+	)
+}
+
