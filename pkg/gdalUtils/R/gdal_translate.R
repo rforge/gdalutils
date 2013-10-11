@@ -72,82 +72,47 @@ gdal_translate <- function(src_dataset,dst_dataset,ot,strict,of="GTiff",
 		modis_sds_index,
 		output_Raster=FALSE,verbose=FALSE)
 {
-  path <- gdal_path() # get gdal's
-  path <- gdal_sortInstallation(path) # sort by release
-  
-  src_dataset <- gdal_rasterToGdal(src_dataset) # eventually convert raster* object
-  
-  ext <- extension(dst_dataset)
-  if (ext=="")
-  {
-    ext <- gdal_getExtension(of)
-  }
-  
-  path <- gdal_supports(of,write=TRUE,path=path,stopOnFirst=TRUE) # check write supports of gdal's to 'of'
-  path <- names(path[path==TRUE])
-  
-  if(length(path)==0)
-  {
-    stop("No GDAL found with write access to: '",of,"'! Run 'gdal_drivers()' column 'format_code' for available drivers")
-  }
-  
-	
-  # Don't know if this will work on windows yet...
-  # DeleteOnRead: gdal_path() now generates a save string (using correctPath), just a simple paste0(path,"command ") should do the job for any chase (OS,LOCAL), NOTE the blank after the command! 
-  base_command <- paste0(path,"gdal_translate ")
-	# Don't forget to close the "'" at the end...
-	
-	# Get defined variable names
-	
-	logical_parameters <- c("strict","unscale","epo","eco","q","sds","stats")
-	vector_parameters <- c("outsize","scale","srcwin","projwin","a_ullr","gcp")
-	scalar_parameters <- c("a_nodata")
-	character_parameters <-c("ot","of","mask","expand","a_srs")
-	repeatable_parameters <- c("b","mo","co")
-	
-  
-	gdal_flags <- vector()
-	# Set up flags
-	if(!missing(ot)) { gdal_flags <- paste(gdal_flags,paste("-ot",ot)) }
-	if(!missing(strict)) { if(strict) gdal_flags <- paste(gdal_flags,"-strict") }
-	if(!missing(of)) { gdal_flags <- paste(gdal_flags,paste("-of",of)) }
-	if(!missing(b)) { gdal_flags <- paste(gdal_flags,paste("-b",b))	}
-	if(!missing(mask)) { gdal_flags <- paste(gdal_flags,paste("-mask",mask)) }
-	if(!missing(expand)) { gdal_flags <- paste(gdal_flags,paste("-expand",expand)) }
-	if(!missing(outsize)) { gdal_flags <- paste(gdal_flags,paste("-outsize",paste(outsize,collapse=" "))) }
-	if(!missing(scale)) { gdal_flags <- paste(gdal_flags,paste("-scale",paste(scale,collapse=" "))) }
-	if(!missing(unscale)) { if(unscale) gdal_flags <- paste(gdal_flags,"-unscale") }
-	if(!missing(srcwin)) { gdal_flags <- paste(gdal_flags,paste("-srcwin",paste(srcwin,collapse=" "))) }
-	if(!missing(projwin)) { gdal_flags <- paste(gdal_flags,paste("-projwin",paste(projwin,collapse=" "))) }
-	if(!missing(epo)) { if(epo) gdal_flags <- paste(gdal_flags,"-epo") }
-	if(!missing(eco)) { if(eco) gdal_flags <- paste(gdal_flags,"-eco") }
-	if(!missing(a_srs)) { gdal_flags <- paste(gdal_flags,paste("-a_srs",a_srs)) }
-	if(!missing(a_ullr)) { gdal_flags <- paste(gdal_flags,cat("-a_ullr",a_ullr)) }
-	if(!missing(a_nodata)) { gdal_flags <- paste(gdal_flags,paste("-a_nodata",a_nodata)) }
-	if(!missing(mo)) { gdal_flags <- paste(gdal_flags,paste("-mo",paste("'",mo,"'",sep=""))) }
-	if(!missing(co)) { gdal_flags <- paste(gdal_flags,paste("-co",paste("'",co,"'",sep=""))) }
-	if(!missing(gcp)) { gdal_flags <- paste(gdal_flags,cat("-gcp",gcp)) }
-	if(!missing(q)) { if(q) gdal_flags <- paste(gdal_flags,"-q") }
-	if(!missing(sds)) { if(sds) gdal_flags <- paste(gdal_flags,"-sds") }
-	if(!missing(stats)) { if(stats) gdal_flags <- paste(gdal_flags,"-stats") }
-	if(!missing(additional_commands)) { gdal_flags <- paste(gdal_flags,additional_commands) }
+	parameter_values <- as.list(environment())
 		
-	if(dirname(src_dataset)==".") { src_dataset <- file.path(getwd(),src_dataset) }
-	if(dirname(dst_dataset)==".") { dst_dataset <- file.path(getwd(),dst_dataset) }	
+	parameter_variables <- list(
+			logical = list(
+					varnames <- c("strict","unscale","epo","eco","q","sds","stats")),
+			vector = list(
+					varnames <- c("outsize","scale","srcwin","projwin","a_ullr","gcp")),
+			scalar = list(
+					varnames <- c("a_nodata")),
+			character = list(
+					varnames <- c("ot","of","mask","expand","a_srs","src_dataset","dst_dataset")),
+			repeatable = list(
+					varnames <- c("b","mo","co")))
 	
-	# MODIS HDF4 customization
-	if(!missing(modis_sds_index))
-	{
-		src_dataset <- modis_hdf4_subdatasets(src_dataset)[modis_sds_index]
-		
-	}
+	parameter_order <- c(
+			"strict","unscale","epo","eco","q","sds","stats",
+			"outsize","scale","srcwin","projwin","a_ullr","gcp",
+			"a_nodata",
+			"ot","of","mask","expand","a_srs",
+			"b","mo","co",
+			"src_dataset","dst_dataset")
 	
-	gdal_translate_cmd <- paste(paste(base_command,gdal_flags,sep=""),paste('"',src_dataset,'"',sep=""),paste('"',dst_dataset,'"',sep=""))
+	parameter_noflags <- c("src_dataset","dst_dataset")
 	
-	if(verbose) message(paste("GDAL command being used:",gdal_translate_cmd))
+#	path <- gdal_path() # get gdal's
+#	path <- gdal_sortInstallation(path) # sort by release
+#	executable <- normalizePath(list.files(getOption("gdalUtils_gdalPath")[[1]]$path,
+#			"gdal_translate",full.names=TRUE))# [1] is prov!
 	
-	gdal_translate_output <- system(gdal_translate_cmd,intern=TRUE) 
+	executable <- "gdal_translate"
 	
+	cmd <- gdal_cmd_builder(
+			executable=executable,
+			parameter_variables=parameter_variables,
+			parameter_values=parameter_values,
+			parameter_order=parameter_order,
+			parameter_noflags=parameter_noflags)
+	
+	if(verbose) message(paste("GDAL command being used:",cmd))
+	
+	gdal_translate_output <- system(cmd,intern=TRUE) 
 	
 	if(verbose) { message(gdal_translate_output) } 
 	

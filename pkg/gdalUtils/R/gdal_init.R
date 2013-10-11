@@ -57,6 +57,16 @@
 # add a "force_search" parameter that automatically
 # brute force searches.
 
+gdal_init <- function()
+{
+	gdal_paths <- gdal_path()
+	options(gdalUtils_gdalPath=data.frame(path=gdal_paths,stringsAsFactors=FALSE))
+	gdal_versions <- gdal_version()
+	gdal_installations <- gdal_installation(sort_most_current=FALSE)
+	
+	
+}
+
 
 gdal_path <- function(
 		search_path,
@@ -64,13 +74,18 @@ gdal_path <- function(
 		ignore.which=FALSE,
 		ignore.common=FALSE,
 		force_full_scan = FALSE, 
-		checkValidity = TRUE, 
+		checkValidity, 
 		search_path_recursive=FALSE,
 		verbose = FALSE)
 {
 	owarn <- getOption("warn")
 	options(warn=-2)
 	on.exit(options(warn=owarn))
+	
+	if(missing(checkValidity))
+	{
+		if(is.null(getOption("gdalUtils_gdalPath"))) checkValidity=TRUE else checkValidity=FALSE
+	}
 	
 	path <- NULL
 	# Rescan will override everything.
@@ -80,7 +95,8 @@ gdal_path <- function(
 		if(!ignore.options)
 		{
 			if(verbose) message("Checking the gdalUtils_gdalPath option...")
-			option_paths <- getOption("gdalUtils_gdalPath")
+			option_paths <- unlist(
+					sapply(getOption("gdalUtils_gdalPath"),function(x) return(x$path)))
 			if(!is.null(option_paths) && checkValidity)
 			{
 				option_paths_check <- gdal_check_validity(option_paths)
@@ -162,7 +178,7 @@ gdal_path <- function(
 					common_paths_check <- gdal_check_validity(common_paths)
 					common_paths <- common_paths[common_paths_check]
 				}
-				path <- c(path,search_paths)
+				path <- c(path,common_paths)
 			}
 		}
 		if(length(path)==0)
@@ -201,13 +217,14 @@ gdal_path <- function(
 		#add QGIS?
 		stop("No GDAL installation found. Please install 'gdal' before continuing:\n\t- www.gdal.org (no HDF4 support!)\n\t- www.trac.osgeo.org/osgeo4w/ (with HDF4 support RECOMMENDED)\n\t- www.fwtools.maptools.org (with HDF4 support)\n") # why not stop?
 	}
+	
 	return(correctPath(path))
 }
 
 gdal_setPath <- function(path, makePermanent=FALSE)
 {
-	path <- gdal_path(path,ignore.options=TRUE)
-	options(gdalUtils_gdalPath=path)
+#	path <- gdal_path(ignore.options=TRUE)
+	options(gdalUtils_gdalPath=gdal_installation())
 	
 	# try to write options to 'Rprofile.site' (in file.path(R.home(),"etc")), if no write permission is given, write (create if not existing) a .Rprofile in isers home path.expand("~"). 
 	if (makePermanent)
@@ -260,9 +277,9 @@ gdal_setPath <- function(path, makePermanent=FALSE)
 
 gdal_version <- function(path, newerThan=NULL, verbose=FALSE)
 {
-	path <- gdal_path(path)
+	if(missing(path)) { path <- gdal_path() }
 	
-	cmd <- file.path(path, "gdalinfo")
+	cmd <- normalizePath(list.files(path, "gdalinfo",full.names=TRUE))
 	cmd <- paste0('"',cmd,'"'," --version")
 	
 	result <- lapply(cmd,system,intern=TRUE)
@@ -364,7 +381,7 @@ gdal_version <- function(path, newerThan=NULL, verbose=FALSE)
 
 gdal_drivers <- function(path, verbose=FALSE)   
 {
-	path <- gdal_path(path)
+	if(missing(path)) path <- gdal_path(checkValidity=TRUE)
 	
 	cmd <- file.path(path, "gdalinfo")
 	cmd <- paste0('"',cmd,'"'," --formats")
@@ -447,7 +464,7 @@ gdal_supports <- function(driver, read=NULL, write=NULL, update=NULL, virtualIO=
 
 gdal_python_utilities <- function(path)
 {
-	path <- gdal_path(path)
+	if(missing(path)) { path <- gdal_path() }
 	sapply(path,list.files,pattern="\\.py")
 }
 
@@ -494,41 +511,52 @@ gdal_getExtension <- function(dataFormat)
 # sort GDALs by release date
 gdal_sortInstallation <- function(path)
 {
-	path <- gdal_path(path)
+	if(missing(path)) path <- gdal_path()
 	path_versions <- gdal_version(path)
 	path <- path_versions[order(as.Date(unlist(path_versions$date)),decreasing=TRUE),]
 	return(path)
 }
 
 gdal_installation <- function(
+		return_versions=TRUE,
 		return_drivers=TRUE,
 		return_python_utilities=TRUE,
 		sort_most_current=TRUE
 )
 {
-	result <- list()
+	path <- gdal_path(checkValidity=TRUE)
 	
-	path <- gdal_path()
-	
+	gdal_installation_results <- lapply(path,
+			function(x,return_drivers,return_python_utilities,return_versions)
+			{
+				result <- list(path=x)
+				
+				if(return_versions)
+				{
+					version <- gdal_version(x)
+					result$version <- version$version
+					result$date <- version$date
+				}
+				
+				if(return_drivers)
+				{
+					result$drivers <- gdal_drivers(x)    
+				}
+				
+				if(return_python_utilities)
+				{
+					result$python_utilities <- gdal_python_utilities(x)    
+				}
+				return(result)
+			},return_drivers=return_drivers,
+			return_python_utilities=return_python_utilities,return_versions=return_versions)
 	if(sort_most_current)
 	{
-		path <- gdal_sortInstallation(path)
-		result$gdal_sorted <- path
-		path <- unlist(path$path)
+		versions <- unlist(sapply(gdal_installation_results,function(x) return(x$date)))
+		gdal_installation_results <- gdal_installation_results[
+			order(as.Date(unlist(versions)),decreasing=TRUE)]
 	}
-	
-	
-	gdal_setPath(path) # exports to options()
-	
-	if(return_drivers)
-	{
-		result$drivers <- gdal_drivers(path)    
-	}
-	if(return_python_utilities)
-	{
-		result$python_utilities <- gdal_python_utilities(path)    
-	}
-	return(result)    
+	return(gdal_installation_results)    
 }
 
 # sligly adapted from MODIS package, this function cares about the final "/" and for blanks and backslashes on Windows

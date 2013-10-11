@@ -4,6 +4,8 @@ gdal_cmd_builder <- function(executable,parameter_variables,parameter_values,par
 {
 	# path to executable check in here?
 	
+	executable <- gdal_get_executable(executable)
+	
 	parameter_variables_types <- names(parameter_variables)
 	defined_variables <- names(parameter_values)[sapply(parameter_values,function(X) class(X) != "name")]
 	
@@ -158,9 +160,6 @@ gdal_cmd_builder <- function(executable,parameter_variables,parameter_values,par
 #			parameter_variables_noflag_strings <- NULL
 #		}
 	}
-	
-
-
 
 	parameter_vector <- c(
 			parameter_variables_logical_strings,
@@ -178,7 +177,7 @@ gdal_cmd_builder <- function(executable,parameter_variables,parameter_values,par
 		parameter_vector <- parameter_vector[parameter_order_defined]
 	}
 	
-	cmd <- paste(c(executable,parameter_vector),collapse=" ")
+	cmd <- paste(c(qm(executable),parameter_vector),collapse=" ")
 	
 	return(cmd)
 	
