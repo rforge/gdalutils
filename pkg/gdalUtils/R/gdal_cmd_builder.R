@@ -22,7 +22,8 @@ gdal_cmd_builder <- function(executable,parameter_variables,parameter_values,par
 						return(parameter_values[[which(names(parameter_values)==X)]])
 					},parameter_values=parameter_values)
 			parameter_variables_logical_strings <- paste("-",
-					parameter_variables_logical[parameter_variables_logical_defined_true],sep="")
+					names(parameter_variables_logical_defined_true),sep="")
+			names(parameter_variables_logical_strings) <- names(parameter_variables_logical_defined_true)
 		} else
 		{
 			parameter_variables_logical_strings <- NULL

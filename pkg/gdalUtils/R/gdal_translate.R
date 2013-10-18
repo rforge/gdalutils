@@ -73,7 +73,10 @@ gdal_translate <- function(src_dataset,dst_dataset,ot,strict,of="GTiff",
 		output_Raster=FALSE,verbose=FALSE)
 {
 	parameter_values <- as.list(environment())
-		
+
+	if(verbose) message("Checking gdal_installation...")
+	gdal_setInstallation()
+	
 	parameter_variables <- list(
 			logical = list(
 					varnames <- c("strict","unscale","epo","eco","q","sds","stats")),
