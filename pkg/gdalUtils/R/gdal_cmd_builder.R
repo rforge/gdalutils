@@ -36,13 +36,16 @@
 #' 
 #' parameter_variables <- list(
 #' 			logical = list(
-#' 					varnames <- c("strict","unscale","epo","eco","q","sds","stats")),
+#' 					varnames <- c("strict","unscale","epo",
+#' 					"eco","q","sds","stats")),
 #' 			vector = list(
-#' 					varnames <- c("outsize","scale","srcwin","projwin","a_ullr","gcp")),
+#' 					varnames <- c("outsize","scale","srcwin",
+#' 					"projwin","a_ullr","gcp")),
 #' 			scalar = list(
 #' 					varnames <- c("a_nodata")),
 #' 			character = list(
-#' 					varnames <- c("ot","of","mask","expand","a_srs","src_dataset","dst_dataset")),
+#' 					varnames <- c("ot","of","mask","expand","a_srs",
+#' 					"src_dataset","dst_dataset")),
 #' 			repeatable = list(
 #' 					varnames <- c("b","mo","co")))
 #' 

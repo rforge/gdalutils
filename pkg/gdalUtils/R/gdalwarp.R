@@ -76,7 +76,8 @@
 #' # Command-line gdalwarp call:
 #' # gdalwarp -t_srs '+proj=utm +zone=11 +datum=WGS84' raw_spot.tif utm11.tif
 #' # gdalwarp in R:
-#' gdalwarp(src_dataset,dstfile="tahoe_highrez_utm11.tif",t_srs='+proj=utm +zone=11 +datum=WGS84',output_Raster=TRUE)
+#' gdalwarp(src_dataset,dstfile="tahoe_highrez_utm11.tif",
+#' 		t_srs='+proj=utm +zone=11 +datum=WGS84',output_Raster=TRUE)
 #' }
 #' @export
 
