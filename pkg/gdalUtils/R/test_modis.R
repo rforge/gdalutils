@@ -7,5 +7,4 @@
 #' @examples \dontrun{
 #' 	gdalinfo(system.file("external/test_modis.hdf", package="gdalUtils"))
 #' }
-#' plot(tahoe_lidar_bareearth)
 NULL

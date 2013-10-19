@@ -10,8 +10,4 @@
 #' tahoe_highrez_training_points <- readOGR(
 #' 	dsn=system.file("external", package="gdalUtils"),layer="tahoe_highrez_training_points")
 #' spplot(tahoe_highrez_training_points,zcol="SPECIES")
-#' tahoe_highrez_training_points_utm <- readOGR(
-#' 	dsn=system.file("external", package="gdalUtils"),
-#' 	layer="tahoe_highrez_training_points_utm")
-#' print(projection(tahoe_highrez_training_points_utm))
 NULL

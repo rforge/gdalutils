@@ -5,9 +5,8 @@
   gdal_translate(src_dataset, dst_dataset, ot, strict,
     of = "GTiff", b, mask, expand, outsize, scale, unscale,
     srcwin, projwin, epo, eco, a_srs, a_ullr, a_nodata, mo,
-    co, gcp, q, sds, stats, additional_commands,
-    modis_sds_index, output_Raster = FALSE,
-    verbose = FALSE)
+    co, gcp, q, sds, stats, additional_commands, sd_index,
+    output_Raster = FALSE, verbose = FALSE)
 }
 \arguments{
   \item{src_dataset}{Character. The source dataset name. It
@@ -136,10 +135,11 @@
   \item{additional_commands}{Character. Additional commands
   to pass directly to gdal_translate.}
 
-  \item{modis_sds_index}{Numeric. If the file is a MODIS
-  HDF4 file, which subdataset should be returned (1 to the
+  \item{sd_index}{Numeric. If the file is an HDF4 or HDF5
+  file, which subdataset should be returned (1 to the
   number of subdatasets)?  If this flag is used,
-  src_dataset should be the filename of the HDF4 file.}
+  src_dataset should be the filename of the multipart
+  file.}
 
   \item{output_Raster}{Logical. Return output dst_dataset
   as a RasterBrick?}
@@ -189,6 +189,9 @@ srcwin=c(1,1,100,100),output_Raster=TRUE,verbose=TRUE)
 # Notice this is the equivalent, but follows gdal_translate's parameter format:
 gdal_translate(src_dataset,"tahoe_highrez_tiled.tif",of="Gtiff",
 srcwin="1 1 100 100",output_Raster=TRUE,verbose=TRUE)
+# Extract the first subdataset from an HDF4 file:
+hdf4_dataset <- system.file("external/test_modis.hdf", package="gdalUtils")
+gdal_translate(hdf4_dataset,"test_modis_sd1.tif",sd_index=1)
 }
 }
 \author{

@@ -167,7 +167,7 @@
   the source dataset.}
 
   \item{additional_commands}{Character. Additional commands
-  to pass directly to gdal_translate.}
+  to pass directly to gdalwarp.}
 
   \item{output_Raster}{Logical. Return output dst_dataset
   as a RasterBrick?}
