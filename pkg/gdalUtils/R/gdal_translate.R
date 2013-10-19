@@ -68,6 +68,8 @@
 #' }
 #' @export
 
+# TODO: return all subdatasets if sds=TRUE as a list of bricks
+
 gdal_translate <- function(src_dataset,dst_dataset,ot,strict,of="GTiff",
 		b,mask,expand,outsize,scale,unscale,srcwin,projwin,epo,eco,
 		a_srs,a_ullr,a_nodata,mo,co,gcp,q,sds,stats,

@@ -31,6 +31,7 @@
 # TODO: set permanently in e.g. .Rprofile (Matteo)
 # TODO: force a re-scan in gdal_setInstallation
 # TODO: allow the user to specify a single installation path in gdal_setInstallation
+# TODO: if nothing is found, give suggestions on where to download GDAL
 
 gdal_setInstallation <- function()
 {
