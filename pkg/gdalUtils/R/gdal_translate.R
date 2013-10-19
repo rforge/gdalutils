@@ -27,7 +27,7 @@
 #' @param sds Logical. Copy all subdatasets of this file to individual output files. Use with formats like HDF or OGDI that have subdatasets.
 #' @param stats Logical. (GDAL >= 1.8.0) Force (re)computation of statistics.
 #' @param additional_commands Character. Additional commands to pass directly to gdal_translate.
-#' @param modis_sds_index Numeric. If the file is a MODIS HDF4 file, which subdataset should be returned (1 to the number of subdatasets)?  If this flag is used, src_dataset should be the filename of the HDF4 file.
+#' @param sd_index Numeric. If the file is an HDF4 or HDF5 file, which subdataset should be returned (1 to the number of subdatasets)?  If this flag is used, src_dataset should be the filename of the multipart file.
 #' @param output_Raster Logical. Return output dst_dataset as a RasterBrick?
 #' @param verbose Logical.
 #' @return NULL or if(output_Raster), a RasterBrick.
@@ -62,6 +62,9 @@
 #' # Notice this is the equivalent, but follows gdal_translate's parameter format:
 #' gdal_translate(src_dataset,"tahoe_highrez_tiled.tif",of="Gtiff",
 #' srcwin="1 1 100 100",output_Raster=TRUE,verbose=TRUE)
+#' # Extract the first subdataset from an HDF4 file:
+#' hdf4_dataset <- system.file("external/test_modis.hdf", package="gdalUtils")
+#' gdal_translate(hdf4_dataset,"test_modis_sd1.tif",sd_index=1)
 #' }
 #' @export
 
@@ -69,13 +72,18 @@ gdal_translate <- function(src_dataset,dst_dataset,ot,strict,of="GTiff",
 		b,mask,expand,outsize,scale,unscale,srcwin,projwin,epo,eco,
 		a_srs,a_ullr,a_nodata,mo,co,gcp,q,sds,stats,
 		additional_commands,
-		modis_sds_index,
+		sd_index,
 		output_Raster=FALSE,verbose=FALSE)
 {
 	parameter_values <- as.list(environment())
 
 	if(verbose) message("Checking gdal_installation...")
 	gdal_setInstallation()
+	
+	if(!missing(sd_index))
+	{
+		parameter_values$src_dataset <- get_subdatasets(src_dataset,names_only=TRUE)[sd_index]
+	}
 	
 	parameter_variables <- list(
 			logical = list(
@@ -116,10 +124,10 @@ gdal_translate <- function(src_dataset,dst_dataset,ot,strict,of="GTiff",
 	if(verbose) { message(cmd_output) } 
 	
 	# (Optional) return Raster
-	if(output_Raster)
+	if(output_Raster & missing(sds))
 	{
-#		return(gdal_gdalToRaster(dst_dataset))	
-		return(brick(dst_dataset))
+		if(!sds) return(brick(dst_dataset))
+		else return(NULL)
 	} else
 	{
 		return(NULL)
