@@ -26,6 +26,7 @@
 
 # TODO: hasWriteDrivers
 # TODO: allow a user to force an ID
+# TODO: minimum version requirement
 
 gdal_chooseInstallation <- function(hasDrivers)
 {	
