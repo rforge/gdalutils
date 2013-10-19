@@ -85,7 +85,7 @@ gdalsrsinfo <- function(srs_def,p,V,o,
 	
 	cmd_output <- system(cmd,intern=TRUE) 
 	
-	if(verbose) { message(gdal_translate_output) }
+	if(verbose) { message(cmd_output) }
 	if(as.CRS)
 	{
 		return(CRS(gsub("'","",cmd_output)))

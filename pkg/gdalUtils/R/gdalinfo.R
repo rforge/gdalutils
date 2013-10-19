@@ -50,7 +50,7 @@
 #' @export
 
 gdalinfo <- function(datasetname,mm,stats,
-	hist,nogcp,nomd,norat,noct,nofl,checksum,
+	approx_stats,hist,nogcp,nomd,nrat,noct,nofl,checksum,
 	proj4,mdd,sd,additional_commands,
 	raw_output=TRUE,verbose=FALSE)
 {
@@ -75,7 +75,7 @@ gdalinfo <- function(datasetname,mm,stats,
 	)
 	
 	parameter_order <- c(
-			"mm","stats","hist","nogcp","nomd","norat","noct","nofl","checksum",
+			"mm","stats","approx_stats","hist","nogcp","nomd","nrat","noct","nofl","checksum",
 			"proj4","mdd","sd","datasetname")
 	
 	parameter_noflags <- c("datasetname")

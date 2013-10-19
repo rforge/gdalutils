@@ -2,6 +2,8 @@
 #' 
 #' Wraps an input in quotation marks.
 #' 
+#' @param x Character or Numeric.
+#' 
 #' @return A character string that begins and ends with quotation marks.
 #' @author Jonathan A. Greenberg
 #' 

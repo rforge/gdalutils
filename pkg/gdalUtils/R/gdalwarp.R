@@ -2,8 +2,8 @@
 #' 
 #' R wrapper for gdalwarp: image reprojection and warping utility
 #' 
-#' @param src_dataset Character. The source file name(s).
-#' @param dst_dataset Character. The destination file name.
+#' @param srcfile Character. The source file name(s).
+#' @param dstfile Character. The destination file name.
 #' @param s_srs Character. source spatial reference set. The coordinate systems that can be passed are anything supported by the OGRSpatialReference.SetFromUserInput() call, which includes EPSG PCS and GCSes (ie. EPSG:4296), PROJ.4 declarations (as above), or the name of a .prf file containing well known text.
 #' @param t_srs Character. target spatial reference set. The coordinate systems that can be passed are anything supported by the OGRSpatialReference.SetFromUserInput() call, which includes EPSG PCS and GCSes (ie. EPSG:4296), PROJ.4 declarations (as above), or the name of a .prf file containing well known text.
 #' @param to Character. set a transformer option suitable to pass to GDALCreateGenImgProjTransformer2().
@@ -40,7 +40,6 @@
 #' @param cvmd Character. (GDAL >= 1.10.0) Value to set metadata items that conflict between source datasets (default is "*"). Use "" to remove conflicting items.
 #' @param setci Logical. (GDAL >= 1.10.0) Set the color interpretation of the bands of the target dataset from the source dataset.
 #' @param additional_commands Character. Additional commands to pass directly to gdal_translate.
-#' @param modis_sds_index Numeric. If the file is a MODIS HDF4 file, which subdataset should be returned (1 to the number of subdatasets)?  If this flag is used, src_dataset should be the filename of the HDF4 file.
 #' @param output_Raster Logical. Return output dst_dataset as a RasterBrick?
 #' @param verbose Logical.
 #' @return NULL or if(output_Raster), a RasterBrick.
@@ -85,9 +84,10 @@ gdalwarp <- function(
 		#help_general,formats, # Need to fix these
 		srcfile,dstfile,
 		s_srs,t_srs,to,
-		order,et,refine_gcps,te,tr,tap,ts,wo,ot,wt,srcnodata,dstnodata,
-		dstalpha,r,wm,multi,q,cutline,cl,cwhere,csql,cblend,crop_to_cutline,
-		of,co,overwrite,nomd,cvmd,setci,
+		order,tps,rpc,geoloc,et,refine_gcps,te,tr,tap,ts,wo,ot,wt,r,srcnodata,dstnodata,
+		dstalpha,wm,multi,q,of="GTiff",co,cutline,cl,cwhere,csql,cblend,crop_to_cutline,
+		overwrite,nomd,cvmd,setci,
+		additional_commands,
 		output_Raster=FALSE,verbose=FALSE)
 {
 	parameter_values <- as.list(environment())

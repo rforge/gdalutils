@@ -4,6 +4,9 @@
 \usage{
   qm(x)
 }
+\arguments{
+  \item{x}{Character or Numeric.}
+}
 \value{
   A character string that begins and ends with quotation
   marks.

@@ -2,17 +2,18 @@
 \alias{gdalwarp}
 \title{gdalwarp}
 \usage{
-  gdalwarp(srcfile, dstfile, s_srs, t_srs, to, order, et,
-    refine_gcps, te, tr, tap, ts, wo, ot, wt, srcnodata,
-    dstnodata, dstalpha, r, wm, multi, q, cutline, cl,
-    cwhere, csql, cblend, crop_to_cutline, of, co,
-    overwrite, nomd, cvmd, setci, output_Raster = FALSE,
+  gdalwarp(srcfile, dstfile, s_srs, t_srs, to, order, tps,
+    rpc, geoloc, et, refine_gcps, te, tr, tap, ts, wo, ot,
+    wt, r, srcnodata, dstnodata, dstalpha, wm, multi, q,
+    of = "GTiff", co, cutline, cl, cwhere, csql, cblend,
+    crop_to_cutline, overwrite, nomd, cvmd, setci,
+    additional_commands, output_Raster = FALSE,
     verbose = FALSE)
 }
 \arguments{
-  \item{src_dataset}{Character. The source file name(s).}
+  \item{srcfile}{Character. The source file name(s).}
 
-  \item{dst_dataset}{Character. The destination file name.}
+  \item{dstfile}{Character. The destination file name.}
 
   \item{s_srs}{Character. source spatial reference set. The
   coordinate systems that can be passed are anything
@@ -167,11 +168,6 @@
 
   \item{additional_commands}{Character. Additional commands
   to pass directly to gdal_translate.}
-
-  \item{modis_sds_index}{Numeric. If the file is a MODIS
-  HDF4 file, which subdataset should be returned (1 to the
-  number of subdatasets)?  If this flag is used,
-  src_dataset should be the filename of the HDF4 file.}
 
   \item{output_Raster}{Logical. Return output dst_dataset
   as a RasterBrick?}

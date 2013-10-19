@@ -2,9 +2,9 @@
 \alias{gdalinfo}
 \title{gdalinfo}
 \usage{
-  gdalinfo(datasetname, mm, stats, hist, nogcp, nomd,
-    norat, noct, nofl, checksum, proj4, mdd, sd,
-    additional_commands, raw_output = TRUE,
+  gdalinfo(datasetname, mm, stats, approx_stats, hist,
+    nogcp, nomd, nrat, noct, nofl, checksum, proj4, mdd,
+    sd, additional_commands, raw_output = TRUE,
     verbose = FALSE)
 }
 \arguments{

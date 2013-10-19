@@ -1,19 +1,16 @@
 Package: gdalUtils
-Maintainer: Matteo Mattiuzzi <matteo.mattiuzzi@boku.ac.at>
+Maintainer: Jonathan Asher Greenberg <gdalUtils@estarcion.net>
 License: GPL (>= 2)
 Title: Wrappers for the Geospatial Data Abstraction Library (GDAL)
 Type: Package
 LazyLoad: yes
 Author: Jonathan Asher Greenberg and Matteo Mattiuzzi
 Description: Wrappers for the Geospatial Data Abstraction Library (GDAL)
-Version: 0.0.2
+Version: 0.0.3
 Date: 2013-10-18
 Depends:
-    R (>= 3.0.2)
-Suggests:
     raster,
-    rgdal,
-    sp
+    R (>= 3.0.2)
 Collate:
     'tahoe_lidar_bareearth_data.R'
     'tahoe_lidar_highesthit_data.R'
