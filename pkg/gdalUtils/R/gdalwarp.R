@@ -39,7 +39,7 @@
 #' @param nomd Logical. (GDAL >= 1.10.0) Do not copy metadata. Without this option, dataset and band metadata (as well as some band information) will be copied from the first source dataset. Items that differ between source datasets will be set to * (see -cvmd option).
 #' @param cvmd Character. (GDAL >= 1.10.0) Value to set metadata items that conflict between source datasets (default is "*"). Use "" to remove conflicting items.
 #' @param setci Logical. (GDAL >= 1.10.0) Set the color interpretation of the bands of the target dataset from the source dataset.
-#' @param additional_commands Character. Additional commands to pass directly to gdal_translate.
+#' @param additional_commands Character. Additional commands to pass directly to gdalwarp.
 #' @param output_Raster Logical. Return output dst_dataset as a RasterBrick?
 #' @param verbose Logical.
 #' @return NULL or if(output_Raster), a RasterBrick.
