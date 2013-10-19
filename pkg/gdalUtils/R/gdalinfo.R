@@ -22,8 +22,8 @@
 #' 
 #' @return character (if raw_output=TRUE) or list (if raw_output=FALSE).
 #' @author Jonathan A. Greenberg (\email{gdalUtils@@estarcion.net}) and Matteo Mattiuzzi (wrapper) and Frank Warmerdam (GDAL lead developer).
-#' @details This is an R wrapper to the gdalinfo function that is part of the 
-#' Geospatial Data Abstraction Library (GDAL) library.  It follows the parameter naming
+#' @details This is an R wrapper for the 'gdalinfo' function that is part of the 
+#' Geospatial Data Abstraction Library (GDAL).  It follows the parameter naming
 #' conventions of the original function, with some modifications to allow for more R-like
 #' parameters.  For all parameters, the user can use a single character string following,
 #' precisely, the gdalinfo format (\url{http://www.gdal.org/gdalinfo.html}), or,
@@ -44,7 +44,6 @@
 #' src_dataset <- system.file("external/tahoe_highrez.tif", package="gdalUtils")
 #' # Command-line gdalinfo call:
 #' # gdalinfo tahoe_highrez.tif
-#' # R gdalinfo function:
 #' gdalinfo(src_dataset)
 #' }
 #' @export

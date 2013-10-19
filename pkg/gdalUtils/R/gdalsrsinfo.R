@@ -1,6 +1,6 @@
 #' gdalsrsinfo
 #' 
-#' R wrapper for gdalsrsinfo (lists info about a given SRS in number of formats (WKT, PROJ.4, etc.))
+#' R wrapper for gdalsrsinfo: lists info about a given SRS in number of formats (WKT, PROJ.4, etc.)
 #' 
 #' @param srs_def Character. A raster dataset name. It can be either file name.
 #' @param p Logical. Pretty-print where applicable (e.g. WKT).
@@ -12,8 +12,8 @@
 #' 
 #' @return character
 #' @author Jonathan A. Greenberg (\email{gdalUtils@@estarcion.net}) and Matteo Mattiuzzi (wrapper) and Frank Warmerdam (GDAL lead developer).
-#' @details This is an R wrapper to the gdalsrsinfo function that is part of the 
-#' Geospatial Data Abstraction Library (GDAL) library.  It follows the parameter naming
+#' @details This is an R wrapper for the 'gdalsrsinfo' function that is part of the 
+#' Geospatial Data Abstraction Library (GDAL).  It follows the parameter naming
 #' conventions of the original function, with some modifications to allow for more R-like
 #' parameters.  For all parameters, the user can use a single character string following,
 #' precisely, the gdalinfo format (\url{http://www.gdal.org/gdalsrsinfo.html}), or,
@@ -33,7 +33,6 @@
 #' src_dataset <- system.file("external/tahoe_highrez.tif", package="gdalUtils")
 #' # Command-line gdalsrsinfo call:
 #' # gdalsrsinfo -o proj4 tahoe_highrez.tif
-#' # gdalsrsinfo in R:
 #' gdalsrsinfo(src_dataset,o="proj4")
 #' # Export as CRS:
 #' gdalsrsinfo(src_dataset,as.CRS=TRUE)

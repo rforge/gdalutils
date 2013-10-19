@@ -32,8 +32,8 @@
 #' @param verbose Logical.
 #' @return NULL or if(output_Raster), a RasterBrick.
 #' @author Jonathan A. Greenberg (\email{gdalUtils@@estarcion.net}) (wrapper) and Frank Warmerdam (GDAL lead developer).
-#' @details This is an R wrapper to the gdal_translate function that is part of the 
-#' Geospatial Data Abstraction Library (GDAL) library.  It follows the parameter naming
+#' @details This is an R wrapper for the 'gdal_translate' function that is part of the 
+#' Geospatial Data Abstraction Library (GDAL).  It follows the parameter naming
 #' conventions of the original function, with some modifications to allow for more R-like
 #' parameters.  For all parameters, the user can use a single character string following,
 #' precisely, the gdal_translate format (\url{http://www.gdal.org/gdal_translate.html}), or,
@@ -54,7 +54,6 @@
 #' src_dataset <- system.file("external/tahoe_highrez.tif", package="gdalUtils")
 #' # Original gdal_translate call:
 #' # gdal_translate -of GTiff -co "TILED=YES" tahoe_highrez.tif tahoe_highrez_tiled.tif
-#' # gdal_translate in R:
 #' gdal_translate(src_dataset,"tahoe_highrez_tiled.tif",of="Gtiff",co="TILED=YES",verbose=TRUE)
 #' # Pull out a chunk and return as a raster:
 #' gdal_translate(src_dataset,"tahoe_highrez_tiled.tif",of="Gtiff",
