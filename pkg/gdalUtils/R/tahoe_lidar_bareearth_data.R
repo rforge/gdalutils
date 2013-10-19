@@ -6,6 +6,6 @@
 #' @keywords data
 #' @examples
 #' tahoe_lidar_bareearth <- 
-#' 	raster(system.file("external/tahoe_lidar_bareearth.tif", package="spatial.tools"))
+#' 	raster(system.file("external/tahoe_lidar_bareearth.tif", package="gdalUtils"))
 #' plot(tahoe_lidar_bareearth)
 NULL
