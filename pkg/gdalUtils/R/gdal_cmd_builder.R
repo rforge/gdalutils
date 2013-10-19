@@ -1,10 +1,93 @@
+#' gdal_cmd_builder
+#' 
+#' Helper function for building GDAL commands.
+#' 
+#' @param executable Character. The GDAL command to use (e.g. "gdal_translate")
+#' @param parameter_variables List. A list of parameter names, organized by type.
+#' @param parameter_values List. A list of the parameters names/values.
+#' @param parameter_order Character. The order of the parameters for the GDAL command.
+#' @param parameter_noflags Character. Parameters which do not have a flag.
+#' @param gdal_installation_id Numeric. The ID of the GDAL installation to use.  Defaults to 1.
+#' 
+#' @return Formatted GDAL command for use with system() calls. 
+#' @author Jonathan A. Greenberg (\email{gdalUtils@@estarcion.net})
+#' 
+#' @details This function takes the executable name (e.g. "gdal_translate"),
+#' a list of parameter names organized by logical, vector,
+#' scalar, character, repeatable, a list of values of these parameters, 
+#' the order they should be used in the GDAL command, and a list of
+#' parameters that should not have a flag, and returns a properly
+#' formatted GDAL command (with the full path-to-executable) that
+#' should work with a system() call.
+#' 
+#' Sometimes, a user may not want to use the most recent GDAL install
+#' (gdal_installation_id=1), so the gdal_installation_id can be used
+#' to set a different install.  This is often used with gdal_chooseInstallation
+#' if, for instance, the particular GDAL installation required needs
+#' a specific driver that may not be available in all installations.
+#' 
+#' In general, an end user shouldn't need to use this function -- it
+#' is used by many of the GDAL wrappers within gdalUtils.
+#'
+#' @references \url{http://www.gdal.org/gdal_translate.html}
+#' @examples \dontrun{ 
+#' # This builds a gdal_translate command.
+#' executable <- "gdal_translate"
+#' 
+#' parameter_variables <- list(
+#' 			logical = list(
+#' 					varnames <- c("strict","unscale","epo","eco","q","sds","stats")),
+#' 			vector = list(
+#' 					varnames <- c("outsize","scale","srcwin","projwin","a_ullr","gcp")),
+#' 			scalar = list(
+#' 					varnames <- c("a_nodata")),
+#' 			character = list(
+#' 					varnames <- c("ot","of","mask","expand","a_srs","src_dataset","dst_dataset")),
+#' 			repeatable = list(
+#' 					varnames <- c("b","mo","co")))
+#' 
+#' parameter_order <- c(
+#' 			"strict","unscale","epo","eco","q","sds","stats",
+#' 			"outsize","scale","srcwin","projwin","a_ullr","gcp",
+#' 			"a_nodata",
+#' 			"ot","of","mask","expand","a_srs",
+#' 			"b","mo","co",
+#' 			"src_dataset","dst_dataset")
+#' 
+#' parameter_noflags <- c("src_dataset","dst_dataset")
+#' 
+#' # Now assign some parameters:
+#' parameter_values = list(
+#' 	src_dataset = "input.tif",
+#' 	dst_dataset = "output.envi",
+#' 	of = "ENVI",
+#' 	strict = TRUE
+#' )
+#' 
+#' cmd <- gdal_cmd_builder(
+#' 			executable=executable,
+#' 			parameter_variables=parameter_variables,
+#' 			parameter_values=parameter_values,
+#' 			parameter_order=parameter_order,
+#' 			parameter_noflags=parameter_noflags)
+#' 
+#' cmd
+#' system(cmd,intern=TRUE) 
+#' }
 #' @export
 
-gdal_cmd_builder <- function(executable,parameter_variables,parameter_values,parameter_order,parameter_noflags)
+gdal_cmd_builder <- function(executable,parameter_variables,
+		parameter_values,parameter_order,parameter_noflags,
+		gdal_installation_id=1)
 {
 	# path to executable check in here?
 	
-	executable <- gdal_get_executable(executable)
+#	executable <- gdal_get_executable(executable)
+	gdal_setInstallation()
+	
+	executable <- normalizePath(list.files(
+					getOption("gdalUtils_gdalPath")[[gdal_installation_id]]$path,
+					executable,full.names=TRUE))
 	
 	parameter_variables_types <- names(parameter_variables)
 	defined_variables <- names(parameter_values)[sapply(parameter_values,function(X) class(X) != "name")]
@@ -148,20 +231,20 @@ gdal_cmd_builder <- function(executable,parameter_variables,parameter_values,par
 #		parameter_variables_noflag_defined <- defined_variables[defined_variables %in% parameter_variables_noflag]
 #		if(length(parameter_variables_noflag_defined)>0)
 #		{
-			parameter_variables_noflag_strings <- sapply(parameter_noflags,
-					function(X,parameter_values)
-					{
-						parameter_variables_noflag_string <- paste(
-								parameter_values[[which(names(parameter_values)==X)]],
-								sep="")
-						return(parameter_variables_noflag_string)
-					},parameter_values=parameter_values)			
+		parameter_variables_noflag_strings <- sapply(parameter_noflags,
+				function(X,parameter_values)
+				{
+					parameter_variables_noflag_string <- paste(
+							parameter_values[[which(names(parameter_values)==X)]],
+							sep="")
+					return(parameter_variables_noflag_string)
+				},parameter_values=parameter_values)			
 #		} else
 #		{
 #			parameter_variables_noflag_strings <- NULL
 #		}
 	}
-
+	
 	parameter_vector <- c(
 			parameter_variables_logical_strings,
 			parameter_variables_vector_strings,

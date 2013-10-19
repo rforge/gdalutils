@@ -1,4 +1,4 @@
-#' Rgdal_translate
+#' gdal_translate
 #' 
 #' R wrapper for gdal_translate
 #' 
@@ -31,7 +31,7 @@
 #' @param output_Raster Logical. Return output dst_dataset as a RasterBrick?
 #' @param verbose Logical.
 #' @return NULL or if(output_Raster), a RasterBrick.
-#' @author Jonathan A. Greenberg (wrapper) and Frank Warmerdam (GDAL lead developer).
+#' @author Jonathan A. Greenberg (\email{gdalUtils@@estarcion.net}) (wrapper) and Frank Warmerdam (GDAL lead developer).
 #' @details This is an R wrapper to the gdal_translate function that is part of the 
 #' Geospatial Data Abstraction Library (GDAL) library.  It follows the parameter naming
 #' conventions of the original function, with some modifications to allow for more R-like
@@ -40,10 +40,10 @@
 #' in some cases, can use R vectors to achieve the same end.  
 #' 
 #' This function assumes the user has a working GDAL on their system.  If the 
-#' "spatial.tools.gdalInstallation" option has been set (usually by get_gdal_installation),
-#' the GDAL found in that path will be used.  If nothing is found, get_gdal_installation
-#' will attempt to find a working GDAL that has the right drivers as specified with the
-#' "of" (output format) parameter.
+#' "gdalUtils_gdalPath" option has been set (usually by gdal_setInstallation),
+#' the GDAL found in that path will be used.  If nothing is found, gdal_setInstallation
+#' will be executed to attempt to find a working GDAL that has the right drivers 
+#' as specified with the "of" (output format) parameter.
 #' 
 #' The user can choose to (optionally) return a RasterBrick of the output file (assuming
 #' raster/rgdal supports the particular output format).
@@ -51,16 +51,16 @@
 #' @references \url{http://www.gdal.org/gdal_translate.html}
 #' @examples \dontrun{ 
 #' # Example from the original gdal_translate documentation:
-#' src_dataset <- system.file("external/tahoe_highrez.tif", package="spatial.tools")
+#' src_dataset <- system.file("external/tahoe_highrez.tif", package="gdalUtils")
 #' # Original gdal_translate call:
 #' # gdal_translate -of GTiff -co "TILED=YES" tahoe_highrez.tif tahoe_highrez_tiled.tif
-#' # Rgdal_translate:
-#' Rgdal_translate(src_dataset,"tahoe_highrez_tiled.tif",of="Gtiff",co="TILED=YES",verbose=TRUE)
+#' # gdal_translate in R:
+#' gdal_translate(src_dataset,"tahoe_highrez_tiled.tif",of="Gtiff",co="TILED=YES",verbose=TRUE)
 #' # Pull out a chunk and return as a raster:
-#' Rgdal_translate(src_dataset,"tahoe_highrez_tiled.tif",of="Gtiff",
+#' gdal_translate(src_dataset,"tahoe_highrez_tiled.tif",of="Gtiff",
 #' srcwin=c(1,1,100,100),output_Raster=TRUE,verbose=TRUE)
 #' # Notice this is the equivalent, but follows gdal_translate's parameter format:
-#' Rgdal_translate(src_dataset,"tahoe_highrez_tiled.tif",of="Gtiff",
+#' gdal_translate(src_dataset,"tahoe_highrez_tiled.tif",of="Gtiff",
 #' srcwin="1 1 100 100",output_Raster=TRUE,verbose=TRUE)
 #' }
 #' @export
@@ -99,11 +99,6 @@ gdal_translate <- function(src_dataset,dst_dataset,ot,strict,of="GTiff",
 	
 	parameter_noflags <- c("src_dataset","dst_dataset")
 	
-#	path <- gdal_path() # get gdal's
-#	path <- gdal_sortInstallation(path) # sort by release
-#	executable <- normalizePath(list.files(getOption("gdalUtils_gdalPath")[[1]]$path,
-#			"gdal_translate",full.names=TRUE))# [1] is prov!
-	
 	executable <- "gdal_translate"
 	
 	cmd <- gdal_cmd_builder(
@@ -111,18 +106,20 @@ gdal_translate <- function(src_dataset,dst_dataset,ot,strict,of="GTiff",
 			parameter_variables=parameter_variables,
 			parameter_values=parameter_values,
 			parameter_order=parameter_order,
-			parameter_noflags=parameter_noflags)
+			parameter_noflags=parameter_noflags,
+			gdal_installation_id=gdal_chooseInstallation(hasDrivers=of))
 	
 	if(verbose) message(paste("GDAL command being used:",cmd))
 	
-	gdal_translate_output <- system(cmd,intern=TRUE) 
+	cmd_output <- system(cmd,intern=TRUE) 
 	
-	if(verbose) { message(gdal_translate_output) } 
+	if(verbose) { message(cmd_output) } 
 	
 	# (Optional) return Raster
 	if(output_Raster)
 	{
-		return(gdal_gdalToRaster(dst_dataset))	
+#		return(gdal_gdalToRaster(dst_dataset))	
+		return(brick(dst_dataset))
 	} else
 	{
 		return(NULL)
