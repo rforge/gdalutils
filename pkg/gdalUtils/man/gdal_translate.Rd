@@ -1,6 +1,6 @@
 \name{gdal_translate}
 \alias{gdal_translate}
-\title{Rgdal_translate}
+\title{gdal_translate}
 \usage{
   gdal_translate(src_dataset, dst_dataset, ot, strict,
     of = "GTiff", b, mask, expand, outsize, scale, unscale,
@@ -164,12 +164,12 @@
   some cases, can use R vectors to achieve the same end.
 
   This function assumes the user has a working GDAL on
-  their system.  If the "spatial.tools.gdalInstallation"
-  option has been set (usually by get_gdal_installation),
-  the GDAL found in that path will be used.  If nothing is
-  found, get_gdal_installation will attempt to find a
-  working GDAL that has the right drivers as specified with
-  the "of" (output format) parameter.
+  their system.  If the "gdalUtils_gdalPath" option has
+  been set (usually by gdal_setInstallation), the GDAL
+  found in that path will be used.  If nothing is found,
+  gdal_setInstallation will be executed to attempt to find
+  a working GDAL that has the right drivers as specified
+  with the "of" (output format) parameter.
 
   The user can choose to (optionally) return a RasterBrick
   of the output file (assuming raster/rgdal supports the
@@ -178,22 +178,22 @@
 \examples{
 \dontrun{
 # Example from the original gdal_translate documentation:
-src_dataset <- system.file("external/tahoe_highrez.tif", package="spatial.tools")
+src_dataset <- system.file("external/tahoe_highrez.tif", package="gdalUtils")
 # Original gdal_translate call:
 # gdal_translate -of GTiff -co "TILED=YES" tahoe_highrez.tif tahoe_highrez_tiled.tif
-# Rgdal_translate:
-Rgdal_translate(src_dataset,"tahoe_highrez_tiled.tif",of="Gtiff",co="TILED=YES",verbose=TRUE)
+# gdal_translate in R:
+gdal_translate(src_dataset,"tahoe_highrez_tiled.tif",of="Gtiff",co="TILED=YES",verbose=TRUE)
 # Pull out a chunk and return as a raster:
-Rgdal_translate(src_dataset,"tahoe_highrez_tiled.tif",of="Gtiff",
+gdal_translate(src_dataset,"tahoe_highrez_tiled.tif",of="Gtiff",
 srcwin=c(1,1,100,100),output_Raster=TRUE,verbose=TRUE)
 # Notice this is the equivalent, but follows gdal_translate's parameter format:
-Rgdal_translate(src_dataset,"tahoe_highrez_tiled.tif",of="Gtiff",
+gdal_translate(src_dataset,"tahoe_highrez_tiled.tif",of="Gtiff",
 srcwin="1 1 100 100",output_Raster=TRUE,verbose=TRUE)
 }
 }
 \author{
-  Jonathan A. Greenberg (wrapper) and Frank Warmerdam (GDAL
-  lead developer).
+  Jonathan A. Greenberg (\email{gdalUtils@estarcion.net})
+  (wrapper) and Frank Warmerdam (GDAL lead developer).
 }
 \references{
   \url{http://www.gdal.org/gdal_translate.html}

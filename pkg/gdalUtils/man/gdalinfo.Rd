@@ -1,0 +1,118 @@
+\name{gdalinfo}
+\alias{gdalinfo}
+\title{gdalinfo}
+\usage{
+  gdalinfo(datasetname, mm, stats, hist, nogcp, nomd,
+    norat, noct, nofl, checksum, proj4, mdd, sd,
+    additional_commands, raw_output = TRUE,
+    verbose = FALSE)
+}
+\arguments{
+  \item{datasetname}{Character. A raster dataset name. It
+  can be either file name.}
+
+  \item{mm}{Logical. Force computation of the actual
+  min/max values for each band in the dataset?}
+
+  \item{stats}{Logical. Read and display image statistics.
+  Force computation if no statistics are stored in an
+  image.}
+
+  \item{approx_stats}{Logical. Read and display image
+  statistics. Force computation if no statistics are stored
+  in an image. However, they may be computed based on
+  overviews or a subset of all tiles. Useful if you are in
+  a hurry and don't want precise stats.}
+
+  \item{hist}{Logical. Report histogram information for all
+  bands.}
+
+  \item{nogcp}{Logical. Suppress ground control points list
+  printing. It may be useful for datasets with huge amount
+  of GCPs, such as L1B AVHRR or HDF4 MODIS which contain
+  thousands of them.}
+
+  \item{nomd}{Logical. Suppress metadata printing. Some
+  datasets may contain a lot of metadata strings.}
+
+  \item{nrat}{Logical. Suppress printing of raster
+  attribute table.}
+
+  \item{noct}{Logical. Suppress printing of color table.}
+
+  \item{checksum}{Logical. Force computation of the
+  checksum for each band in the dataset.}
+
+  \item{mdd}{Character. Report metadata for the specified
+  domain.}
+
+  \item{nofl}{Logical. (GDAL >= 1.9.0) Only display the
+  first file of the file list.}
+
+  \item{sd}{Numeric. (GDAL >= 1.9.0) If the input dataset
+  contains several subdatasets read and display a
+  subdataset with specified number (starting from 1). This
+  is an alternative of giving the full subdataset name.}
+
+  \item{proj4}{Logical. (GDAL >= 1.9.0) Report a PROJ.4
+  string corresponding to the file's coordinate system.}
+
+  \item{additional_commands}{Character. Additional commands
+  to pass directly to gdalinfo.}
+
+  \item{raw_output}{Logical. Dump the raw output of the
+  gdalinfo (default=TRUE). If not, attempt to return a
+  clean list (not all parameters will be retained, at
+  present).}
+
+  \item{verbose}{Logical.}
+}
+\value{
+  character (if raw_output=TRUE) or list (if
+  raw_output=FALSE).
+}
+\description{
+  R wrapper for gdalinfo
+}
+\details{
+  This is an R wrapper to the gdalinfo function that is
+  part of the Geospatial Data Abstraction Library (GDAL)
+  library.  It follows the parameter naming conventions of
+  the original function, with some modifications to allow
+  for more R-like parameters.  For all parameters, the user
+  can use a single character string following, precisely,
+  the gdalinfo format
+  (\url{http://www.gdal.org/gdalinfo.html}), or, in some
+  cases, can use R vectors to achieve the same end.
+
+  This function assumes the user has a working GDAL on
+  their system.  If the "gdalUtils_gdalPath" option has
+  been set (usually by gdal_setInstallation), the GDAL
+  found in that path will be used.  If nothing is found,
+  gdal_setInstallation will be executed to attempt to find
+  a working GDAL.
+
+  By default, this will return the gdalinfo as a character
+  vector, one line of the output per element.  The user can
+  choose raw_output=FALSE for a cleaner format (similar to
+  GDALinfo in the rgdal package), although not all
+  parameters are preserved.
+}
+\examples{
+\dontrun{
+src_dataset <- system.file("external/tahoe_highrez.tif", package="gdalUtils")
+# Command-line gdalinfo call:
+# gdalinfo tahoe_highrez.tif
+# R gdalinfo function:
+gdalinfo(src_dataset)
+}
+}
+\author{
+  Jonathan A. Greenberg (\email{gdalUtils@estarcion.net})
+  and Matteo Mattiuzzi (wrapper) and Frank Warmerdam (GDAL
+  lead developer).
+}
+\references{
+  \url{http://www.gdal.org/gdalinfo.html}
+}
+

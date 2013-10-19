@@ -15,16 +15,13 @@ Suggests:
     rgdal,
     sp
 Collate:
-    'modis_hdf4_subdatasets.R'
-    'tahoe_highrez_training_data.R'
     'tahoe_lidar_bareearth_data.R'
     'tahoe_lidar_highesthit_data.R'
     'gdal_cmd_builder.R'
     'gdal_translate.R'
     'qm.R'
-    'rasterInterface.R'
     'gdalinfo.R'
-    'gdal_init.R'
     'gdalwarp.R'
-    'gdal_get_executable.R'
-	'gdalsrsinfo.R'
+    'gdalsrsinfo.R'
+    'gdal_chooseInstallation.R'
+    'gdal_setInstallation.R'
