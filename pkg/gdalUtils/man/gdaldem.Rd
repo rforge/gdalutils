@@ -16,13 +16,13 @@
   \item{input_dem}{Character. The input DEM raster to be
   processed.}
 
-  \item{output}{Character. The output raster produced}
+  \item{output}{Character. The output raster produced.}
 
   \item{of}{Character. Select the output format. The
   default is GeoTIFF (GTiff). Use the short format name.}
 
   \item{compute_edges}{Logical. (GDAL >= 1.8.0) Do the
-  computation at raster edges and near nodata values}
+  computation at raster edges and near nodata values.}
 
   \item{alg}{Character. "ZevenbergenThorne" (GDAL >= 1.8.0)
   Use Zevenbergen & Thorne formula, instead of Horn's
@@ -44,13 +44,13 @@
   non-error output.}
 
   \item{z}{Numeric. (mode=="hillshade") vertical
-  exaggeration used to pre-multiply the elevations}
+  exaggeration used to pre-multiply the elevations.}
 
   \item{s}{Numeric. (mode=="hillshade" | mode=="slope)
   ratio of vertical units to horizontal. If the horizontal
   unit of the source DEM is degrees (e.g Lat/Long WGS84
   projection), you can use scale=111120 if the vertical
-  units are meters (or scale=370400 if they are in feet)}
+  units are meters (or scale=370400 if they are in feet).}
 
   \item{az}{Numeric. (mode=="hillshade") azimuth of the
   light, in degrees. 0 if it comes from the top of the
@@ -72,7 +72,7 @@
 
   \item{trigonometric}{Logical. (mode=="aspect") return
   trigonometric angle instead of azimuth. Thus 0deg means
-  East, 90deg North, 180deg West, 270deg South}
+  East, 90deg North, 180deg West, 270deg South.}
 
   \item{zero_for_flat}{Logical. (mode=="aspect") By using
   those 2 options, the aspect returned by gdaldem aspect
@@ -84,12 +84,12 @@
   text-based color configuration file (see Description).}
 
   \item{alpha}{Logical. (mode=="color-relief") add an alpha
-  channel to the output raster}
+  channel to the output raster.}
 
   \item{exact_color_entry}{Logical. (mode=="color-relief")
   use strict matching when searching in the color
   configuration file. If none matching color entry is
-  found, the "0,0,0,0" RGBA quadruplet will be used}
+  found, the "0,0,0,0" RGBA quadruplet will be used.}
 
   \item{nearest_color_entry}{Logical.
   (mode=="color-relief") use the RGBA quadruplet
@@ -105,22 +105,21 @@
   \item{verbose}{Logical.}
 }
 \value{
-  character
+  NULL or if(output_Raster), a RasterBrick.
 }
 \description{
   R wrapper for gdaldem: Tools to analyze and visualize
   DEMs. (since GDAL 1.7.0)
 }
 \details{
-  This is an R wrapper to the gdaldem function that is part
-  of the Geospatial Data Abstraction Library (GDAL)
-  library.  It follows the parameter naming conventions of
-  the original function, with some modifications to allow
-  for more R-like parameters.  For all parameters, the user
-  can use a single character string following, precisely,
-  the gdalinfo format
-  (\url{http://www.gdal.org/gdaldem.html}), or, in some
-  cases, can use R vectors to achieve the same end.
+  This is an R wrapper for the 'gdaldem' function that is
+  part of the Geospatial Data Abstraction Library (GDAL).
+  It follows the parameter naming conventions of the
+  original function, with some modifications to allow for
+  more R-like parameters.  For all parameters, the user can
+  use a single character string following, precisely, the
+  gdalinfo format (\url{http://www.gdal.org/gdaldem.html}),
+  or, in some cases, use R vectors to achieve the same end.
 
   This function assumes the user has a working GDAL on
   their system.  If the "gdalUtils_gdalPath" option has

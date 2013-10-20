@@ -54,12 +54,12 @@
 #' src_dataset <- system.file("external/tahoe_highrez.tif", package="gdalUtils")
 #' # Original gdal_translate call:
 #' # gdal_translate -of GTiff -co "TILED=YES" tahoe_highrez.tif tahoe_highrez_tiled.tif
-#' gdal_translate(src_dataset,"tahoe_highrez_tiled.tif",of="Gtiff",co="TILED=YES",verbose=TRUE)
+#' gdal_translate(src_dataset,"tahoe_highrez_tiled.tif",of="GTiff",co="TILED=YES",verbose=TRUE)
 #' # Pull out a chunk and return as a raster:
-#' gdal_translate(src_dataset,"tahoe_highrez_tiled.tif",of="Gtiff",
+#' gdal_translate(src_dataset,"tahoe_highrez_tiled.tif",of="GTiff",
 #' srcwin=c(1,1,100,100),output_Raster=TRUE,verbose=TRUE)
 #' # Notice this is the equivalent, but follows gdal_translate's parameter format:
-#' gdal_translate(src_dataset,"tahoe_highrez_tiled.tif",of="Gtiff",
+#' gdal_translate(src_dataset,"tahoe_highrez_tiled.tif",of="GTiff",
 #' srcwin="1 1 100 100",output_Raster=TRUE,verbose=TRUE)
 #' # Extract the first subdataset from an HDF4 file:
 #' hdf4_dataset <- system.file("external/test_modis.hdf", package="gdalUtils")

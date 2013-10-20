@@ -182,13 +182,13 @@
   utility
 }
 \details{
-  This is an R wrapper to the gdalwarp function that is
-  part of the Geospatial Data Abstraction Library (GDAL)
-  library.  It follows the parameter naming conventions of
-  the original function, with some modifications to allow
-  for more R-like parameters.  For all parameters, the user
-  can use a single character string following, precisely,
-  the gdalwarp format
+  This is an R wrapper for the 'gdalwarp' function that is
+  part of the Geospatial Data Abstraction Library (GDAL).
+  It follows the parameter naming conventions of the
+  original function, with some modifications to allow for
+  more R-like parameters.  For all parameters, the user can
+  use a single character string following, precisely, the
+  gdalwarp format
   (\url{http://www.gdal.org/gdalwarp.html}), or, in some
   cases, can use R vectors to achieve the same end.
 
@@ -221,7 +221,6 @@
 src_dataset <- system.file("external/tahoe_highrez.tif", package="gdalUtils")
 # Command-line gdalwarp call:
 # gdalwarp -t_srs '+proj=utm +zone=11 +datum=WGS84' raw_spot.tif utm11.tif
-# gdalwarp in R:
 gdalwarp(src_dataset,dstfile="tahoe_highrez_utm11.tif",
 		t_srs='+proj=utm +zone=11 +datum=WGS84',output_Raster=TRUE)
 }
