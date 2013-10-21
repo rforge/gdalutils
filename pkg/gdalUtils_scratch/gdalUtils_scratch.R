@@ -40,3 +40,6 @@ output_aspect <- gdaldem(mode="aspect",input_dem=input_dem,output="output_aspect
 plot(output_aspect,col=gray.colors(256))
 
 
+### ogrinfo
+datasource_name <- system.file("external/tahoe_highrez_training.shp", package="gdalUtils")
+

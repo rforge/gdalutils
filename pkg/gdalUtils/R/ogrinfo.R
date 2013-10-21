@@ -53,6 +53,8 @@
 #' }
 #' @export
 
+# TODO: cleaner output similar to gdalinfo(...,raw_output=FALSE)
+
 ogrinfo <- function(datasource_name,layer,
 		ro,q,where,spat,geomfield,fid,sql,
 		dialect,al,so,fields,geom,formats,
