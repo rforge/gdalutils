@@ -152,7 +152,8 @@
 \examples{
 \dontrun{
 # Example from the original gdal_translate documentation:
-# gdal_rasterize -b 1 -b 2 -b 3 -burn 255 -burn 0 -burn 0 -l tahoe_highrez_training tahoe_highrez_training.shp tempfile.tif
+# gdal_rasterize -b 1 -b 2 -b 3 -burn 255 -burn 0
+# 	-burn 0 -l tahoe_highrez_training tahoe_highrez_training.shp tempfile.tif
 dst_filename_original  <- system.file("external/tahoe_highrez.tif", package="gdalUtils")
 # Back up the file, since we are going to burn stuff into it.
 dst_filename <- paste(tempfile(),".tif",sep="")

@@ -7,6 +7,7 @@
 #' @param parameter_values List. A list of the parameters names/values.
 #' @param parameter_order Character. The order of the parameters for the GDAL command.
 #' @param parameter_noflags Character. Parameters which do not have a flag.
+#' @param parameter_doubledash Character. Parameters which should have a double dash "--".
 #' @param gdal_installation_id Numeric. The ID of the GDAL installation to use.  Defaults to 1.
 #' 
 #' @return Formatted GDAL command for use with system() calls. 
@@ -79,8 +80,11 @@
 #' }
 #' @export
 
+#TODO: additional commands
+
 gdal_cmd_builder <- function(executable,parameter_variables,
-		parameter_values,parameter_order,parameter_noflags,
+		parameter_values,parameter_order,parameter_noflags=c(),
+		parameter_doubledash=c(),
 		gdal_installation_id=1)
 {
 	# path to executable check in here?
@@ -107,8 +111,25 @@ gdal_cmd_builder <- function(executable,parameter_variables,
 					{
 						return(parameter_values[[which(names(parameter_values)==X)]])
 					},parameter_values=parameter_values)
-			parameter_variables_logical_strings <- paste("-",
-					names(parameter_variables_logical_defined_true),sep="")
+			
+			parameter_variables_logical_strings <- sapply(parameter_variables_logical_defined,
+					function(X,parameter_doubledash)
+					{
+						if(X %in% parameter_noflags)
+						{
+							flag=NULL
+						} else
+						{
+							if(X %in% parameter_doubledash)
+							{
+								flag=paste("--",X," ",sep="")	
+							} else
+							{
+								flag=paste("-",X," ",sep="")
+							}
+						}
+						return(flag)
+					},parameter_doubledash=parameter_doubledash)	
 			names(parameter_variables_logical_strings) <- names(parameter_variables_logical_defined_true)
 		} else
 		{
@@ -124,20 +145,26 @@ gdal_cmd_builder <- function(executable,parameter_variables,
 		if(length(parameter_variables_vector_defined)>0)
 		{
 			parameter_variables_vector_strings <- sapply(parameter_variables_vector_defined,
-					function(X,parameter_values)
+					function(X,parameter_values,parameter_doubledash)
 					{
 						if(X %in% parameter_noflags)
 						{
 							flag=NULL
 						} else
 						{
-							flag=paste("-",X," ",sep="")
+							if(X %in% parameter_doubledash)
+							{
+								flag=paste("--",X," ",sep="")	
+							} else
+							{
+								flag=paste("-",X," ",sep="")
+							}
 						}
 						parameter_variables_vector_string <- paste(flag,
 								qm(paste(parameter_values[[which(names(parameter_values)==X)]],collapse=" ")),
 								sep="")
 						return(parameter_variables_vector_string)
-					},parameter_values=parameter_values)			
+					},parameter_values=parameter_values,parameter_doubledash=parameter_doubledash)			
 		} else
 		{
 			parameter_variables_vector_strings <- NULL
@@ -151,20 +178,26 @@ gdal_cmd_builder <- function(executable,parameter_variables,
 		if(length(parameter_variables_scalar_defined)>0)
 		{
 			parameter_variables_scalar_strings <- sapply(parameter_variables_scalar_defined,
-					function(X,parameter_values)
+					function(X,parameter_values,parameter_doubledash)
 					{
 						if(X %in% parameter_noflags)
 						{
 							flag=NULL
 						} else
 						{
-							flag=paste("-",X," ",sep="")
+							if(X %in% parameter_doubledash)
+							{
+								flag=paste("--",X," ",sep="")	
+							} else
+							{
+								flag=paste("-",X," ",sep="")
+							}
 						}
 						parameter_variables_scalar_string <- paste(flag,
 								qm(parameter_values[[which(names(parameter_values)==X)]]),
 								sep="")
 						return(parameter_variables_scalar_string)
-					},parameter_values=parameter_values)			
+					},parameter_values=parameter_values,parameter_doubledash=parameter_doubledash)			
 		} else
 		{
 			parameter_variables_scalar_strings <- NULL
@@ -179,20 +212,26 @@ gdal_cmd_builder <- function(executable,parameter_variables,
 		if(length(parameter_variables_character_defined)>0)
 		{
 			parameter_variables_character_strings <- sapply(parameter_variables_character_defined,
-					function(X,parameter_values,parameter_noflags)
+					function(X,parameter_values,parameter_noflags,parameter_doubledash)
 					{
 						if(X %in% parameter_noflags)
 						{
 							flag=NULL
 						} else
 						{
-							flag=paste("-",X," ",sep="")
+							if(X %in% parameter_doubledash)
+							{
+								flag=paste("--",X," ",sep="")	
+							} else
+							{
+								flag=paste("-",X," ",sep="")
+							}
 						}
 						parameter_variables_character_string <- paste(flag,
 								qm(parameter_values[[which(names(parameter_values)==X)]]),
 								sep="")
 						return(parameter_variables_character_string)
-					},parameter_values=parameter_values,parameter_noflags=parameter_noflags)			
+					},parameter_values=parameter_values,parameter_noflags=parameter_noflags,parameter_doubledash=parameter_doubledash)			
 		} else
 		{
 			parameter_variables_character_strings <- NULL
@@ -206,14 +245,20 @@ gdal_cmd_builder <- function(executable,parameter_variables,
 		if(length(parameter_variables_repeatable_defined)>0)
 		{
 			parameter_variables_repeatable_strings <- sapply(parameter_variables_repeatable_defined,
-					function(X,parameter_values)
+					function(X,parameter_values,parameter_doubledash)
 					{
 						if(X %in% parameter_noflags)
 						{
 							flag=NULL
 						} else
 						{
-							flag=paste("-",X," ",sep="")
+							if(X %in% parameter_doubledash)
+							{
+								flag=paste("--",X," ",sep="")	
+							} else
+							{
+								flag=paste("-",X," ",sep="")
+							}
 						}
 						parameter_variables_repeatable_string <- paste(
 								paste(flag,
@@ -221,7 +266,7 @@ gdal_cmd_builder <- function(executable,parameter_variables,
 										sep=""),
 								collapse=" ")
 						return(parameter_variables_repeatable_string)
-					},parameter_values=parameter_values)			
+					},parameter_values=parameter_values,parameter_doubledash=parameter_doubledash)			
 		} else
 		{
 			parameter_variables_repeatable_strings <- NULL

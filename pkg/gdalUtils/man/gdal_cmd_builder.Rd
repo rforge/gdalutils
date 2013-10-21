@@ -3,7 +3,8 @@
 \title{gdal_cmd_builder}
 \usage{
   gdal_cmd_builder(executable, parameter_variables,
-    parameter_values, parameter_order, parameter_noflags,
+    parameter_values, parameter_order,
+    parameter_noflags = c(), parameter_doubledash = c(),
     gdal_installation_id = 1)
 }
 \arguments{
@@ -21,6 +22,9 @@
 
   \item{parameter_noflags}{Character. Parameters which do
   not have a flag.}
+
+  \item{parameter_doubledash}{Character. Parameters which
+  should have a double dash "--".}
 
   \item{gdal_installation_id}{Numeric. The ID of the GDAL
   installation to use.  Defaults to 1.}
