@@ -30,6 +30,7 @@
 #' @param sd_index Numeric. If the file is an HDF4 or HDF5 file, which subdataset should be returned (1 to the number of subdatasets)?  If this flag is used, src_dataset should be the filename of the multipart file.
 #' @param output_Raster Logical. Return output dst_dataset as a RasterBrick?
 #' @param verbose Logical.
+#' @param ... Other parameters to pass to gdal_translate.
 #' @return NULL or if(output_Raster), a RasterBrick.
 #' @author Jonathan A. Greenberg (\email{gdalUtils@@estarcion.net}) (wrapper) and Frank Warmerdam (GDAL lead developer).
 #' @details This is an R wrapper for the 'gdal_translate' function that is part of the 
@@ -79,10 +80,11 @@ gdal_translate <- function(src_dataset,dst_dataset,ot,strict,of="GTiff",
 		a_srs,a_ullr,a_nodata,mo,co,gcp,q,sds,stats,
 		additional_commands,
 		sd_index,
-		output_Raster=FALSE,verbose=FALSE)
+		output_Raster=FALSE,verbose=FALSE,
+		...)
 {
 	parameter_values <- as.list(environment())
-
+	
 	if(verbose) message("Checking gdal_installation...")
 	gdal_setInstallation()
 	
@@ -130,12 +132,7 @@ gdal_translate <- function(src_dataset,dst_dataset,ot,strict,of="GTiff",
 	if(verbose) { message(cmd_output) } 
 	
 	# (Optional) return Raster
-	if(output_Raster & missing(sds))
-	{
-		if(!sds) return(brick(dst_dataset))
-		else return(NULL)
-	} else
-	{
-		return(NULL)
-	}	
+	if(output_Raster & missing(sds)) return(brick(dst_dataset))
+	if(output_Raster & !sds) return(brick(dst_dataset))
+	else(return(NULL))
 }
