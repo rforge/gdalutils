@@ -5,6 +5,6 @@
 #' @author Jonathan A. Greenberg \email{gdalUtils@@estarcion.net}
 #' @keywords data
 #' @examples \dontrun{
-#' 	gdalinfo(system.file("external/test_modis.hdf", package="gdalUtils"))
+#' gdalinfo(system.file("external/test_modis.hdf", package="gdalUtils"))
 #' }
 NULL

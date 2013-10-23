@@ -56,7 +56,6 @@ gdalbuildvrt <- function(gdalfile,output.vrt,
 		addalpha,hidenodata,srcnodata,vrtnodata,
 		a_srs,input_file_list,overwrite,
 		additional_commands,
-		output_Raster=FALSE,
 		verbose=FALSE,
 		...)
 {
