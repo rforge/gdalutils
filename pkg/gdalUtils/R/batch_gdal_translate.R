@@ -39,6 +39,9 @@
 #' @export
 #' @import foreach
 
+# TODO: For nested folders, copy the folder hierarchy?  
+# TODO: What to do with duplicate filenames (if recursive=TRUE or if the file stripped of an extension is identical)? 
+
 batch_gdal_translate <- function(infiles,outdir,outsuffix="_conv.tif",pattern=NULL,recursive=FALSE,
 		verbose=FALSE,
 		...)
