@@ -6,8 +6,7 @@
     te, tr, tap, separate, b, sd,
     allow_projection_difference, q, addalpha, hidenodata,
     srcnodata, vrtnodata, a_srs, input_file_list,
-    overwrite, additional_commands, output_Raster = FALSE,
-    verbose = FALSE, ...)
+    overwrite, additional_commands, verbose = FALSE, ...)
 }
 \arguments{
   \item{gdalfile}{Character. Input files (as a character
@@ -136,7 +135,7 @@
   \item{...}{Other parameters to pass to gdal_translate.}
 }
 \value{
-  character
+  NULL
 }
 \description{
   R wrapper for gdalbuildvrt: Builds a VRT from a list of

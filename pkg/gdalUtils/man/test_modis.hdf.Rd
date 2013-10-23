@@ -7,7 +7,7 @@
 }
 \examples{
 \dontrun{
-	gdalinfo(system.file("external/test_modis.hdf", package="gdalUtils"))
+gdalinfo(system.file("external/test_modis.hdf", package="gdalUtils"))
 }
 }
 \author{

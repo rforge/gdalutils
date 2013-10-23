@@ -25,7 +25,7 @@
 #' @param verbose Logical. Verbose execution?
 #' @param ... Other parameters to pass to gdal_translate.
 #' 
-#' @return character
+#' @return NULL
 #' @author Jonathan A. Greenberg (\email{gdalUtils@@estarcion.net}) (wrapper) and Frank Warmerdam (GDAL lead developer).
 #' @details This is an R wrapper for the 'gdalbuildvrt' function that is part of the 
 #' Geospatial Data Abstraction Library (GDAL).  It follows the parameter naming
@@ -108,6 +108,6 @@ gdalbuildvrt <- function(gdalfile,output.vrt,
 	if(verbose) message(paste("GDAL command being used:",cmd))
 	
 	cmd_output <- system(cmd,intern=TRUE) 
-
-		return(cmd_output)
+	
+	return(NULL)
 }

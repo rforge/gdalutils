@@ -7,7 +7,7 @@
 #' @param ... Parameters to pass to \code{\link{gdalbuildvrt}} and \code{\link{gdal_translate}}.
 #' @details This function mosaics a set of input rasters (gdalfile) using parameters
 #' found in \code{\link{gdalbuildvrt}} and subsequently exports the mosaic to 
-#' an output file (dst_dataset) using parameters \code{\link{gdal_translate}}.  The user
+#' an output file (dst_dataset) using parameters found in \code{\link{gdal_translate}}.  The user
 #' can choose to preserve the intermediate output.vrt file, but in general this is not
 #' needed.
 #' @return Either a list of NULLs or a list of RasterBricks depending on whether output_Raster is set to TRUE.

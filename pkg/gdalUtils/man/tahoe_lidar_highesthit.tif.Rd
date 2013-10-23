@@ -8,7 +8,7 @@
 }
 \examples{
 tahoe_lidar_highesthit <-
-	raster(system.file("external/tahoe_lidar_highesthit.tif", package="gdalUtils"))
+raster(system.file("external/tahoe_lidar_highesthit.tif", package="gdalUtils"))
 plot(tahoe_lidar_highesthit)
 }
 \author{
