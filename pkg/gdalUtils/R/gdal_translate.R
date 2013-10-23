@@ -68,6 +68,9 @@
 #' @export
 
 # TODO: return all subdatasets if sds=TRUE as a list of bricks
+# TODO: add in overwrite=TRUE/FALSE capabilties in this and other functions.
+#		(Right now these are fairly unsafe, as they can easily overwrite and
+#		existing file).
 
 gdal_translate <- function(src_dataset,dst_dataset,ot,strict,of="GTiff",
 		b,mask,expand,outsize,scale,unscale,srcwin,projwin,epo,eco,
