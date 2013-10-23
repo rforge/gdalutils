@@ -309,6 +309,9 @@ gdal_cmd_builder <- function(executable,parameter_variables,
 		parameter_vector <- parameter_vector[parameter_order_defined]
 	}
 	
+	# Collapse multiple parameter entries:
+	parameter_vector <- sapply(parameter_vector,function(x) paste(x,collapse=" "))
+	
 	cmd <- paste(c(qm(executable),parameter_vector),collapse=" ")
 	
 	return(cmd)
