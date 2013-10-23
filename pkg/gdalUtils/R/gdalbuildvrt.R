@@ -23,6 +23,7 @@
 #' @param overwrite Logical. Overwrite the VRT if it already exists.
 #' @param additional_commands Character. Additional commands to pass directly to ogrinfo.
 #' @param verbose Logical. Verbose execution?
+#' @param ... Other parameters to pass to gdal_translate.
 #' 
 #' @return character
 #' @author Jonathan A. Greenberg (\email{gdalUtils@@estarcion.net}) (wrapper) and Frank Warmerdam (GDAL lead developer).
@@ -56,7 +57,8 @@ gdalbuildvrt <- function(gdalfile,output.vrt,
 		a_srs,input_file_list,overwrite,
 		additional_commands,
 		output_Raster=FALSE,
-		verbose=FALSE)
+		verbose=FALSE,
+		...)
 {
 	
 	parameter_values <- as.list(environment())

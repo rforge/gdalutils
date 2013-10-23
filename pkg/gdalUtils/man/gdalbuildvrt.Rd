@@ -7,7 +7,7 @@
     allow_projection_difference, q, addalpha, hidenodata,
     srcnodata, vrtnodata, a_srs, input_file_list,
     overwrite, additional_commands, output_Raster = FALSE,
-    verbose = FALSE)
+    verbose = FALSE, ...)
 }
 \arguments{
   \item{gdalfile}{Character. Input files (as a character
@@ -132,6 +132,8 @@
   to pass directly to ogrinfo.}
 
   \item{verbose}{Logical. Verbose execution?}
+
+  \item{...}{Other parameters to pass to gdal_translate.}
 }
 \value{
   character

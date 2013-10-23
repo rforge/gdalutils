@@ -58,3 +58,9 @@ layer2 <- system.file("external/tahoe_lidar_highesthit.tif", package="gdalUtils"
 output.vrt <- paste(tempfile(),".vrt",sep="")
 gdalbuildvrt(gdalfile=c(layer1,layer2),output.vrt=output.vrt,separate=TRUE)
 gdalinfo(output.vrt)
+
+### mosaic rasters
+layer1 <- system.file("external/tahoe_lidar_bareearth.tif", package="gdalUtils")
+layer2 <- system.file("external/tahoe_lidar_highesthit.tif", package="gdalUtils")
+mosaic_rasters(gdalfile=c(layer1,layer2),dst_dataset="test_mosaic.envi",separate=TRUE,of="ENVI",
+		verbose=TRUE,output_Raster=TRUE)

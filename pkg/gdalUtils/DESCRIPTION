@@ -34,3 +34,4 @@ Collate:
     'batch_gdal_translate.R'
     'remove_file_extension.R'
     'gdalbuildvrt.R'
+    'mosaic_rasters.R'

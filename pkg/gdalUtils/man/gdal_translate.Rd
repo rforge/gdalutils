@@ -6,7 +6,7 @@
     of = "GTiff", b, mask, expand, outsize, scale, unscale,
     srcwin, projwin, epo, eco, a_srs, a_ullr, a_nodata, mo,
     co, gcp, q, sds, stats, additional_commands, sd_index,
-    output_Raster = FALSE, verbose = FALSE)
+    output_Raster = FALSE, verbose = FALSE, ...)
 }
 \arguments{
   \item{src_dataset}{Character. The source dataset name. It
@@ -145,6 +145,8 @@
   as a RasterBrick?}
 
   \item{verbose}{Logical.}
+
+  \item{...}{Other parameters to pass to gdal_translate.}
 }
 \value{
   NULL or if(output_Raster), a RasterBrick.
