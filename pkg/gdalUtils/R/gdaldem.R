@@ -71,6 +71,8 @@
 #'	output="output_aspect.tif",output_Raster=TRUE)
 #' plot(output_aspect,col=gray.colors(256))
 #' }
+#' @import rgdal
+#' @import raster
 #' @export
 
 # TODO: Fully document this.

@@ -31,7 +31,8 @@
 #' output_folder <- tempdir()
 #' # library(spatial.tools)
 #' # sfQuickInit() # from package spatial.tools to launch a parallel PSOCK cluster
-#' batch_gdal_translate(infiles=input_folder,outdir=output_folder,outsuffix="_converted.envi",of="ENVI",pattern=".tif$")
+#' batch_gdal_translate(infiles=input_folder,outdir=output_folder,
+#' 	outsuffix="_converted.envi",of="ENVI",pattern=".tif$")
 #' list.files(output_folder,pattern="_converted.envi$")
 #' # sfQuickStop() # from package spatial.tools to stop a parallel PSOCK cluster
 #' }
@@ -43,6 +44,10 @@ batch_gdal_translate <- function(infiles,outdir,outsuffix="_conv.tif",pattern=NU
 		...)
 
 {
+	# These are just to avoid errors in CRAN checks.
+	infile <- NULL
+	outfile <- NULL
+	
 	if(missing(outdir) || !file.exists(outdir) || !file.info(outdir)$isdir)
 	{
 		stop("Please select a valid outdir.")	

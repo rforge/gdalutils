@@ -62,6 +62,8 @@
 #' #After plot:
 #' plotRGB(brick(dst_filename))
 #' }
+#' @import rgdal
+#' @import raster
 #' @export
 
 gdal_rasterize <- function(

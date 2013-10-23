@@ -78,6 +78,8 @@
 #' gdalwarp(src_dataset,dstfile="tahoe_highrez_utm11.tif",
 #' 		t_srs='+proj=utm +zone=11 +datum=WGS84',output_Raster=TRUE)
 #' }
+#' @import rgdal
+#' @import raster
 #' @export
 
 gdalwarp <- function(

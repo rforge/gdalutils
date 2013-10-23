@@ -65,6 +65,8 @@
 #' hdf4_dataset <- system.file("external/test_modis.hdf", package="gdalUtils")
 #' gdal_translate(hdf4_dataset,"test_modis_sd1.tif",sd_index=1)
 #' }
+#' @import rgdal
+#' @import raster
 #' @export
 
 # TODO: return all subdatasets if sds=TRUE as a list of bricks
