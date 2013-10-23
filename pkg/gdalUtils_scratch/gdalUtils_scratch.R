@@ -51,3 +51,10 @@ output_folder <- tempdir()
 batch_gdal_translate(infiles=input_folder,outdir=output_folder,outsuffix="_converted.envi",of="ENVI",pattern=".tif$")
 list.files(output_folder,pattern="_converted.envi$")
 # sfQuickStop() # from package spatial.tools to stop a parallel PSOCK cluster
+
+### gdalbuildvrt
+layer1 <- system.file("external/tahoe_lidar_bareearth.tif", package="gdalUtils")
+layer2 <- system.file("external/tahoe_lidar_highesthit.tif", package="gdalUtils")
+output.vrt <- paste(tempfile(),".vrt",sep="")
+gdalbuildvrt(gdalfile=c(layer1,layer2),output.vrt=output.vrt,separate=TRUE)
+gdalinfo(output.vrt)
