@@ -2,7 +2,7 @@
 #'
 #' @name tahoe_lidar_highesthit.tif
 #' @docType data
-#' @author Jonathan A. Greenberg \email{spatial.tools@@estarcion.net}
+#' @author Jonathan A. Greenberg \email{gdalUtils@@estarcion.net}
 #' @keywords data
 #' @examples
 #' tahoe_lidar_highesthit <- 

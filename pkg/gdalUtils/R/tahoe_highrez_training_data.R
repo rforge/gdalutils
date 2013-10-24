@@ -1,7 +1,7 @@
-#' Point and polygon files for use with spatial.tools
+#' Point and polygon files for use with gdalUtils
 #' @name tahoe_highrez_training
 #' @docType data
-#' @author Jonathan A. Greenberg \email{spatial.tools@@estarcion.net}
+#' @author Jonathan A. Greenberg \email{gdalUtils@@estarcion.net}
 #' @keywords data
 #' @examples
 #' tahoe_highrez_training_polygons <- readOGR(
