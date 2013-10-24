@@ -12,7 +12,7 @@ raster(system.file("external/tahoe_lidar_highesthit.tif", package="gdalUtils"))
 plot(tahoe_lidar_highesthit)
 }
 \author{
-  Jonathan A. Greenberg \email{spatial.tools@estarcion.net}
+  Jonathan A. Greenberg \email{gdalUtils@estarcion.net}
 }
 \keyword{data}
 \keyword{datasets}
