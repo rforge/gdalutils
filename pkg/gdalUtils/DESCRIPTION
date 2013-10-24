@@ -6,7 +6,7 @@ Type: Package
 LazyLoad: yes
 Author: Jonathan Asher Greenberg and Matteo Mattiuzzi
 Description: Wrappers for the Geospatial Data Abstraction Library (GDAL)
-Version: 0.0.9
+Version: 0.1.0
 Date: 2013-10-23
 Depends:
     rgdal,

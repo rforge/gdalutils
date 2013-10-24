@@ -132,7 +132,23 @@ gdal_translate <- function(src_dataset,dst_dataset,ot,strict,of="GTiff",
 	if(verbose) { message(cmd_output) } 
 	
 	# (Optional) return Raster
-	if(output_Raster & missing(sds)) return(brick(dst_dataset))
-	if(output_Raster & !sds) return(brick(dst_dataset))
+	if(output_Raster)
+	{
+		if(missing(sds)) 
+		{
+			return(brick(dst_dataset))
+		}
+		else
+		{
+			if(!sds) 
+			{
+				return(brick(dst_dataset))
+			}
+			else 
+			{
+				return(NULL)
+			}
+		}
+	}
 	else(return(NULL))
 }
