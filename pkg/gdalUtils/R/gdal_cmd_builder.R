@@ -8,6 +8,7 @@
 #' @param parameter_order Character. The order of the parameters for the GDAL command.
 #' @param parameter_noflags Character. Parameters which do not have a flag.
 #' @param parameter_doubledash Character. Parameters which should have a double dash "--".
+#' @param parameter_noquotes Character. Parameters which should not be wrapped in quotes (vector parameters only, at present).
 #' @param gdal_installation_id Numeric. The ID of the GDAL installation to use.  Defaults to 1.
 #' 
 #' @return Formatted GDAL command for use with system() calls. 
@@ -85,6 +86,7 @@
 gdal_cmd_builder <- function(executable,parameter_variables,
 		parameter_values,parameter_order,parameter_noflags=c(),
 		parameter_doubledash=c(),
+		parameter_noquotes=c(),
 		gdal_installation_id=1)
 {
 	# path to executable check in here?
@@ -160,9 +162,18 @@ gdal_cmd_builder <- function(executable,parameter_variables,
 								flag=paste("-",X," ",sep="")
 							}
 						}
-						parameter_variables_vector_string <- paste(flag,
-								qm(paste(parameter_values[[which(names(parameter_values)==X)]],collapse=" ")),
-								sep="")
+						
+						if(X %in% parameter_noquotes)
+						{
+							parameter_variables_vector_string <- paste(flag,
+									paste(parameter_values[[which(names(parameter_values)==X)]],collapse=" "),
+									sep="")
+						} else
+						{						
+							parameter_variables_vector_string <- paste(flag,
+									qm(paste(parameter_values[[which(names(parameter_values)==X)]],collapse=" ")),
+									sep="")
+						}
 						return(parameter_variables_vector_string)
 					},parameter_values=parameter_values,parameter_doubledash=parameter_doubledash)			
 		} else

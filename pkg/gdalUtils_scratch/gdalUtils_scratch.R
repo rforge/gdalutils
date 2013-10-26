@@ -64,3 +64,12 @@ layer1 <- system.file("external/tahoe_lidar_bareearth.tif", package="gdalUtils")
 layer2 <- system.file("external/tahoe_lidar_highesthit.tif", package="gdalUtils")
 mosaic_rasters(gdalfile=c(layer1,layer2),dst_dataset="test_mosaic.envi",separate=TRUE,of="ENVI",
 		verbose=TRUE,output_Raster=TRUE)
+
+
+### gdaladdo
+filename  <- system.file("external/tahoe_highrez.tif", package="gdalUtils")
+temp_filename <- paste(tempfile(),".tif",sep="")
+file.copy(from=filename,to=temp_filename,overwrite=TRUE)
+gdalinfo(filename)
+gdaladdo(r="average",temp_filename,levels=c(2,4,8,16),verbose=TRUE)
+gdalinfo(temp_filename)
