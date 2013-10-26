@@ -82,6 +82,8 @@
 #' @export
 
 #TODO: additional commands
+#TODO: command aliases (e.g. for commands with a hyphen, 
+#	since R doesn't allow that in variable naming).
 
 gdal_cmd_builder <- function(executable,parameter_variables,
 		parameter_values,parameter_order,parameter_noflags=c(),
@@ -91,7 +93,6 @@ gdal_cmd_builder <- function(executable,parameter_variables,
 {
 	# path to executable check in here?
 	
-#	executable <- gdal_get_executable(executable)
 	gdal_setInstallation()
 	
 	executable <- normalizePath(list.files(
