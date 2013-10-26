@@ -5,7 +5,7 @@
   gdal_cmd_builder(executable, parameter_variables,
     parameter_values, parameter_order,
     parameter_noflags = c(), parameter_doubledash = c(),
-    gdal_installation_id = 1)
+    parameter_noquotes = c(), gdal_installation_id = 1)
 }
 \arguments{
   \item{executable}{Character. The GDAL command to use
@@ -25,6 +25,10 @@
 
   \item{parameter_doubledash}{Character. Parameters which
   should have a double dash "--".}
+
+  \item{parameter_noquotes}{Character. Parameters which
+  should not be wrapped in quotes (vector parameters only,
+  at present).}
 
   \item{gdal_installation_id}{Numeric. The ID of the GDAL
   installation to use.  Defaults to 1.}
