@@ -8,7 +8,7 @@
 #' @param b Numeric. (available from GDAL 1.10) Select an input band band for overview generation. Band numbering starts from 1. Multiple -b switches may be used to select a set of input bands to generate overviews.
 #' @param ro Logical. (available from GDAL 1.6.0) open the dataset in read-only mode, in order to generate external overview (for GeoTIFF especially).
 #' @param clean Logical. (available from GDAL 1.7.0) remove all overviews.
-#' @param additional_commands Character. Additional commands to pass directly to ogrinfo.
+#' @param additional_commands Character. Additional commands to pass directly to gdaladdo.
 #' @param verbose Logical. Verbose execution?
 #' @param ... Other parameters to pass to gdaladdo.
 #' 
