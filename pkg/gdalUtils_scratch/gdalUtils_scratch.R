@@ -73,3 +73,14 @@ file.copy(from=filename,to=temp_filename,overwrite=TRUE)
 gdalinfo(filename)
 gdaladdo(r="average",temp_filename,levels=c(2,4,8,16),verbose=TRUE)
 gdalinfo(temp_filename)
+
+
+### ogr2ogr
+src_datasource_name <- system.file("external/tahoe_highrez_training.shp", package="gdalUtils")
+dst_datasource_name <- paste(tempfile(),".shp",sep="")
+ogrInfo(src_datasource_name,"tahoe_highrez_training")
+# reproject the input to mercator
+ogr2ogr(src_datasource_name,dst_datasource_name,t_srs="EPSG:3395",verbose=TRUE)
+ogrInfo(dirname(dst_datasource_name),layer=remove_file_extension(basename(dst_datasource_name)))
+
+

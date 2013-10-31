@@ -29,7 +29,7 @@
   all overviews.}
 
   \item{additional_commands}{Character. Additional commands
-  to pass directly to ogrinfo.}
+  to pass directly to gdaladdo.}
 
   \item{verbose}{Logical. Verbose execution?}
 

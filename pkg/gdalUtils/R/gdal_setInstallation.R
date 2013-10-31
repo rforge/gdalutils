@@ -2,6 +2,8 @@
 #' 
 #' Sets local GDAL installation options
 #' 
+#' @param rescan Logical. Force a rescan if neccessary (e.g. if you updated your GDAL install).
+#' 
 #' @return Sets an option "gdalUtils_gdalPath" with GDAL installation information.
 #' @author Jonathan A. Greenberg (\email{gdalUtils@@estarcion.net}) and Matteo Mattiuzzi
 #' 
@@ -34,7 +36,7 @@
 # TODO: if nothing is found, give suggestions on where to download GDAL
 # TODO: check if the user has permission to execute the commands
 
-gdal_setInstallation <- function()
+gdal_setInstallation <- function(rescan=FALSE)
 {
 	
 # Returns the available GDAL python utilities
@@ -373,10 +375,11 @@ gdal_setInstallation <- function()
 			return_versions=TRUE,
 			return_drivers=TRUE,
 			return_python_utilities=TRUE,
-			sort_most_current=TRUE
+			sort_most_current=TRUE,
+			rescan=FALSE
 	)
 	{
-		path <- gdal_path()
+		path <- gdal_path(ignore.options=rescan)
 		
 		gdal_installation_results <- lapply(path,
 				function(x,return_drivers,return_python_utilities,return_versions)
@@ -414,5 +417,5 @@ gdal_setInstallation <- function()
 # Sets the installation for this session.
 	
 #	path <- gdal_path(ignore.options=TRUE)
-	options(gdalUtils_gdalPath=gdal_installation())
+	options(gdalUtils_gdalPath=gdal_installation(rescan=rescan))
 }

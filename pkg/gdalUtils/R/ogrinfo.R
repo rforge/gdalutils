@@ -106,5 +106,5 @@ ogrinfo <- function(datasource_name,layer,
 	
 	cmd_output <- system(cmd,intern=TRUE) 
 
-		return(cmd_output)
+	return(cmd_output)
 }
