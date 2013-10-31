@@ -82,11 +82,15 @@
 #' @export
 
 #TODO: additional commands
+<<<<<<< .mine
+#TODO: work without parameters (executable only)
+=======
 #TODO: command aliases (e.g. for commands with a hyphen, 
 #	since R doesn't allow that in variable naming).
+>>>>>>> .r63
 
-gdal_cmd_builder <- function(executable,parameter_variables,
-		parameter_values,parameter_order,parameter_noflags=c(),
+gdal_cmd_builder <- function(executable,parameter_variables=c(),
+		parameter_values=c(),parameter_order=c(),parameter_noflags=c(),
 		parameter_doubledash=c(),
 		parameter_noquotes=c(),
 		gdal_installation_id=1)
