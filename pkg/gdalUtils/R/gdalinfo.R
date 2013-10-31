@@ -50,7 +50,9 @@
 
 gdalinfo <- function(datasetname,mm,stats,
 	approx_stats,hist,nogcp,nomd,nrat,noct,nofl,checksum,
-	proj4,mdd,sd,additional_commands,
+	proj4,mdd,sd,
+	version,formats,format,optfile,config,debug,
+	additional_commands,
 	raw_output=TRUE,verbose=FALSE)
 {
 	parameter_values <- as.list(environment())
@@ -62,22 +64,28 @@ gdalinfo <- function(datasetname,mm,stats,
 	parameter_variables <- list(
 			logical = list(
 					varnames <- c("mm","stats","approx_stats","hist","nogcp","nomd",
-							"nrat","noct","checksum","nofl","proj4")),
+							"nrat","noct","checksum","nofl","proj4",
+							"version","formats")),
 			vector = list(
 					varnames <- NULL),
 			scalar = list(
 					varnames <- c("sd")),
 			character = list(
-					varnames <- c("mdd","datasetname")),
+					varnames <- c("mdd","datasetname",
+						"format","optfile","config","debug")),
 			repeatable = list(
 					varnames <- NULL)
 	)
 	
 	parameter_order <- c(
 			"mm","stats","approx_stats","hist","nogcp","nomd","nrat","noct","nofl","checksum",
-			"proj4","mdd","sd","datasetname")
+			"proj4","mdd","sd",
+			"version","formats","format","optfile","config","debug",
+			"datasetname")
 	
 	parameter_noflags <- c("datasetname")
+	
+	parameter_doubledash <- c("version","formats","format","optfile","config","debug")
 	
 	executable <- "gdalinfo"
 	# End gdalinfo setup
@@ -87,7 +95,8 @@ gdalinfo <- function(datasetname,mm,stats,
 			parameter_variables=parameter_variables,
 			parameter_values=parameter_values,
 			parameter_order=parameter_order,
-			parameter_noflags=parameter_noflags)
+			parameter_noflags=parameter_noflags,
+			parameter_doubledash=parameter_doubledash)
 	
 	if(verbose) message(paste("GDAL command being used:",cmd))
 	
