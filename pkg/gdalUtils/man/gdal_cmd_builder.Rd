@@ -2,8 +2,8 @@
 \alias{gdal_cmd_builder}
 \title{gdal_cmd_builder}
 \usage{
-  gdal_cmd_builder(executable, parameter_variables,
-    parameter_values, parameter_order,
+  gdal_cmd_builder(executable, parameter_variables = c(),
+    parameter_values = c(), parameter_order = c(),
     parameter_noflags = c(), parameter_doubledash = c(),
     parameter_noquotes = c(), gdal_installation_id = 1)
 }

@@ -2,7 +2,11 @@
 \alias{gdal_setInstallation}
 \title{gdal_setInstallation}
 \usage{
-  gdal_setInstallation()
+  gdal_setInstallation(rescan = FALSE)
+}
+\arguments{
+  \item{rescan}{Logical. Force a rescan if neccessary (e.g.
+  if you updated your GDAL install).}
 }
 \value{
   Sets an option "gdalUtils_gdalPath" with GDAL

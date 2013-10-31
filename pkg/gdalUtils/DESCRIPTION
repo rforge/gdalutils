@@ -6,8 +6,8 @@ Type: Package
 LazyLoad: yes
 Author: Jonathan Asher Greenberg and Matteo Mattiuzzi
 Description: Wrappers for the Geospatial Data Abstraction Library (GDAL)
-Version: 0.1.1
-Date: 2013-10-26
+Version: 0.1.2
+Date: 2013-10-31
 Depends:
     rgdal,
     raster,
@@ -36,3 +36,4 @@ Collate:
     'gdalbuildvrt.R'
     'mosaic_rasters.R'
     'gdaladdo.R'
+    'ogr2ogr.R'

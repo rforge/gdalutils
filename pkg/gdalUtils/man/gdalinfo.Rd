@@ -4,7 +4,8 @@
 \usage{
   gdalinfo(datasetname, mm, stats, approx_stats, hist,
     nogcp, nomd, nrat, noct, nofl, checksum, proj4, mdd,
-    sd, additional_commands, raw_output = TRUE,
+    sd, version, formats, format, optfile, config, debug,
+    additional_commands, raw_output = TRUE,
     verbose = FALSE)
 }
 \arguments{
