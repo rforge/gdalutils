@@ -2,29 +2,28 @@
 \alias{gdal_chooseInstallation}
 \title{gdal_chooseInstallation}
 \usage{
-  gdal_chooseInstallation(hasDrivers)
+gdal_chooseInstallation(hasDrivers)
 }
 \arguments{
   \item{hasDrivers}{Character. Which drivers must be
   available?}
 }
 \value{
-  Numeric id of the most recent installation that matches
-  the requirements.
+Numeric id of the most recent installation that matches the
+requirements.
 }
 \description{
-  Choose a GDAL installation based on certain requirements.
+Choose a GDAL installation based on certain requirements.
 }
 \details{
-  By default, the GDAL commands will use the installation
-  found at getOption("gdalUtils_gdalPath")[[1]], which is
-  the most recent version found on the system.  If the user
-  has more than one GDAL installed (more common on Windows
-  and Mac systems than *nix systems),
-  gdal_chooseInstallation can be used to choose an
-  installation (perhaps not the most recent one) that has
-  certain functionality, e.g. supports HDF4 formatted
-  files.
+By default, the GDAL commands will use the installation
+found at getOption("gdalUtils_gdalPath")[[1]], which is the
+most recent version found on the system.  If the user has
+more than one GDAL installed (more common on Windows and
+Mac systems than *nix systems), gdal_chooseInstallation can
+be used to choose an installation (perhaps not the most
+recent one) that has certain functionality, e.g. supports
+HDF4 formatted files.
 }
 \examples{
 \dontrun{
@@ -36,9 +35,9 @@ getOption("gdalUtils_gdalPath")[[
 }
 }
 \author{
-  Jonathan A. Greenberg (\email{gdalUtils@estarcion.net})
+Jonathan A. Greenberg (\email{gdalUtils@estarcion.net})
 }
 \references{
-  \url{http://www.gdal.org/gdal_translate.html}
+\url{http://www.gdal.org/gdal_translate.html}
 }
 

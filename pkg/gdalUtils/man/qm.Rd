@@ -2,17 +2,17 @@
 \alias{qm}
 \title{qm}
 \usage{
-  qm(x)
+qm(x)
 }
 \arguments{
   \item{x}{Character or Numeric.}
 }
 \value{
-  A character string that begins and ends with quotation
-  marks.
+A character string that begins and ends with quotation
+marks.
 }
 \description{
-  Wraps an input in quotation marks.
+Wraps an input in quotation marks.
 }
 \examples{
 {
@@ -21,6 +21,6 @@ qm(42)
 }
 }
 \author{
-  Jonathan A. Greenberg
+Jonathan A. Greenberg
 }
 

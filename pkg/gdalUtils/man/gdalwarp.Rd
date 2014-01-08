@@ -2,13 +2,11 @@
 \alias{gdalwarp}
 \title{gdalwarp}
 \usage{
-  gdalwarp(srcfile, dstfile, s_srs, t_srs, to, order, tps,
-    rpc, geoloc, et, refine_gcps, te, tr, tap, ts, wo, ot,
-    wt, r, srcnodata, dstnodata, dstalpha, wm, multi, q,
-    of = "GTiff", co, cutline, cl, cwhere, csql, cblend,
-    crop_to_cutline, overwrite, nomd, cvmd, setci,
-    additional_commands, output_Raster = FALSE,
-    verbose = FALSE)
+gdalwarp(srcfile, dstfile, s_srs, t_srs, to, order, tps, rpc, geoloc, et,
+  refine_gcps, te, tr, tap, ts, wo, ot, wt, r, srcnodata, dstnodata, dstalpha,
+  wm, multi, q, of = "GTiff", co, cutline, cl, cwhere, csql, cblend,
+  crop_to_cutline, overwrite, nomd, cvmd, setci, additional_commands,
+  output_Raster = FALSE, verbose = FALSE)
 }
 \arguments{
   \item{srcfile}{Character. The source file name(s).}
@@ -175,45 +173,44 @@
   \item{verbose}{Logical.}
 }
 \value{
-  NULL or if(output_Raster), a RasterBrick.
+NULL or if(output_Raster), a RasterBrick.
 }
 \description{
-  R wrapper for gdalwarp: image reprojection and warping
-  utility
+R wrapper for gdalwarp: image reprojection and warping
+utility
 }
 \details{
-  This is an R wrapper for the 'gdalwarp' function that is
-  part of the Geospatial Data Abstraction Library (GDAL).
-  It follows the parameter naming conventions of the
-  original function, with some modifications to allow for
-  more R-like parameters.  For all parameters, the user can
-  use a single character string following, precisely, the
-  gdalwarp format
-  (\url{http://www.gdal.org/gdalwarp.html}), or, in some
-  cases, can use R vectors to achieve the same end.
+This is an R wrapper for the 'gdalwarp' function that is
+part of the Geospatial Data Abstraction Library (GDAL).  It
+follows the parameter naming conventions of the original
+function, with some modifications to allow for more R-like
+parameters.  For all parameters, the user can use a single
+character string following, precisely, the gdalwarp format
+(\url{http://www.gdal.org/gdalwarp.html}), or, in some
+cases, can use R vectors to achieve the same end.
 
-  This function assumes the user has a working GDAL on
-  their system.  If the "gdalUtils_gdalPath" option has
-  been set (usually by gdal_setInstallation), the GDAL
-  found in that path will be used.  If nothing is found,
-  gdal_setInstallation will be executed to attempt to find
-  a working GDAL that has the right drivers as specified
-  with the "of" (output format) parameter.
+This function assumes the user has a working GDAL on their
+system.  If the "gdalUtils_gdalPath" option has been set
+(usually by gdal_setInstallation), the GDAL found in that
+path will be used.  If nothing is found,
+gdal_setInstallation will be executed to attempt to find a
+working GDAL that has the right drivers as specified with
+the "of" (output format) parameter.
 
-  The resampling_methods available are as follows: near:
-  nearest neighbour resampling (default, fastest algorithm,
-  worst interpolation quality). bilinear: bilinear
-  resampling. cubic: cubic resampling. cubicspline: cubic
-  spline resampling. lanczos: Lanczos windowed sinc
-  resampling. average: average resampling, computes the
-  average of all non-NODATA contributing pixels. (GDAL >=
-  1.10.0) mode: mode resampling, selects the value which
-  appears most often of all the sampled points. (GDAL >=
-  1.10.0)
+The resampling_methods available are as follows: near:
+nearest neighbour resampling (default, fastest algorithm,
+worst interpolation quality). bilinear: bilinear
+resampling. cubic: cubic resampling. cubicspline: cubic
+spline resampling. lanczos: Lanczos windowed sinc
+resampling. average: average resampling, computes the
+average of all non-NODATA contributing pixels. (GDAL >=
+1.10.0) mode: mode resampling, selects the value which
+appears most often of all the sampled points. (GDAL >=
+1.10.0)
 
-  The user can choose to (optionally) return a RasterBrick
-  of the output file (assuming raster/rgdal supports the
-  particular output format).
+The user can choose to (optionally) return a RasterBrick of
+the output file (assuming raster/rgdal supports the
+particular output format).
 }
 \examples{
 \dontrun{
@@ -226,10 +223,10 @@ gdalwarp(src_dataset,dstfile="tahoe_highrez_utm11.tif",
 }
 }
 \author{
-  Jonathan A. Greenberg (\email{gdalUtils@estarcion.net})
-  (wrapper) and Frank Warmerdam (GDAL lead developer).
+Jonathan A. Greenberg (\email{gdalUtils@estarcion.net})
+(wrapper) and Frank Warmerdam (GDAL lead developer).
 }
 \references{
-  \url{http://www.gdal.org/gdalwarp.html}
+\url{http://www.gdal.org/gdalwarp.html}
 }
 

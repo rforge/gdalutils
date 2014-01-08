@@ -2,11 +2,10 @@
 \alias{gdal_translate}
 \title{gdal_translate}
 \usage{
-  gdal_translate(src_dataset, dst_dataset, ot, strict,
-    of = "GTiff", b, mask, expand, outsize, scale, unscale,
-    srcwin, projwin, epo, eco, a_srs, a_ullr, a_nodata, mo,
-    co, gcp, q, sds, stats, additional_commands, sd_index,
-    output_Raster = FALSE, verbose = FALSE, ...)
+gdal_translate(src_dataset, dst_dataset, ot, strict, of = "GTiff", b, mask,
+  expand, outsize, scale, unscale, srcwin, projwin, epo, eco, a_srs, a_ullr,
+  a_nodata, mo, co, gcp, q, sds, stats, additional_commands, sd_index,
+  output_Raster = FALSE, verbose = FALSE, ...)
 }
 \arguments{
   \item{src_dataset}{Character. The source dataset name. It
@@ -149,33 +148,32 @@
   \item{...}{Other parameters to pass to gdal_translate.}
 }
 \value{
-  NULL or if(output_Raster), a RasterBrick.
+NULL or if(output_Raster), a RasterBrick.
 }
 \description{
-  R wrapper for gdal_translate
+R wrapper for gdal_translate
 }
 \details{
-  This is an R wrapper for the 'gdal_translate' function
-  that is part of the Geospatial Data Abstraction Library
-  (GDAL).  It follows the parameter naming conventions of
-  the original function, with some modifications to allow
-  for more R-like parameters.  For all parameters, the user
-  can use a single character string following, precisely,
-  the gdal_translate format
-  (\url{http://www.gdal.org/gdal_translate.html}), or, in
-  some cases, can use R vectors to achieve the same end.
+This is an R wrapper for the 'gdal_translate' function that
+is part of the Geospatial Data Abstraction Library (GDAL).
+It follows the parameter naming conventions of the original
+function, with some modifications to allow for more R-like
+parameters.  For all parameters, the user can use a single
+character string following, precisely, the gdal_translate
+format (\url{http://www.gdal.org/gdal_translate.html}), or,
+in some cases, can use R vectors to achieve the same end.
 
-  This function assumes the user has a working GDAL on
-  their system.  If the "gdalUtils_gdalPath" option has
-  been set (usually by gdal_setInstallation), the GDAL
-  found in that path will be used.  If nothing is found,
-  gdal_setInstallation will be executed to attempt to find
-  a working GDAL that has the right drivers as specified
-  with the "of" (output format) parameter.
+This function assumes the user has a working GDAL on their
+system.  If the "gdalUtils_gdalPath" option has been set
+(usually by gdal_setInstallation), the GDAL found in that
+path will be used.  If nothing is found,
+gdal_setInstallation will be executed to attempt to find a
+working GDAL that has the right drivers as specified with
+the "of" (output format) parameter.
 
-  The user can choose to (optionally) return a RasterBrick
-  of the output file (assuming raster/rgdal supports the
-  particular output format).
+The user can choose to (optionally) return a RasterBrick of
+the output file (assuming raster/rgdal supports the
+particular output format).
 }
 \examples{
 \dontrun{
@@ -196,10 +194,10 @@ gdal_translate(hdf4_dataset,"test_modis_sd1.tif",sd_index=1)
 }
 }
 \author{
-  Jonathan A. Greenberg (\email{gdalUtils@estarcion.net})
-  (wrapper) and Frank Warmerdam (GDAL lead developer).
+Jonathan A. Greenberg (\email{gdalUtils@estarcion.net})
+(wrapper) and Frank Warmerdam (GDAL lead developer).
 }
 \references{
-  \url{http://www.gdal.org/gdal_translate.html}
+\url{http://www.gdal.org/gdal_translate.html}
 }
 

@@ -2,8 +2,8 @@
 \alias{mosaic_rasters}
 \title{Mosaic raster files using GDAL Utilities}
 \usage{
-  mosaic_rasters(gdalfile, dst_dataset, output.vrt = NULL,
-    output_Raster = FALSE, ...)
+mosaic_rasters(gdalfile, dst_dataset, output.vrt = NULL,
+  output_Raster = FALSE, ...)
 }
 \arguments{
   \item{gdalfile}{Character. Input files (as a character
@@ -22,20 +22,20 @@
   \code{\link{gdal_translate}}.}
 }
 \value{
-  Either a list of NULLs or a list of RasterBricks
-  depending on whether output_Raster is set to TRUE.
+Either a list of NULLs or a list of RasterBricks depending
+on whether output_Raster is set to TRUE.
 }
 \description{
-  Mosaic raster files using GDAL Utilities
+Mosaic raster files using GDAL Utilities
 }
 \details{
-  This function mosaics a set of input rasters (gdalfile)
-  using parameters found in \code{\link{gdalbuildvrt}} and
-  subsequently exports the mosaic to an output file
-  (dst_dataset) using parameters found in
-  \code{\link{gdal_translate}}.  The user can choose to
-  preserve the intermediate output.vrt file, but in general
-  this is not needed.
+This function mosaics a set of input rasters (gdalfile)
+using parameters found in \code{\link{gdalbuildvrt}} and
+subsequently exports the mosaic to an output file
+(dst_dataset) using parameters found in
+\code{\link{gdal_translate}}.  The user can choose to
+preserve the intermediate output.vrt file, but in general
+this is not needed.
 }
 \examples{
 \dontrun{
@@ -47,9 +47,9 @@ gdalinfo("test_mosaic.envi")
 }
 }
 \author{
-  Jonathan A. Greenberg (\email{gdalUtils@estarcion.net})
+Jonathan A. Greenberg (\email{gdalUtils@estarcion.net})
 }
 \seealso{
-  \code{\link{gdalbuildvrt}}, \code{\link{gdal_translate}}
+\code{\link{gdalbuildvrt}}, \code{\link{gdal_translate}}
 }
 

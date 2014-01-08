@@ -6,34 +6,12 @@ Type: Package
 LazyLoad: yes
 Author: Jonathan Asher Greenberg and Matteo Mattiuzzi
 Description: Wrappers for the Geospatial Data Abstraction Library (GDAL)
-Version: 0.1.2
-Date: 2013-10-31
+Version: 0.2.0
+Date: 2014-1-8
 Depends:
-    rgdal,
-    raster,
     R (>= 3.0.2)
 Imports:
+    sp,
+    rgdal,
+    raster,
     foreach
-Collate:
-    'tahoe_lidar_bareearth_data.R'
-    'tahoe_lidar_highesthit_data.R'
-    'gdal_cmd_builder.R'
-    'gdal_translate.R'
-    'qm.R'
-    'gdalinfo.R'
-    'gdalwarp.R'
-    'gdalsrsinfo.R'
-    'gdal_chooseInstallation.R'
-    'gdal_setInstallation.R'
-    'get_subdatasets.R'
-    'test_modis.R'
-    'gdal_rasterize.R'
-    'tahoe_highrez_training_data.R'
-    'gdaldem.R'
-    'ogrinfo.R'
-    'batch_gdal_translate.R'
-    'remove_file_extension.R'
-    'gdalbuildvrt.R'
-    'mosaic_rasters.R'
-    'gdaladdo.R'
-    'ogr2ogr.R'

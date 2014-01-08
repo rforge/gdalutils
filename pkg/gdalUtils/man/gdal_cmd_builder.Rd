@@ -2,10 +2,10 @@
 \alias{gdal_cmd_builder}
 \title{gdal_cmd_builder}
 \usage{
-  gdal_cmd_builder(executable, parameter_variables = c(),
-    parameter_values = c(), parameter_order = c(),
-    parameter_noflags = c(), parameter_doubledash = c(),
-    parameter_noquotes = c(), gdal_installation_id = 1)
+gdal_cmd_builder(executable, parameter_variables = c(),
+  parameter_values = c(), parameter_order = c(), parameter_noflags = c(),
+  parameter_doubledash = c(), parameter_noquotes = c(),
+  gdal_installation_id = 1)
 }
 \arguments{
   \item{executable}{Character. The GDAL command to use
@@ -34,32 +34,32 @@
   installation to use.  Defaults to 1.}
 }
 \value{
-  Formatted GDAL command for use with system() calls.
+Formatted GDAL command for use with system() calls.
 }
 \description{
-  Helper function for building GDAL commands.
+Helper function for building GDAL commands.
 }
 \details{
-  This function takes the executable name (e.g.
-  "gdal_translate"), a list of parameter names organized by
-  logical, vector, scalar, character, repeatable, a list of
-  values of these parameters, the order they should be used
-  in the GDAL command, and a list of parameters that should
-  not have a flag, and returns a properly formatted GDAL
-  command (with the full path-to-executable) that should
-  work with a system() call.
+This function takes the executable name (e.g.
+"gdal_translate"), a list of parameter names organized by
+logical, vector, scalar, character, repeatable, a list of
+values of these parameters, the order they should be used
+in the GDAL command, and a list of parameters that should
+not have a flag, and returns a properly formatted GDAL
+command (with the full path-to-executable) that should work
+with a system() call.
 
-  Sometimes, a user may not want to use the most recent
-  GDAL install (gdal_installation_id=1), so the
-  gdal_installation_id can be used to set a different
-  install.  This is often used with gdal_chooseInstallation
-  if, for instance, the particular GDAL installation
-  required needs a specific driver that may not be
-  available in all installations.
+Sometimes, a user may not want to use the most recent GDAL
+install (gdal_installation_id=1), so the
+gdal_installation_id can be used to set a different
+install.  This is often used with gdal_chooseInstallation
+if, for instance, the particular GDAL installation required
+needs a specific driver that may not be available in all
+installations.
 
-  In general, an end user shouldn't need to use this
-  function -- it is used by many of the GDAL wrappers
-  within gdalUtils.
+In general, an end user shouldn't need to use this function
+-- it is used by many of the GDAL wrappers within
+gdalUtils.
 }
 \examples{
 \dontrun{
@@ -111,9 +111,9 @@ system(cmd,intern=TRUE)
 }
 }
 \author{
-  Jonathan A. Greenberg (\email{gdalUtils@estarcion.net})
+Jonathan A. Greenberg (\email{gdalUtils@estarcion.net})
 }
 \references{
-  \url{http://www.gdal.org/gdal_translate.html}
+\url{http://www.gdal.org/gdal_translate.html}
 }
 

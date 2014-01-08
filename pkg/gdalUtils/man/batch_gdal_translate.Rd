@@ -2,9 +2,8 @@
 \alias{batch_gdal_translate}
 \title{batch_gdal_translate}
 \usage{
-  batch_gdal_translate(infiles, outdir,
-    outsuffix = "_conv.tif", pattern = NULL,
-    recursive = FALSE, verbose = FALSE, ...)
+batch_gdal_translate(infiles, outdir, outsuffix = "_conv.tif",
+  pattern = NULL, recursive = FALSE, verbose = FALSE, ...)
 }
 \arguments{
   \item{infiles}{Character. A directory or a character
@@ -30,25 +29,25 @@
   \code{\link{gdal_translate}}}
 }
 \value{
-  Either a list of NULLs or a list of RasterBricks
-  depending on whether output_Raster is set to TRUE.
+Either a list of NULLs or a list of RasterBricks depending
+on whether output_Raster is set to TRUE.
 }
 \description{
-  Runs gdal_translate on a batch of files
+Runs gdal_translate on a batch of files
 }
 \details{
-  This function is designed to run gdal_translate in batch
-  mode.  Files are passed to the function either directly
-  as a character vector of filenames, or by passing it a
-  directory and (typically) a search pattern (e.g.
-  pattern=".tif").  gdal_translate will execute based on
-  parameters passed to it, and the output file will be
-  named based on the input file (stripped of its
-  extension), with the outsuffix appended to it.
+This function is designed to run gdal_translate in batch
+mode.  Files are passed to the function either directly as
+a character vector of filenames, or by passing it a
+directory and (typically) a search pattern (e.g.
+pattern=".tif").  gdal_translate will execute based on
+parameters passed to it, and the output file will be named
+based on the input file (stripped of its extension), with
+the outsuffix appended to it.
 
-  If a parallel engine is started and registered with
-  foreach, this program will run in parallel (one
-  gdal_translate per worker).
+If a parallel engine is started and registered with
+foreach, this program will run in parallel (one
+gdal_translate per worker).
 }
 \examples{
 \dontrun{
@@ -64,12 +63,12 @@ list.files(output_folder,pattern="_converted.envi$")
 }
 }
 \author{
-  Jonathan A. Greenberg (\email{gdalUtils@estarcion.net})
+Jonathan A. Greenberg (\email{gdalUtils@estarcion.net})
 }
 \references{
-  \url{http://www.gdal.org/gdal_translate.html}
+\url{http://www.gdal.org/gdal_translate.html}
 }
 \seealso{
-  \code{\link{gdal_translate}}, \code{\link{list.files}}
+\code{\link{gdal_translate}}, \code{\link{list.files}}
 }
 

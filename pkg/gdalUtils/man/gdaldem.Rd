@@ -2,12 +2,10 @@
 \alias{gdaldem}
 \title{gdaldem}
 \usage{
-  gdaldem(mode, input_dem, output, of, compute_edges, alg,
-    b, co, q, z, s, az, alt, combined, p, trigonometric,
-    zero_for_flat, color_text_file, alpha,
-    exact_color_entry, nearest_color_entry,
-    additional_commands, output_Raster = FALSE,
-    verbose = FALSE)
+gdaldem(mode, input_dem, output, of, compute_edges, alg, b, co, q, z, s, az,
+  alt, combined, p, trigonometric, zero_for_flat, color_text_file, alpha,
+  exact_color_entry, nearest_color_entry, additional_commands,
+  output_Raster = FALSE, verbose = FALSE)
 }
 \arguments{
   \item{mode}{Character.
@@ -105,32 +103,32 @@
   \item{verbose}{Logical.}
 }
 \value{
-  NULL or if(output_Raster), a RasterBrick.
+NULL or if(output_Raster), a RasterBrick.
 }
 \description{
-  R wrapper for gdaldem: Tools to analyze and visualize
-  DEMs. (since GDAL 1.7.0)
+R wrapper for gdaldem: Tools to analyze and visualize DEMs.
+(since GDAL 1.7.0)
 }
 \details{
-  This is an R wrapper for the 'gdaldem' function that is
-  part of the Geospatial Data Abstraction Library (GDAL).
-  It follows the parameter naming conventions of the
-  original function, with some modifications to allow for
-  more R-like parameters.  For all parameters, the user can
-  use a single character string following, precisely, the
-  gdalinfo format (\url{http://www.gdal.org/gdaldem.html}),
-  or, in some cases, use R vectors to achieve the same end.
+This is an R wrapper for the 'gdaldem' function that is
+part of the Geospatial Data Abstraction Library (GDAL).  It
+follows the parameter naming conventions of the original
+function, with some modifications to allow for more R-like
+parameters.  For all parameters, the user can use a single
+character string following, precisely, the gdalinfo format
+(\url{http://www.gdal.org/gdaldem.html}), or, in some
+cases, use R vectors to achieve the same end.
 
-  This function assumes the user has a working GDAL on
-  their system.  If the "gdalUtils_gdalPath" option has
-  been set (usually by gdal_setInstallation), the GDAL
-  found in that path will be used.  If nothing is found,
-  gdal_setInstallation will be executed to attempt to find
-  a working GDAL.
+This function assumes the user has a working GDAL on their
+system.  If the "gdalUtils_gdalPath" option has been set
+(usually by gdal_setInstallation), the GDAL found in that
+path will be used.  If nothing is found,
+gdal_setInstallation will be executed to attempt to find a
+working GDAL.
 
-  The user can choose to (optionally) return a RasterBrick
-  of the output file (assuming raster/rgdal supports the
-  particular output format).
+The user can choose to (optionally) return a RasterBrick of
+the output file (assuming raster/rgdal supports the
+particular output format).
 }
 \examples{
 \dontrun{
@@ -160,11 +158,11 @@ plot(output_aspect,col=gray.colors(256))
 }
 }
 \author{
-  Jonathan A. Greenberg (\email{gdalUtils@estarcion.net})
-  (wrapper) and Matthew Perry, Even Rouault, Howard Butler,
-  and Chris Yesson (GDAL developers).
+Jonathan A. Greenberg (\email{gdalUtils@estarcion.net})
+(wrapper) and Matthew Perry, Even Rouault, Howard Butler,
+and Chris Yesson (GDAL developers).
 }
 \references{
-  \url{http://www.gdal.org/gdaldem.html}
+\url{http://www.gdal.org/gdaldem.html}
 }
 

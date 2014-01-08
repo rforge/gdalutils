@@ -2,8 +2,8 @@
 \alias{gdaladdo}
 \title{gdaladdo}
 \usage{
-  gdaladdo(filename, levels, r, b, ro, clean,
-    additional_commands, verbose = FALSE, ...)
+gdaladdo(filename, levels, r, b, ro, clean, additional_commands,
+  verbose = FALSE, ...)
 }
 \arguments{
   \item{filename}{Character. The file to build overviews
@@ -35,30 +35,25 @@
 
   \item{...}{Other parameters to pass to gdaladdo.}
 }
-\value{
-  NULL
-}
 \description{
-  R wrapper for gdaladdo: builds or rebuilds overview
-  images
+R wrapper for gdaladdo: builds or rebuilds overview images
 }
 \details{
-  This is an R wrapper for the 'gdaladdo' function that is
-  part of the Geospatial Data Abstraction Library (GDAL).
-  It follows the parameter naming conventions of the
-  original function, with some modifications to allow for
-  more R-like parameters.  For all parameters, the user can
-  use a single character string following, precisely, the
-  gdalinfo format (\url{http://gdal.org/gdaladdo.html}),
-  or, in some cases, can use R vectors to achieve the same
-  end.
+This is an R wrapper for the 'gdaladdo' function that is
+part of the Geospatial Data Abstraction Library (GDAL).  It
+follows the parameter naming conventions of the original
+function, with some modifications to allow for more R-like
+parameters.  For all parameters, the user can use a single
+character string following, precisely, the gdalinfo format
+(\url{http://gdal.org/gdaladdo.html}), or, in some cases,
+can use R vectors to achieve the same end.
 
-  This function assumes the user has a working GDAL on
-  their system.  If the "gdalUtils_gdalPath" option has
-  been set (usually by gdal_setInstallation), the GDAL
-  found in that path will be used.  If nothing is found,
-  gdal_setInstallation will be executed to attempt to find
-  a working GDAL.
+This function assumes the user has a working GDAL on their
+system.  If the "gdalUtils_gdalPath" option has been set
+(usually by gdal_setInstallation), the GDAL found in that
+path will be used.  If nothing is found,
+gdal_setInstallation will be executed to attempt to find a
+working GDAL.
 }
 \examples{
 \dontrun{
@@ -71,10 +66,10 @@ gdalinfo(temp_filename)
 }
 }
 \author{
-  Jonathan A. Greenberg (\email{gdalUtils@estarcion.net})
-  (wrapper) and Frank Warmerdam (GDAL lead developer).
+Jonathan A. Greenberg (\email{gdalUtils@estarcion.net})
+(wrapper) and Frank Warmerdam (GDAL lead developer).
 }
 \references{
-  \url{http://www.gdal.org/gdaladdo.html}
+\url{http://www.gdal.org/gdaladdo.html}
 }
 

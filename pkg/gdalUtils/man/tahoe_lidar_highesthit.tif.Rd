@@ -3,17 +3,18 @@
 \alias{tahoe_lidar_highesthit.tif}
 \title{Lidar-derived highest hit (aka canopy) digital elevation model from the Lake Tahoe Basin.}
 \description{
-  Lidar-derived highest hit (aka canopy) digital elevation
-  model from the Lake Tahoe Basin.
+Lidar-derived highest hit (aka canopy) digital elevation
+model from the Lake Tahoe Basin.
 }
 \examples{
+\dontrun{
 tahoe_lidar_highesthit <-
 raster(system.file("external/tahoe_lidar_highesthit.tif", package="gdalUtils"))
 plot(tahoe_lidar_highesthit)
 }
+}
 \author{
-  Jonathan A. Greenberg \email{gdalUtils@estarcion.net}
+Jonathan A. Greenberg \email{gdalUtils@estarcion.net}
 }
 \keyword{data}
-\keyword{datasets}
 

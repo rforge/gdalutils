@@ -2,11 +2,10 @@
 \alias{gdalbuildvrt}
 \title{gdalbuildvrt}
 \usage{
-  gdalbuildvrt(gdalfile, output.vrt, tileindex, resolution,
-    te, tr, tap, separate, b, sd,
-    allow_projection_difference, q, addalpha, hidenodata,
-    srcnodata, vrtnodata, a_srs, input_file_list,
-    overwrite, additional_commands, verbose = FALSE, ...)
+gdalbuildvrt(gdalfile, output.vrt, tileindex, resolution, te, tr, tap, separate,
+  b, sd, allow_projection_difference, q, addalpha, hidenodata, srcnodata,
+  vrtnodata, a_srs, input_file_list, overwrite, additional_commands,
+  verbose = FALSE, ...)
 }
 \arguments{
   \item{gdalfile}{Character. Input files (as a character
@@ -134,30 +133,26 @@
 
   \item{...}{Other parameters to pass to gdal_translate.}
 }
-\value{
-  NULL
-}
 \description{
-  R wrapper for gdalbuildvrt: Builds a VRT from a list of
-  datasets
+R wrapper for gdalbuildvrt: Builds a VRT from a list of
+datasets
 }
 \details{
-  This is an R wrapper for the 'gdalbuildvrt' function that
-  is part of the Geospatial Data Abstraction Library
-  (GDAL).  It follows the parameter naming conventions of
-  the original function, with some modifications to allow
-  for more R-like parameters.  For all parameters, the user
-  can use a single character string following, precisely,
-  the gdalinfo format
-  (\url{http://gdal.org/gdalbuildvrt.html}), or, in some
-  cases, can use R vectors to achieve the same end.
+This is an R wrapper for the 'gdalbuildvrt' function that
+is part of the Geospatial Data Abstraction Library (GDAL).
+It follows the parameter naming conventions of the original
+function, with some modifications to allow for more R-like
+parameters.  For all parameters, the user can use a single
+character string following, precisely, the gdalinfo format
+(\url{http://gdal.org/gdalbuildvrt.html}), or, in some
+cases, can use R vectors to achieve the same end.
 
-  This function assumes the user has a working GDAL on
-  their system.  If the "gdalUtils_gdalPath" option has
-  been set (usually by gdal_setInstallation), the GDAL
-  found in that path will be used.  If nothing is found,
-  gdal_setInstallation will be executed to attempt to find
-  a working GDAL.
+This function assumes the user has a working GDAL on their
+system.  If the "gdalUtils_gdalPath" option has been set
+(usually by gdal_setInstallation), the GDAL found in that
+path will be used.  If nothing is found,
+gdal_setInstallation will be executed to attempt to find a
+working GDAL.
 }
 \examples{
 \dontrun{
@@ -169,10 +164,10 @@ gdalinfo(output.vrt)
 }
 }
 \author{
-  Jonathan A. Greenberg (\email{gdalUtils@estarcion.net})
-  (wrapper) and Frank Warmerdam (GDAL lead developer).
+Jonathan A. Greenberg (\email{gdalUtils@estarcion.net})
+(wrapper) and Frank Warmerdam (GDAL lead developer).
 }
 \references{
-  \url{http://www.gdal.org/gdalbuildvrt.html}
+\url{http://www.gdal.org/gdalbuildvrt.html}
 }
 

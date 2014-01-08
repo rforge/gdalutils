@@ -3,17 +3,18 @@
 \alias{tahoe_lidar_bareearth.tif}
 \title{Lidar-derived bare earth digital elevation model from the Lake Tahoe Basin.}
 \description{
-  Lidar-derived bare earth digital elevation model from the
-  Lake Tahoe Basin.
+Lidar-derived bare earth digital elevation model from the
+Lake Tahoe Basin.
 }
 \examples{
+\dontrun{
 tahoe_lidar_bareearth <-
 raster(system.file("external/tahoe_lidar_bareearth.tif", package="gdalUtils"))
 plot(tahoe_lidar_bareearth)
 }
+}
 \author{
-  Jonathan A. Greenberg \email{gdalUtils@estarcion.net}
+Jonathan A. Greenberg \email{gdalUtils@estarcion.net}
 }
 \keyword{data}
-\keyword{datasets}
 

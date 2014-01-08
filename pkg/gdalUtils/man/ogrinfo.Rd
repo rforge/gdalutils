@@ -2,9 +2,9 @@
 \alias{ogrinfo}
 \title{ogrinfo}
 \usage{
-  ogrinfo(datasource_name, layer, ro, q, where, spat,
-    geomfield, fid, sql, dialect, al, so, fields, geom,
-    formats, additional_commands, verbose = FALSE)
+ogrinfo(datasource_name, layer, ro, q, where, spat, geomfield, fid, sql,
+  dialect, al, so, fields, geom, formats, additional_commands,
+  verbose = FALSE)
 }
 \arguments{
   \item{datasource_name}{Character. The data source to
@@ -78,28 +78,28 @@
   \item{verbose}{Logical.}
 }
 \value{
-  character
+character
 }
 \description{
-  R wrapper for ogrinfo: lists information about an OGR
-  supported data source
+R wrapper for ogrinfo: lists information about an OGR
+supported data source
 }
 \details{
-  This is an R wrapper for the 'ogrinfo' function that is
-  part of the Geospatial Data Abstraction Library (GDAL).
-  It follows the parameter naming conventions of the
-  original function, with some modifications to allow for
-  more R-like parameters.  For all parameters, the user can
-  use a single character string following, precisely, the
-  gdalinfo format (\url{http://gdal.org/ogrinfo.html}), or,
-  in some cases, can use R vectors to achieve the same end.
+This is an R wrapper for the 'ogrinfo' function that is
+part of the Geospatial Data Abstraction Library (GDAL).  It
+follows the parameter naming conventions of the original
+function, with some modifications to allow for more R-like
+parameters.  For all parameters, the user can use a single
+character string following, precisely, the gdalinfo format
+(\url{http://gdal.org/ogrinfo.html}), or, in some cases,
+can use R vectors to achieve the same end.
 
-  This function assumes the user has a working GDAL on
-  their system.  If the "gdalUtils_gdalPath" option has
-  been set (usually by gdal_setInstallation), the GDAL
-  found in that path will be used.  If nothing is found,
-  gdal_setInstallation will be executed to attempt to find
-  a working GDAL.
+This function assumes the user has a working GDAL on their
+system.  If the "gdalUtils_gdalPath" option has been set
+(usually by gdal_setInstallation), the GDAL found in that
+path will be used.  If nothing is found,
+gdal_setInstallation will be executed to attempt to find a
+working GDAL.
 }
 \examples{
 \dontrun{
@@ -119,10 +119,10 @@ ogrinfo(datasource_name,"tahoe_highrez_training")
 }
 }
 \author{
-  Jonathan A. Greenberg (\email{gdalUtils@estarcion.net})
-  (wrapper) and Frank Warmerdam (GDAL lead developer).
+Jonathan A. Greenberg (\email{gdalUtils@estarcion.net})
+(wrapper) and Frank Warmerdam (GDAL lead developer).
 }
 \references{
-  \url{http://www.gdal.org/ogrinfo.html}
+\url{http://www.gdal.org/ogrinfo.html}
 }
 

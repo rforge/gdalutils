@@ -3,9 +3,10 @@
 \alias{tahoe_highrez_training}
 \title{Point and polygon files for use with gdalUtils}
 \description{
-  Point and polygon files for use with gdalUtils
+Point and polygon files for use with gdalUtils
 }
 \examples{
+\dontrun{
 tahoe_highrez_training_polygons <- readOGR(
 	dsn=system.file("external", package="gdalUtils"),layer="tahoe_highrez_training")
 spplot(tahoe_highrez_training_polygons,zcol="Class")
@@ -13,9 +14,9 @@ tahoe_highrez_training_points <- readOGR(
 	dsn=system.file("external", package="gdalUtils"),layer="tahoe_highrez_training_points")
 spplot(tahoe_highrez_training_points,zcol="SPECIES")
 }
+}
 \author{
-  Jonathan A. Greenberg \email{gdalUtils@estarcion.net}
+Jonathan A. Greenberg \email{gdalUtils@estarcion.net}
 }
 \keyword{data}
-\keyword{datasets}
 
