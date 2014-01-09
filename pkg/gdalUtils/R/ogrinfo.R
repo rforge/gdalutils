@@ -18,7 +18,7 @@
 #' @param geom Character. ("YES"|"NO"|"SUMMARY") (starting with GDAL 1.6.0) If set to NO, the feature dump will not display the geometry. If set to SUMMARY, only a summary of the geometry will be displayed. If set to YES, the geometry will be reported in full OGC WKT format. Default value is YES.
 #' @param formats Logical. List the format drivers that are enabled.
 #' @param additional_commands Character. Additional commands to pass directly to ogrinfo.
-#' @param verbose Logical.
+#' @param verbose Logical. Enable verbose execution? Default is FALSE.  
 #' 
 #' @return character
 #' @author Jonathan A. Greenberg (\email{gdalUtils@@estarcion.net}) (wrapper) and Frank Warmerdam (GDAL lead developer).
@@ -36,7 +36,7 @@
 #'
 #' @references \url{http://www.gdal.org/ogrinfo.html}
 #' 
-#' @examples \dontrun{ 
+#' @examples 
 #' datasource_name <- system.file("external/tahoe_highrez_training.shp", package="gdalUtils")
 #' # Display all available formats:
 #' # Command-line ogrinfo call:
@@ -50,7 +50,7 @@
 #' # Get info on the layer of the shapefile:
 #' # ogrinfo tahoe_highrez_training.shp tahoe_highrez_training
 #' ogrinfo(datasource_name,"tahoe_highrez_training")
-#' }
+#' 
 #' @export
 
 # TODO: cleaner output similar to gdalinfo(...,raw_output=FALSE)

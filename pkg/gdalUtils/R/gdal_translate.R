@@ -29,7 +29,7 @@
 #' @param additional_commands Character. Additional commands to pass directly to gdal_translate.
 #' @param sd_index Numeric. If the file is an HDF4 or HDF5 file, which subdataset should be returned (1 to the number of subdatasets)?  If this flag is used, src_dataset should be the filename of the multipart file.
 #' @param output_Raster Logical. Return output dst_dataset as a RasterBrick?
-#' @param verbose Logical.
+#' @param verbose Logical. Enable verbose execution? Default is FALSE.  
 #' @param ... Other parameters to pass to gdal_translate.
 #' @return NULL or if(output_Raster), a RasterBrick.
 #' @author Jonathan A. Greenberg (\email{gdalUtils@@estarcion.net}) (wrapper) and Frank Warmerdam (GDAL lead developer).
@@ -50,7 +50,7 @@
 #' raster/rgdal supports the particular output format).
 #'
 #' @references \url{http://www.gdal.org/gdal_translate.html}
-#' @examples \dontrun{ 
+#' @examples 
 #' # Example from the original gdal_translate documentation:
 #' src_dataset <- system.file("external/tahoe_highrez.tif", package="gdalUtils")
 #' # Original gdal_translate call:
@@ -65,7 +65,7 @@
 #' # Extract the first subdataset from an HDF4 file:
 #' hdf4_dataset <- system.file("external/test_modis.hdf", package="gdalUtils")
 #' gdal_translate(hdf4_dataset,"test_modis_sd1.tif",sd_index=1)
-#' }
+#' 
 #' @import rgdal
 #' @import raster
 #' @export

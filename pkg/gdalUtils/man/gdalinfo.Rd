@@ -102,7 +102,8 @@ gdalinfo(datasetname, mm, stats, approx_stats, hist, nogcp, nomd, nrat, noct,
   clean list (not all parameters will be retained, at
   present).}
 
-  \item{verbose}{Logical.}
+  \item{verbose}{Logical. Enable verbose execution? Default
+  is FALSE.}
 }
 \value{
 character (if raw_output=TRUE) or list (if

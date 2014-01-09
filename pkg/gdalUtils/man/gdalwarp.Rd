@@ -170,7 +170,8 @@ gdalwarp(srcfile, dstfile, s_srs, t_srs, to, order, tps, rpc, geoloc, et,
   \item{output_Raster}{Logical. Return output dst_dataset
   as a RasterBrick?}
 
-  \item{verbose}{Logical.}
+  \item{verbose}{Logical. Enable verbose execution? Default
+  is FALSE.}
 }
 \value{
 NULL or if(output_Raster), a RasterBrick.
@@ -213,14 +214,12 @@ the output file (assuming raster/rgdal supports the
 particular output format).
 }
 \examples{
-\dontrun{
 # Example from the original gdal_translate documentation:
 src_dataset <- system.file("external/tahoe_highrez.tif", package="gdalUtils")
 # Command-line gdalwarp call:
 # gdalwarp -t_srs '+proj=utm +zone=11 +datum=WGS84' raw_spot.tif utm11.tif
 gdalwarp(src_dataset,dstfile="tahoe_highrez_utm11.tif",
 		t_srs='+proj=utm +zone=11 +datum=WGS84',output_Raster=TRUE)
-}
 }
 \author{
 Jonathan A. Greenberg (\email{gdalUtils@estarcion.net})

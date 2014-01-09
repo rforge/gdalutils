@@ -294,7 +294,7 @@ gdal_setInstallation <- function(rescan=FALSE)
 										recursive=search_path_recursive,
 										fullNames=TRUE)
 #										full.names=TRUE)
-				))
+						))
 				if(length(search_paths)==0) search_paths <- NULL
 				if(!is.null(search_paths) && checkValidity)
 				{
@@ -340,12 +340,12 @@ gdal_setInstallation <- function(rescan=FALSE)
 									{
 										search_common_paths <- 
 												#normalizePath(dirname(
-														listDirectory(
+												listDirectory(
 #														list.files(
-																path=x,pattern="gdalinfo",recursive=TRUE,
+														path=x,pattern="gdalinfo",recursive=TRUE,
 #																full.names=TRUE)
-																fullNames=TRUE)
-											#	))
+														fullNames=TRUE)
+										#	))
 										if(length(search_common_paths)==0)
 											return(search_common_paths)
 										else
@@ -381,11 +381,11 @@ gdal_setInstallation <- function(rescan=FALSE)
 			
 			search_full_path <- 
 					# normalizePath(dirname(
-							listDirectory(
+					listDirectory(
 #							list.files(
-									path=root_dir,pattern="gdalinfo",
-									recursive=TRUE,
-									fullNames=TRUE)
+							path=root_dir,pattern="gdalinfo",
+							recursive=TRUE,
+							fullNames=TRUE)
 #									full.names=TRUE)
 			# ))
 			if(length(search_full_path)==0) search_full_path <- NULL
@@ -401,7 +401,6 @@ gdal_setInstallation <- function(rescan=FALSE)
 		if(length(path)==0)
 		{
 			#add QGIS?
-			warning("No GDAL installation found. Please install 'gdal' before continuing:\n\t- www.gdal.org (no HDF4 support!)\n\t- www.trac.osgeo.org/osgeo4w/ (with HDF4 support RECOMMENDED)\n\t- www.fwtools.maptools.org (with HDF4 support)\n") # why not stop?
 			return(NULL)
 		} else
 		{	
@@ -455,8 +454,15 @@ gdal_setInstallation <- function(rescan=FALSE)
 	}
 	
 # Sets the installation for this session.
-	
-#	path <- gdal_path(ignore.options=TRUE)
+	if(is.null(getOption("gdalUtils_gdalPath")))
+	{
+		rescan=TRUE	
+	}
+	gdal_installation_out <- gdal_installation(rescan=rescan)
+	options(gdalUtils_gdalPath=gdal_installation_out)
+	if(is.null(getOption("gdalUtils_gdalPath")))
+	{
+		warning("No GDAL installation found. Please install 'gdal' before continuing:\n\t- www.gdal.org (no HDF4 support!)\n\t- www.trac.osgeo.org/osgeo4w/ (with HDF4 support RECOMMENDED)\n\t- www.fwtools.maptools.org (with HDF4 support)\n") # why not stop?
+	}
 #	browser()
-	options(gdalUtils_gdalPath=gdal_installation(rescan=rescan))
 }

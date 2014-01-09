@@ -9,7 +9,7 @@
 #' @param ro Logical. (available from GDAL 1.6.0) open the dataset in read-only mode, in order to generate external overview (for GeoTIFF especially).
 #' @param clean Logical. (available from GDAL 1.7.0) remove all overviews.
 #' @param additional_commands Character. Additional commands to pass directly to gdaladdo.
-#' @param verbose Logical. Verbose execution?
+#' @param verbose Logical. Enable verbose execution? Default is FALSE.  
 #' @param ... Other parameters to pass to gdaladdo.
 #' 
 #' @return NULL
@@ -28,14 +28,14 @@
 #'
 #' @references \url{http://www.gdal.org/gdaladdo.html}
 #' 
-#' @examples \dontrun{ 
+#' @examples 
 #' filename  <- system.file("external/tahoe_highrez.tif", package="gdalUtils")
 #' temp_filename <- paste(tempfile(),".tif",sep="")
 #' file.copy(from=filename,to=temp_filename,overwrite=TRUE)
 #' gdalinfo(filename)
 #' gdaladdo(r="average",temp_filename,levels=c(2,4,8,16),verbose=TRUE)
 #' gdalinfo(temp_filename)
-#' }
+#' 
 #' @export
 
 gdaladdo <- function(filename,levels,

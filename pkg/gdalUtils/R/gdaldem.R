@@ -25,7 +25,7 @@
 #' @param nearest_color_entry Logical. (mode=="color-relief") use the RGBA quadruplet corresponding to the closest entry in the color configuration file.
 #' @param additional_commands Character. Additional commands to pass directly to gdalsrsinfo.
 #' @param output_Raster Logical. Return output dst_dataset as a RasterBrick?
-#' @param verbose Logical.
+#' @param verbose Logical. Enable verbose execution? Default is FALSE.  
 #' 
 #' @return NULL or if(output_Raster), a RasterBrick.
 #' @author Jonathan A. Greenberg (\email{gdalUtils@@estarcion.net}) (wrapper) and Matthew Perry, Even Rouault, Howard Butler, and Chris Yesson  (GDAL developers).
@@ -46,7 +46,12 @@
 #'
 #' @references \url{http://www.gdal.org/gdaldem.html}
 #' 
-#' @examples \dontrun{ 
+#' @examples 
+#' library(raster)
+#' # We'll pre-check for a proper GDAL installation before running these examples:
+#' gdal_setInstallation()
+#' if(!is.null(getOption("gdalUtils_gdalPath")))
+#' {
 #' input_dem  <- system.file("external/tahoe_lidar_highesthit.tif", package="gdalUtils")
 #' plot(raster(input_dem),col=gray.colors(256))
 #' 

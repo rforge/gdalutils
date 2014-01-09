@@ -115,7 +115,8 @@ gdal_rasterize(src_datasource, dst_filename, b, i, at, burn, a, threeD, l,
   \item{output_Raster}{Logical. Return output dst_filename
   as a RasterBrick?}
 
-  \item{verbose}{Logical.}
+  \item{verbose}{Logical. Enable verbose execution? Default
+  is FALSE.}
 }
 \value{
 NULL or if(output_Raster), a RasterBrick.
@@ -147,8 +148,8 @@ the output file (assuming raster/rgdal supports the
 particular output format).
 }
 \examples{
-\dontrun{
-# Example from the original gdal_translate documentation:
+library(raster)
+# Example from the original gdal_rasterize documentation:
 # gdal_rasterize -b 1 -b 2 -b 3 -burn 255 -burn 0
 # 	-burn 0 -l tahoe_highrez_training tahoe_highrez_training.shp tempfile.tif
 dst_filename_original  <- system.file("external/tahoe_highrez.tif", package="gdalUtils")
@@ -162,7 +163,6 @@ tahoe_burned <- gdal_rasterize(src_dataset,dst_filename,
 	b=c(1,2,3),burn=c(0,255,0),l="tahoe_highrez_training",verbose=TRUE,output_Raster=TRUE)
 #After plot:
 plotRGB(brick(dst_filename))
-}
 }
 \author{
 Jonathan A. Greenberg (\email{gdalUtils@estarcion.net})

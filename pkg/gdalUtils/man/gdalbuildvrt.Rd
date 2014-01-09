@@ -129,7 +129,8 @@ gdalbuildvrt(gdalfile, output.vrt, tileindex, resolution, te, tr, tap, separate,
   \item{additional_commands}{Character. Additional commands
   to pass directly to ogrinfo.}
 
-  \item{verbose}{Logical. Verbose execution?}
+  \item{verbose}{Logical. Enable verbose execution? Default
+  is FALSE.}
 
   \item{...}{Other parameters to pass to gdal_translate.}
 }
@@ -155,13 +156,11 @@ gdal_setInstallation will be executed to attempt to find a
 working GDAL.
 }
 \examples{
-\dontrun{
 layer1 <- system.file("external/tahoe_lidar_bareearth.tif", package="gdalUtils")
 layer2 <- system.file("external/tahoe_lidar_highesthit.tif", package="gdalUtils")
 output.vrt <- paste(tempfile(),".vrt",sep="")
 gdalbuildvrt(gdalfile=c(layer1,layer2),output.vrt=output.vrt,separate=TRUE)
 gdalinfo(output.vrt)
-}
 }
 \author{
 Jonathan A. Greenberg (\email{gdalUtils@estarcion.net})

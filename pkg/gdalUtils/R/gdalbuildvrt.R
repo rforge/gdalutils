@@ -22,7 +22,7 @@
 #' @param input_file_list Character. To specify a text file with an input filename on each line.
 #' @param overwrite Logical. Overwrite the VRT if it already exists.
 #' @param additional_commands Character. Additional commands to pass directly to ogrinfo.
-#' @param verbose Logical. Verbose execution?
+#' @param verbose Logical. Enable verbose execution? Default is FALSE.  
 #' @param ... Other parameters to pass to gdal_translate.
 #' 
 #' @return NULL
@@ -41,13 +41,13 @@
 #'
 #' @references \url{http://www.gdal.org/gdalbuildvrt.html}
 #' 
-#' @examples \dontrun{ 
+#' @examples 
 #' layer1 <- system.file("external/tahoe_lidar_bareearth.tif", package="gdalUtils")
 #' layer2 <- system.file("external/tahoe_lidar_highesthit.tif", package="gdalUtils")
 #' output.vrt <- paste(tempfile(),".vrt",sep="")
 #' gdalbuildvrt(gdalfile=c(layer1,layer2),output.vrt=output.vrt,separate=TRUE)
 #' gdalinfo(output.vrt)
-#' }
+#' 
 #' @export
 
 gdalbuildvrt <- function(gdalfile,output.vrt,

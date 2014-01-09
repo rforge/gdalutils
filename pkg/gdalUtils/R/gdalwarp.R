@@ -41,7 +41,7 @@
 #' @param setci Logical. (GDAL >= 1.10.0) Set the color interpretation of the bands of the target dataset from the source dataset.
 #' @param additional_commands Character. Additional commands to pass directly to gdalwarp.
 #' @param output_Raster Logical. Return output dst_dataset as a RasterBrick?
-#' @param verbose Logical.
+#' @param verbose Logical. Enable verbose execution? Default is FALSE.  
 #' @return NULL or if(output_Raster), a RasterBrick.
 #' @author Jonathan A. Greenberg (\email{gdalUtils@@estarcion.net}) (wrapper) and Frank Warmerdam (GDAL lead developer).
 #' @details This is an R wrapper for the 'gdalwarp' function that is part of the 
@@ -70,14 +70,14 @@
 #' raster/rgdal supports the particular output format).
 #'
 #' @references \url{http://www.gdal.org/gdalwarp.html}
-#' @examples \dontrun{ 
+#' @examples 
 #' # Example from the original gdal_translate documentation:
 #' src_dataset <- system.file("external/tahoe_highrez.tif", package="gdalUtils")
 #' # Command-line gdalwarp call:
 #' # gdalwarp -t_srs '+proj=utm +zone=11 +datum=WGS84' raw_spot.tif utm11.tif
 #' gdalwarp(src_dataset,dstfile="tahoe_highrez_utm11.tif",
 #' 		t_srs='+proj=utm +zone=11 +datum=WGS84',output_Raster=TRUE)
-#' }
+#' 
 #' @import rgdal
 #' @import raster
 #' @export

@@ -31,7 +31,8 @@ gdaladdo(filename, levels, r, b, ro, clean, additional_commands,
   \item{additional_commands}{Character. Additional commands
   to pass directly to gdaladdo.}
 
-  \item{verbose}{Logical. Verbose execution?}
+  \item{verbose}{Logical. Enable verbose execution? Default
+  is FALSE.}
 
   \item{...}{Other parameters to pass to gdaladdo.}
 }
@@ -56,14 +57,12 @@ gdal_setInstallation will be executed to attempt to find a
 working GDAL.
 }
 \examples{
-\dontrun{
 filename  <- system.file("external/tahoe_highrez.tif", package="gdalUtils")
 temp_filename <- paste(tempfile(),".tif",sep="")
 file.copy(from=filename,to=temp_filename,overwrite=TRUE)
 gdalinfo(filename)
 gdaladdo(r="average",temp_filename,levels=c(2,4,8,16),verbose=TRUE)
 gdalinfo(temp_filename)
-}
 }
 \author{
 Jonathan A. Greenberg (\email{gdalUtils@estarcion.net})

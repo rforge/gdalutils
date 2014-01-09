@@ -24,7 +24,7 @@
 #' @param debug Character. Control what debugging messages are emitted. A value of ON will enable all debug messages. A value of OFF will disable all debug messages. Another value will select only debug messages containing that string in the debug prefix code.
 #' @param additional_commands Character. Additional commands to pass directly to gdalinfo.
 #' @param raw_output Logical. Dump the raw output of the gdalinfo (default=TRUE). If not, attempt to return a clean list (not all parameters will be retained, at present). 
-#' @param verbose Logical.
+#' @param verbose Logical. Enable verbose execution? Default is FALSE.  
 #' 
 #' @return character (if raw_output=TRUE) or list (if raw_output=FALSE).
 #' @author Jonathan A. Greenberg (\email{gdalUtils@@estarcion.net}) and Matteo Mattiuzzi (wrapper) and Frank Warmerdam (GDAL lead developer).

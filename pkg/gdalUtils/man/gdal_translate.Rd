@@ -143,7 +143,8 @@ gdal_translate(src_dataset, dst_dataset, ot, strict, of = "GTiff", b, mask,
   \item{output_Raster}{Logical. Return output dst_dataset
   as a RasterBrick?}
 
-  \item{verbose}{Logical.}
+  \item{verbose}{Logical. Enable verbose execution? Default
+  is FALSE.}
 
   \item{...}{Other parameters to pass to gdal_translate.}
 }
@@ -176,7 +177,6 @@ the output file (assuming raster/rgdal supports the
 particular output format).
 }
 \examples{
-\dontrun{
 # Example from the original gdal_translate documentation:
 src_dataset <- system.file("external/tahoe_highrez.tif", package="gdalUtils")
 # Original gdal_translate call:
@@ -191,7 +191,6 @@ srcwin="1 1 100 100",output_Raster=TRUE,verbose=TRUE)
 # Extract the first subdataset from an HDF4 file:
 hdf4_dataset <- system.file("external/test_modis.hdf", package="gdalUtils")
 gdal_translate(hdf4_dataset,"test_modis_sd1.tif",sd_index=1)
-}
 }
 \author{
 Jonathan A. Greenberg (\email{gdalUtils@estarcion.net})

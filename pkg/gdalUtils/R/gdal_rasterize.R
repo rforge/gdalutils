@@ -26,7 +26,7 @@
 #' @param q Logical. (GDAL >= 1.8.0) Suppress progress monitor and other non-error output.
 #' @param additional_commands Character. Additional commands to pass directly to gdal_rasterize.
 #' @param output_Raster Logical. Return output dst_filename as a RasterBrick?
-#' @param verbose Logical.
+#' @param verbose Logical. Enable verbose execution? Default is FALSE.  
 #' @return NULL or if(output_Raster), a RasterBrick.
 #' @author Jonathan A. Greenberg (\email{gdalUtils@@estarcion.net}) (wrapper) and Frank Warmerdam (GDAL lead developer).
 #' @details This is an R wrapper for the 'gdal_rasterize' function that is part of the 
@@ -46,8 +46,9 @@
 #' raster/rgdal supports the particular output format).
 #'
 #' @references \url{http://www.gdal.org/gdal_rasterize.html}
-#' @examples \dontrun{ 
-#' # Example from the original gdal_translate documentation:
+#' @examples 
+#' library(raster)
+#' # Example from the original gdal_rasterize documentation:
 #' # gdal_rasterize -b 1 -b 2 -b 3 -burn 255 -burn 0 
 #' # 	-burn 0 -l tahoe_highrez_training tahoe_highrez_training.shp tempfile.tif
 #' dst_filename_original  <- system.file("external/tahoe_highrez.tif", package="gdalUtils")
@@ -61,7 +62,7 @@
 #' 	b=c(1,2,3),burn=c(0,255,0),l="tahoe_highrez_training",verbose=TRUE,output_Raster=TRUE)
 #' #After plot:
 #' plotRGB(brick(dst_filename))
-#' }
+#' 
 #' @import rgdal
 #' @import raster
 #' @export

@@ -8,7 +8,7 @@
 #' @param o Character. Output type ("default"|"all"|"wkt_all"|"proj4"|"wkt"|"wkt_simple"|"wkt_noct"|"wkt_esri"|"mapinfo"|"xml")
 #' @param as.CRS Logical. Return a CRS object?  Default=FALSE.
 #' @param additional_commands Character. Additional commands to pass directly to gdalsrsinfo.
-#' @param verbose Logical.
+#' @param verbose Logical. Enable verbose execution? Default is FALSE.  
 #' 
 #' @return character
 #' @author Jonathan A. Greenberg (\email{gdalUtils@@estarcion.net}) and Matteo Mattiuzzi (wrapper) and Frank Warmerdam (GDAL lead developer).
@@ -29,14 +29,14 @@
 #'
 #' @references \url{http://www.gdal.org/gdalinfo.html}
 #' 
-#' @examples \dontrun{ 
+#' @examples 
 #' src_dataset <- system.file("external/tahoe_highrez.tif", package="gdalUtils")
 #' # Command-line gdalsrsinfo call:
 #' # gdalsrsinfo -o proj4 tahoe_highrez.tif
 #' gdalsrsinfo(src_dataset,o="proj4")
 #' # Export as CRS:
 #' gdalsrsinfo(src_dataset,as.CRS=TRUE)
-#' }
+#' 
 #' @import sp
 #' @export
 

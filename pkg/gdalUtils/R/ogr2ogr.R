@@ -51,7 +51,7 @@
 #' @param gcp Numeric. c(ungeoref_x,ungeoref_y,georef_x georef_y,elevation) (starting with GDAL 1.10.0) Add the indicated ground control point. This option may be provided multiple times to provide a set of GCPs.
 #' @param order Numeric. (starting with GDAL 1.10.0) order of polynomial used for warping (1 to 3). The default is to select a polynomial order based on the number of GCPs.
 #' @param additional_commands Character. Additional commands to pass directly to ogrinfo.
-#' @param verbose Logical.
+#' @param verbose Logical. Enable verbose execution? Default is FALSE.  
 #'  
 #' @return character
 #' @author Jonathan A. Greenberg (\email{gdalUtils@@estarcion.net}) (wrapper) and Frank Warmerdam (GDAL lead developer).
@@ -69,13 +69,17 @@
 #'
 #' @references \url{http://www.gdal.org/ogr2ogr.html}
 #' 
-#' @examples \dontrun{ 
+#' @examples 
+#' # We'll pre-check for a proper GDAL installation before running these examples:
+#' gdal_setInstallation()
+#' if(!is.null(getOption("gdalUtils_gdalPath")))
+#' {
 #' src_datasource_name <- system.file("external/tahoe_highrez_training.shp", package="gdalUtils")
 #' dst_datasource_name <- paste(tempfile(),".shp",sep="")
-#' ogrInfo(src_datasource_name,"tahoe_highrez_training")
+#' ogrinfo(src_datasource_name,"tahoe_highrez_training")
 #' # reproject the input to mercator
 #' ogr2ogr(src_datasource_name,dst_datasource_name,t_srs="EPSG:3395",verbose=TRUE)
-#' ogrInfo(dirname(dst_datasource_name),layer=remove_file_extension(basename(dst_datasource_name)))
+#' ogrinfo(dirname(dst_datasource_name),layer=remove_file_extension(basename(dst_datasource_name)))
 #' }
 #' @export
 

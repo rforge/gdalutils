@@ -75,7 +75,8 @@ ogrinfo(datasource_name, layer, ro, q, where, spat, geomfield, fid, sql,
   \item{additional_commands}{Character. Additional commands
   to pass directly to ogrinfo.}
 
-  \item{verbose}{Logical.}
+  \item{verbose}{Logical. Enable verbose execution? Default
+  is FALSE.}
 }
 \value{
 character
@@ -102,7 +103,6 @@ gdal_setInstallation will be executed to attempt to find a
 working GDAL.
 }
 \examples{
-\dontrun{
 datasource_name <- system.file("external/tahoe_highrez_training.shp", package="gdalUtils")
 # Display all available formats:
 # Command-line ogrinfo call:
@@ -116,7 +116,6 @@ ogrinfo(datasource_name)
 # Get info on the layer of the shapefile:
 # ogrinfo tahoe_highrez_training.shp tahoe_highrez_training
 ogrinfo(datasource_name,"tahoe_highrez_training")
-}
 }
 \author{
 Jonathan A. Greenberg (\email{gdalUtils@estarcion.net})

@@ -23,7 +23,8 @@ gdalsrsinfo(srs_def, p, V, o, additional_commands, as.CRS = FALSE,
   \item{additional_commands}{Character. Additional commands
   to pass directly to gdalsrsinfo.}
 
-  \item{verbose}{Logical.}
+  \item{verbose}{Logical. Enable verbose execution? Default
+  is FALSE.}
 }
 \value{
 character
@@ -54,14 +55,12 @@ If as.CRS is set to TRUE, 'o' will automatically be set to
 use with sp.
 }
 \examples{
-\dontrun{
 src_dataset <- system.file("external/tahoe_highrez.tif", package="gdalUtils")
 # Command-line gdalsrsinfo call:
 # gdalsrsinfo -o proj4 tahoe_highrez.tif
 gdalsrsinfo(src_dataset,o="proj4")
 # Export as CRS:
 gdalsrsinfo(src_dataset,as.CRS=TRUE)
-}
 }
 \author{
 Jonathan A. Greenberg (\email{gdalUtils@estarcion.net}) and

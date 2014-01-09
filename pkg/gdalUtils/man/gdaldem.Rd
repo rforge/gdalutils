@@ -100,7 +100,8 @@ gdaldem(mode, input_dem, output, of, compute_edges, alg, b, co, q, z, s, az,
   \item{output_Raster}{Logical. Return output dst_dataset
   as a RasterBrick?}
 
-  \item{verbose}{Logical.}
+  \item{verbose}{Logical. Enable verbose execution? Default
+  is FALSE.}
 }
 \value{
 NULL or if(output_Raster), a RasterBrick.
@@ -131,7 +132,11 @@ the output file (assuming raster/rgdal supports the
 particular output format).
 }
 \examples{
-\dontrun{
+library(raster)
+# We'll pre-check for a proper GDAL installation before running these examples:
+gdal_setInstallation()
+if(!is.null(getOption("gdalUtils_gdalPath")))
+{
 input_dem  <- system.file("external/tahoe_lidar_highesthit.tif", package="gdalUtils")
 plot(raster(input_dem),col=gray.colors(256))
 
