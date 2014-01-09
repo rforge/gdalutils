@@ -66,6 +66,7 @@ ogrinfo <- function(datasource_name,layer,
 	
 	if(verbose) message("Checking gdal_installation...")
 	gdal_setInstallation()
+	if(is.null(getOption("gdalUtils_gdalPath"))) return()
 	
 	# Start gdalinfo setup
 	parameter_variables <- list(

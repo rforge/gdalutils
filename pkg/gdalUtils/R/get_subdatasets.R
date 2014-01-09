@@ -26,6 +26,10 @@
 
 get_subdatasets <- function(datasetname,names_only=TRUE)
 {
+	if(verbose) message("Checking gdal_installation...")
+	gdal_setInstallation()
+	if(is.null(getOption("gdalUtils_gdalPath"))) return()
+	
 	if(names_only)
 	{
 		gdalinfo_raw <- gdalinfo(datasetname)

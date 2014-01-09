@@ -135,12 +135,10 @@ GDALinfo in the rgdal package), although not all parameters
 are preserved.
 }
 \examples{
-\dontrun{
 src_dataset <- system.file("external/tahoe_highrez.tif", package="gdalUtils")
 # Command-line gdalinfo call:
 # gdalinfo tahoe_highrez.tif
 gdalinfo(src_dataset)
-}
 }
 \author{
 Jonathan A. Greenberg (\email{gdalUtils@estarcion.net}) and

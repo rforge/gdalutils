@@ -47,6 +47,10 @@ batch_gdal_translate <- function(infiles,outdir,outsuffix="_conv.tif",pattern=NU
 		...)
 
 {
+	if(verbose) message("Checking gdal_installation...")
+	gdal_setInstallation()
+	if(is.null(getOption("gdalUtils_gdalPath"))) return()
+	
 	# These are just to avoid errors in CRAN checks.
 	infile <- NULL
 	outfile <- NULL

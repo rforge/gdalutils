@@ -37,6 +37,7 @@
 #' # Export as CRS:
 #' gdalsrsinfo(src_dataset,as.CRS=TRUE)
 #' }
+#' @import sp
 #' @export
 
 gdalsrsinfo <- function(srs_def,p,V,o,
@@ -50,6 +51,7 @@ gdalsrsinfo <- function(srs_def,p,V,o,
 	
 	if(verbose) message("Checking gdal_installation...")
 	gdal_setInstallation()
+	if(is.null(getOption("gdalUtils_gdalPath"))) return()
 	
 	# Start gdalinfo setup
 	parameter_variables <- list(

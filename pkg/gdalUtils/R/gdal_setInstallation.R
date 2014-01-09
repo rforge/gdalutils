@@ -27,6 +27,7 @@
 #' # The version number:
 #' getOption("gdalUtils_gdalPath")[[1]]$version
 #' }
+#' @importFrom R.utils listDirectory
 #' @export
 
 # TODO: interface with gdal_chooseInstallation to remove some installs.
@@ -43,7 +44,10 @@ gdal_setInstallation <- function(rescan=FALSE)
 	gdal_python_utilities <- function(path)
 	{
 		if(missing(path)) { path <- gdal_path() }
-		sapply(path,list.files,pattern="\\.py")
+		sapply(path,
+				listDirectory,
+#				list.files,
+				pattern="\\.py")
 	}
 	
 # Returns the available GDAL drivers
@@ -84,7 +88,13 @@ gdal_setInstallation <- function(rescan=FALSE)
 	{
 		if(missing(path)) { path <- gdal_path() }
 		
-		cmd <- normalizePath(list.files(path, "gdalinfo",full.names=TRUE))
+		cmd <- normalizePath(
+				listDirectory(
+#				list.files(
+						path, "gdalinfo",
+						fullNames=TRUE)
+#						full.names=TRUE)
+		)
 		cmd <- paste0('"',cmd,'"'," --version")
 		
 		result <- lapply(cmd,system,intern=TRUE)
@@ -200,7 +210,12 @@ gdal_setInstallation <- function(rescan=FALSE)
 				function(x)
 				{
 					cmd <- normalizePath(
-							list.files(path=x,pattern="gdalinfo",full.names=TRUE))
+							listDirectory(
+#							list.files(
+									path=x,pattern="gdalinfo",
+									fullNames=TRUE)
+#									full.names=TRUE)
+					)
 					
 					if(length(cmd)==0)
 					{
@@ -273,8 +288,13 @@ gdal_setInstallation <- function(rescan=FALSE)
 			{
 				if(verbose) message("Checking the search path...")
 				search_paths <- normalizePath(dirname(
-								list.files(path=search_path,pattern="gdalinfo",
-										recursive=search_path_recursive,full.names=TRUE)))
+								#				list.files(
+								listDirectory(
+										path=search_path,pattern="gdalinfo",
+										recursive=search_path_recursive,
+										fullNames=TRUE)
+#										full.names=TRUE)
+				))
 				if(length(search_paths)==0) search_paths <- NULL
 				if(!is.null(search_paths) && checkValidity)
 				{
@@ -311,15 +331,25 @@ gdal_setInstallation <- function(rescan=FALSE)
 							"C:\\OSGeo4W"
 					)
 				}
+#				browser()
 				
 				if(length(common_locations != 0))
 				{
 					common_paths <- unlist(sapply(common_locations,
 									function(x)
 									{
-										search_common_paths <- normalizePath(dirname(
-														list.files(path=x,pattern="gdalinfo",recursive=TRUE,full.names=TRUE)))
-										return(search_common_paths)
+										search_common_paths <- 
+												#normalizePath(dirname(
+														listDirectory(
+#														list.files(
+																path=x,pattern="gdalinfo",recursive=TRUE,
+#																full.names=TRUE)
+																fullNames=TRUE)
+											#	))
+										if(length(search_common_paths)==0)
+											return(search_common_paths)
+										else
+											return(normalizePath(dirname(search_common_paths)))
 									}))
 					if(length(common_paths)==0) common_paths <- NULL
 					if(!is.null(common_paths) && checkValidity)
@@ -349,25 +379,34 @@ gdal_setInstallation <- function(rescan=FALSE)
 				root_dir <- "C:\\"
 			}
 			
-			search_full_path <- normalizePath(dirname(
-							list.files(path=root_dir,pattern="gdalinfo",
-									recursive=TRUE,full.names=TRUE)))
+			search_full_path <- 
+					# normalizePath(dirname(
+							listDirectory(
+#							list.files(
+									path=root_dir,pattern="gdalinfo",
+									recursive=TRUE,
+									fullNames=TRUE)
+#									full.names=TRUE)
+			# ))
 			if(length(search_full_path)==0) search_full_path <- NULL
+			else search_full_path <- normalizePath(dirname(search_full_path))
 			if(!is.null(search_full_path) && checkValidity)
 			{
 				search_full_path_check <- gdal_check_validity(search_full_path)
 				search_full_path <- search_full_path[search_full_path_check]
 			}
-			path <- c(path,search_paths)
+			path <- c(path,search_full_path)
 		}
 		
 		if(length(path)==0)
 		{
 			#add QGIS?
-			stop("No GDAL installation found. Please install 'gdal' before continuing:\n\t- www.gdal.org (no HDF4 support!)\n\t- www.trac.osgeo.org/osgeo4w/ (with HDF4 support RECOMMENDED)\n\t- www.fwtools.maptools.org (with HDF4 support)\n") # why not stop?
+			warning("No GDAL installation found. Please install 'gdal' before continuing:\n\t- www.gdal.org (no HDF4 support!)\n\t- www.trac.osgeo.org/osgeo4w/ (with HDF4 support RECOMMENDED)\n\t- www.fwtools.maptools.org (with HDF4 support)\n") # why not stop?
+			return(NULL)
+		} else
+		{	
+			return(correctPath(path))
 		}
-		
-		return(correctPath(path))
 	}
 	
 # Returns the full GDAL installation status
@@ -380,6 +419,7 @@ gdal_setInstallation <- function(rescan=FALSE)
 	)
 	{
 		path <- gdal_path(ignore.options=rescan)
+		if(is.null(path)) return(NULL)
 		
 		gdal_installation_results <- lapply(path,
 				function(x,return_drivers,return_python_utilities,return_versions)
@@ -417,5 +457,6 @@ gdal_setInstallation <- function(rescan=FALSE)
 # Sets the installation for this session.
 	
 #	path <- gdal_path(ignore.options=TRUE)
+#	browser()
 	options(gdalUtils_gdalPath=gdal_installation(rescan=rescan))
 }

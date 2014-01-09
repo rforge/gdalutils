@@ -88,6 +88,7 @@ gdal_translate <- function(src_dataset,dst_dataset,ot,strict,of="GTiff",
 	
 	if(verbose) message("Checking gdal_installation...")
 	gdal_setInstallation()
+	if(is.null(getOption("gdalUtils_gdalPath"))) return()
 	
 	if(!missing(sd_index))
 	{

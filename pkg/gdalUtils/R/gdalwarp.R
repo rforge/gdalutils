@@ -96,6 +96,7 @@ gdalwarp <- function(
 	
 	if(verbose) message("Checking gdal_installation...")
 	gdal_setInstallation()
+	if(is.null(getOption("gdalUtils_gdalPath"))) return()
 	
 	# Place all gdal function variables into these groupings:
 	parameter_variables <- list(

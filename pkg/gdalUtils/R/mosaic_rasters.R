@@ -24,6 +24,10 @@
 
 mosaic_rasters <- function(gdalfile,dst_dataset,output.vrt=NULL,output_Raster=FALSE,...)
 {
+	if(verbose) message("Checking gdal_installation...")
+	gdal_setInstallation()
+	if(is.null(getOption("gdalUtils_gdalPath"))) return()
+	
 	if(is.null(output.vrt))
 	{
 		output.vrt <- paste(tempfile(),".vrt",sep="")

@@ -46,12 +46,11 @@
 #'
 #' @references \url{http://www.gdal.org/gdalinfo.html}
 #' 
-#' @examples \dontrun{ 
+#' @examples 
 #' src_dataset <- system.file("external/tahoe_highrez.tif", package="gdalUtils")
 #' # Command-line gdalinfo call:
 #' # gdalinfo tahoe_highrez.tif
 #' gdalinfo(src_dataset)
-#' }
 #' @export
 
 gdalinfo <- function(datasetname,mm,stats,
@@ -65,6 +64,7 @@ gdalinfo <- function(datasetname,mm,stats,
 
 	if(verbose) message("Checking gdal_installation...")
 	gdal_setInstallation()
+	if(is.null(getOption("gdalUtils_gdalPath"))) return()
 	
 	# Start gdalinfo setup
 	parameter_variables <- list(

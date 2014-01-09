@@ -103,6 +103,7 @@ ogr2ogr <- function(src_datasource_name,dst_datasource_name,
 	
 	if(verbose) message("Checking gdal_installation...")
 	gdal_setInstallation()
+	if(is.null(getOption("gdalUtils_gdalPath"))) return()
 	
 	# Start gdalinfo setup
 	parameter_variables <- list(
