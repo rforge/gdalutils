@@ -51,6 +51,9 @@
 #'
 #' @references \url{http://www.gdal.org/gdal_translate.html}
 #' @examples 
+#' #' # Run if raster and rgdal are installed:
+#' if(require(raster) && require(rgdal))
+#' {
 #' # Example from the original gdal_translate documentation:
 #' src_dataset <- system.file("external/tahoe_highrez.tif", package="gdalUtils")
 #' # Original gdal_translate call:
@@ -65,9 +68,7 @@
 #' # Extract the first subdataset from an HDF4 file:
 #' hdf4_dataset <- system.file("external/test_modis.hdf", package="gdalUtils")
 #' gdal_translate(hdf4_dataset,"test_modis_sd1.tif",sd_index=1)
-#' 
-#' @import rgdal
-#' @import raster
+#' }
 #' @export
 
 # TODO: return all subdatasets if sds=TRUE as a list of bricks
@@ -84,6 +85,12 @@ gdal_translate <- function(src_dataset,dst_dataset,ot,strict,of="GTiff",
 		output_Raster=FALSE,verbose=FALSE,
 		...)
 {
+	if(output_Raster && (!require(raster) || !require(rgdal)))
+	{
+		warning("rgdal and/or raster not installed. Please install.packages(c('rgdal','raster')) or set output_Raster=FALSE")
+		return(NULL)
+	}
+	
 	parameter_values <- as.list(environment())
 	
 	if(verbose) message("Checking gdal_installation...")

@@ -132,7 +132,9 @@ the output file (assuming raster/rgdal supports the
 particular output format).
 }
 \examples{
-library(raster)
+# Run if raster and rgdal are installed:
+if(require(raster) && require(rgdal))
+{
 # We'll pre-check for a proper GDAL installation before running these examples:
 gdal_setInstallation()
 if(!is.null(getOption("gdalUtils_gdalPath")))
@@ -160,6 +162,7 @@ plot(output_slope,col=gray.colors(256))
 output_aspect <- gdaldem(mode="aspect",input_dem=input_dem,
 	output="output_aspect.tif",output_Raster=TRUE)
 plot(output_aspect,col=gray.colors(256))
+}
 }
 }
 \author{

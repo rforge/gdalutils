@@ -16,16 +16,25 @@
 #' @author Jonathan A. Greenberg (\email{gdalUtils@@estarcion.net})
 #' @seealso \code{\link{gdalbuildvrt}}, \code{\link{gdal_translate}}
 #' @examples 
+#' # Run if raster and rgdal are installed:
+#' if(require(raster) && require(rgdal))
+#' {
 #' layer1 <- system.file("external/tahoe_lidar_bareearth.tif", package="gdalUtils")
 #' layer2 <- system.file("external/tahoe_lidar_highesthit.tif", package="gdalUtils")
 #' mosaic_rasters(gdalfile=c(layer1,layer2),dst_dataset="test_mosaic.envi",separate=TRUE,of="ENVI",
 #' 		verbose=TRUE)
 #' gdalinfo("test_mosaic.envi")
-#' 
+#' }
 #' @export
 
 mosaic_rasters <- function(gdalfile,dst_dataset,output.vrt=NULL,output_Raster=FALSE,verbose=FALSE,...)
 {
+	if(output_Raster && (!require(raster) || !require(rgdal)))
+	{
+		warning("rgdal and/or raster not installed. Please install.packages(c('rgdal','raster')) or set output_Raster=FALSE")
+		return(NULL)
+	}
+	
 	if(verbose) message("Checking gdal_installation...")
 	gdal_setInstallation()
 	if(is.null(getOption("gdalUtils_gdalPath"))) return()

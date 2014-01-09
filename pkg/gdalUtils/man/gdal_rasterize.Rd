@@ -148,7 +148,9 @@ the output file (assuming raster/rgdal supports the
 particular output format).
 }
 \examples{
-library(raster)
+# Run if raster and rgdal are installed:
+if(require(raster) && require(rgdal))
+{
 # Example from the original gdal_rasterize documentation:
 # gdal_rasterize -b 1 -b 2 -b 3 -burn 255 -burn 0
 # 	-burn 0 -l tahoe_highrez_training tahoe_highrez_training.shp tempfile.tif
@@ -163,6 +165,7 @@ tahoe_burned <- gdal_rasterize(src_dataset,dst_filename,
 	b=c(1,2,3),burn=c(0,255,0),l="tahoe_highrez_training",verbose=TRUE,output_Raster=TRUE)
 #After plot:
 plotRGB(brick(dst_filename))
+}
 }
 \author{
 Jonathan A. Greenberg (\email{gdalUtils@estarcion.net})

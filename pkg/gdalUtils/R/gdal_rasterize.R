@@ -47,7 +47,9 @@
 #'
 #' @references \url{http://www.gdal.org/gdal_rasterize.html}
 #' @examples 
-#' library(raster)
+#' # Run if raster and rgdal are installed:
+#' if(require(raster) && require(rgdal))
+#' {
 #' # Example from the original gdal_rasterize documentation:
 #' # gdal_rasterize -b 1 -b 2 -b 3 -burn 255 -burn 0 
 #' # 	-burn 0 -l tahoe_highrez_training tahoe_highrez_training.shp tempfile.tif
@@ -62,9 +64,7 @@
 #' 	b=c(1,2,3),burn=c(0,255,0),l="tahoe_highrez_training",verbose=TRUE,output_Raster=TRUE)
 #' #After plot:
 #' plotRGB(brick(dst_filename))
-#' 
-#' @import rgdal
-#' @import raster
+#' }
 #' @export
 
 gdal_rasterize <- function(
@@ -75,6 +75,12 @@ gdal_rasterize <- function(
 		additional_commands,
 		output_Raster=FALSE,verbose=FALSE)
 {
+	if(output_Raster && (!require(raster) || !require(rgdal)))
+	{
+		warning("rgdal and/or raster not installed. Please install.packages(c('rgdal','raster')) or set output_Raster=FALSE")
+		return(NULL)
+	}
+	
 	parameter_values <- as.list(environment())
 	
 	if(verbose) message("Checking gdal_installation...")

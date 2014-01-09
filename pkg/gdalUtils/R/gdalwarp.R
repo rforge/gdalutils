@@ -71,15 +71,16 @@
 #'
 #' @references \url{http://www.gdal.org/gdalwarp.html}
 #' @examples 
+#' # Run if raster and rgdal are installed:
+#' if(require(raster) && require(rgdal))
+#' {
 #' # Example from the original gdal_translate documentation:
 #' src_dataset <- system.file("external/tahoe_highrez.tif", package="gdalUtils")
 #' # Command-line gdalwarp call:
 #' # gdalwarp -t_srs '+proj=utm +zone=11 +datum=WGS84' raw_spot.tif utm11.tif
 #' gdalwarp(src_dataset,dstfile="tahoe_highrez_utm11.tif",
 #' 		t_srs='+proj=utm +zone=11 +datum=WGS84',output_Raster=TRUE)
-#' 
-#' @import rgdal
-#' @import raster
+#' }
 #' @export
 
 gdalwarp <- function(
@@ -92,6 +93,12 @@ gdalwarp <- function(
 		additional_commands,
 		output_Raster=FALSE,verbose=FALSE)
 {
+	if(output_Raster && (!require(raster) || !require(rgdal)))
+	{
+		warning("rgdal and/or raster not installed. Please install.packages(c('rgdal','raster')) or set output_Raster=FALSE")
+		return(NULL)
+	}
+	
 	parameter_values <- as.list(environment())
 	
 	if(verbose) message("Checking gdal_installation...")

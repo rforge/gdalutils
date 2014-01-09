@@ -47,7 +47,9 @@
 #' @references \url{http://www.gdal.org/gdaldem.html}
 #' 
 #' @examples 
-#' library(raster)
+#' # Run if raster and rgdal are installed:
+#' if(require(raster) && require(rgdal))
+#' {
 #' # We'll pre-check for a proper GDAL installation before running these examples:
 #' gdal_setInstallation()
 #' if(!is.null(getOption("gdalUtils_gdalPath")))
@@ -76,8 +78,7 @@
 #'	output="output_aspect.tif",output_Raster=TRUE)
 #' plot(output_aspect,col=gray.colors(256))
 #' }
-#' @import rgdal
-#' @import raster
+#' }
 #' @export
 
 # TODO: Fully document this.
@@ -93,6 +94,12 @@ gdaldem <- function(
 		output_Raster=FALSE,
 		verbose=FALSE)
 {	
+	if(output_Raster && (!require(raster) || !require(rgdal)))
+	{
+		warning("rgdal and/or raster not installed. Please install.packages(c('rgdal','raster')) or set output_Raster=FALSE")
+		return(NULL)
+	}
+	
 	parameter_values <- as.list(environment())
 	
 	if(verbose) message("Checking gdal_installation...")

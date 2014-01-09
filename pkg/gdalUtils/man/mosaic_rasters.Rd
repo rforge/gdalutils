@@ -41,11 +41,15 @@ preserve the intermediate output.vrt file, but in general
 this is not needed.
 }
 \examples{
+# Run if raster and rgdal are installed:
+if(require(raster) && require(rgdal))
+{
 layer1 <- system.file("external/tahoe_lidar_bareearth.tif", package="gdalUtils")
 layer2 <- system.file("external/tahoe_lidar_highesthit.tif", package="gdalUtils")
 mosaic_rasters(gdalfile=c(layer1,layer2),dst_dataset="test_mosaic.envi",separate=TRUE,of="ENVI",
 		verbose=TRUE)
 gdalinfo("test_mosaic.envi")
+}
 }
 \author{
 Jonathan A. Greenberg (\email{gdalUtils@estarcion.net})
