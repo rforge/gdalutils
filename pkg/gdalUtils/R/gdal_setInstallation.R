@@ -2,6 +2,7 @@
 #' 
 #' Sets local GDAL installation options
 #' 
+#' @param search_path Character. Force a search in a specified directory.  This directory should contain the gdalinfo(.exe) executable.  If a valid GDAL install is found in this path, this will force gdalUtils to use this installation.  Remember to set rescan=TRUE if you have already set an install.
 #' @param rescan Logical. Force a rescan if neccessary (e.g. if you updated your GDAL install).
 #' 
 #' @return Sets an option "gdalUtils_gdalPath" with GDAL installation information.
@@ -14,7 +15,20 @@
 #' in general the first entry is the one that is used by the various GDAL utilities.
 #' Note that this will automatically run every time a GDAL wrapper function is called,
 #' so the user does not have to explicitly run it.
-#'
+#' 
+#' gdal_setInstallation is designed to invoke consecutively more 
+#' rigorous searches in able to find a valid GDAL install.  Understanding
+#' the search routine may help debug problems on your system.  The order
+#' of the searches is as follows, noting that as soon as a valid install
+#' is found (determined by running gdalinfo --version and getting the
+#' correct output), gdal_setInstallation stops further searching:
+#' 1) Checks a pre-determined location given by the search_path parameter.
+#' 2) Checks for gdalinfo using Sys.which().  This is typically defined
+#' 		in the system's PATH, so will override any other install.
+#' 3) Checks for gdalinfo in common install locations (OS specific).  
+#' 4) Finally, if it can't find a valid GDAL install anywhere else,
+#' 		it will brute-force search the entire local system (which may
+#' 		take a long time).  
 #' @references \url{http://www.gdal.org/gdal_translate.html}
 #' @examples \dontrun{ 
 #' # Assumes you have GDAL installed on your local machine.
@@ -37,7 +51,7 @@
 # TODO: if nothing is found, give suggestions on where to download GDAL
 # TODO: check if the user has permission to execute the commands
 
-gdal_setInstallation <- function(rescan=FALSE)
+gdal_setInstallation <- function(search_path=NULL,rescan=FALSE)
 {
 	
 # Returns the available GDAL python utilities
@@ -233,7 +247,7 @@ gdal_setInstallation <- function(rescan=FALSE)
 	
 # Determines the path to GDAL installations
 	gdal_path <- function(
-			search_path,
+			search_path=NULL,
 			ignore.options=FALSE,
 			ignore.which=FALSE,
 			ignore.common=FALSE,
@@ -268,23 +282,11 @@ gdal_setInstallation <- function(rescan=FALSE)
 				}
 				path <- c(path,option_paths)
 			}
-			
-			# Next try Sys.which unless ignored:
-			if(!ignore.options && length(path)==0)
-			{
-				if(verbose) message("Checking Sys.which...")
-				Sys.which_path <- dirname(Sys.which("gdalinfo"))
-				if(Sys.which_path=="") Sys.which_path <- NULL
-				if(!is.null(Sys.which_path) && checkValidity)
-				{
-					Sys.which_path_check <- gdal_check_validity(Sys.which_path)
-					Sys.which_path <- Sys.which_path[Sys.which_path_check]
-				}
-				path <- c(path,Sys.which_path)
-			}
-			
+						
 			# Next, try scanning the search path
-			if(!missing(search_path) && length(path)==0)
+#			if(!missing(search_path) && length(path)==0)
+			if(!is.null(search_path) && length(path)==0)
+		
 			{
 				if(verbose) message("Checking the search path...")
 				search_paths <- normalizePath(dirname(
@@ -302,7 +304,20 @@ gdal_setInstallation <- function(rescan=FALSE)
 					search_paths <- search_paths[search_paths_check]
 				}
 				path <- c(path,search_paths)
-				
+			}
+			
+			# Next try Sys.which unless ignored:
+			if(!ignore.options && length(path)==0)
+			{
+				if(verbose) message("Checking Sys.which...")
+				Sys.which_path <- dirname(Sys.which("gdalinfo"))
+				if(Sys.which_path=="") Sys.which_path <- NULL
+				if(!is.null(Sys.which_path) && checkValidity)
+				{
+					Sys.which_path_check <- gdal_check_validity(Sys.which_path)
+					Sys.which_path <- Sys.which_path[Sys.which_path_check]
+				}
+				path <- c(path,Sys.which_path)
 			}
 			
 			# If nothing is still found, look in common locations
@@ -414,10 +429,11 @@ gdal_setInstallation <- function(rescan=FALSE)
 			return_drivers=TRUE,
 			return_python_utilities=TRUE,
 			sort_most_current=TRUE,
-			rescan=FALSE
+			rescan=FALSE,
+			search_path=NULL
 	)
 	{
-		path <- gdal_path(ignore.options=rescan)
+		path <- gdal_path(ignore.options=rescan,search_path=search_path)
 		if(is.null(path)) return(NULL)
 		
 		gdal_installation_results <- lapply(path,
@@ -458,7 +474,7 @@ gdal_setInstallation <- function(rescan=FALSE)
 	{
 		rescan=TRUE	
 	}
-	gdal_installation_out <- gdal_installation(rescan=rescan)
+	gdal_installation_out <- gdal_installation(search_path=search_path,rescan=rescan)
 	options(gdalUtils_gdalPath=gdal_installation_out)
 	if(is.null(getOption("gdalUtils_gdalPath")))
 	{
