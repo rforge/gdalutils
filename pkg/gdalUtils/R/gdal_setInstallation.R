@@ -289,15 +289,15 @@ gdal_setInstallation <- function(search_path=NULL,rescan=FALSE)
 		
 			{
 				if(verbose) message("Checking the search path...")
-				search_paths <- normalizePath(dirname(
+				search_paths <- 
 								#				list.files(
 								listDirectory(
 										path=search_path,pattern="gdalinfo",
 										recursive=search_path_recursive,
 										fullNames=TRUE)
 #										full.names=TRUE)
-						))
-				if(length(search_paths)==0) search_paths <- NULL
+				if(length(search_paths)==0) search_paths <- NULL else 
+					search_paths <- normalizePath(dirname(search_paths))
 				if(!is.null(search_paths) && checkValidity)
 				{
 					search_paths_check <- gdal_check_validity(search_paths)
