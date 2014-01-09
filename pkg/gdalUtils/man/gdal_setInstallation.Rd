@@ -41,14 +41,14 @@ problems on your system.  The order of the searches is as
 follows, noting that as soon as a valid install is found
 (determined by running gdalinfo --version and getting the
 correct output), gdal_setInstallation stops further
-searching: 1) Checks a pre-determined location given by the
-search_path parameter. 2) Checks for gdalinfo using
-Sys.which().  This is typically defined in the system's
-PATH, so will override any other install. 3) Checks for
-gdalinfo in common install locations (OS specific). 4)
+searching: \enumerate{ \item Checks a pre-determined
+location given by the search_path parameter. \item Checks
+using Sys.which().  This is typically defined in the
+system's PATH, so will override any other install. \item
+Checks in common install locations (OS specific). \item
 Finally, if it can't find a valid GDAL install anywhere
 else, it will brute-force search the entire local system
-(which may take a long time).
+(which may take a long time). }
 }
 \examples{
 \dontrun{
