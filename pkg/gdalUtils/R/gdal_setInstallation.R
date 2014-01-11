@@ -253,6 +253,7 @@ gdal_setInstallation <- function(search_path=NULL,rescan=FALSE)
 			ignore.options=FALSE,
 			ignore.which=FALSE,
 			ignore.common=FALSE,
+			ignore.full_scan=FALSE,
 			force_full_scan = FALSE, 
 			checkValidity, 
 			search_path_recursive=FALSE,
@@ -377,7 +378,7 @@ gdal_setInstallation <- function(search_path=NULL,rescan=FALSE)
 					path <- c(path,common_paths)
 				}
 			}
-			if(length(path)==0)
+			if(!ignore.full_scan && length(path)==0)
 			{
 				force_full_scan=TRUE
 			}
