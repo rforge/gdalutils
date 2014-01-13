@@ -491,6 +491,6 @@ gdal_setInstallation <- function(search_path=NULL,rescan=FALSE,
 	}
 	else
 	{
-		if(verbose(message("GDAL version ",unlist(getOption("gdalUtils_gdalPath")[[1]]$version)))
+		if(verbose) message("GDAL version ",unlist(getOption("gdalUtils_gdalPath")[[1]]$version))
 	}
 }
