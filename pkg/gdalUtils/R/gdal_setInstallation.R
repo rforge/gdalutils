@@ -4,6 +4,7 @@
 #' 
 #' @param search_path Character. Force a search in a specified directory.  This directory should contain the gdalinfo(.exe) executable.  If a valid GDAL install is found in this path, this will force gdalUtils to use this installation.  Remember to set rescan=TRUE if you have already set an install.
 #' @param rescan Logical. Force a rescan if neccessary (e.g. if you updated your GDAL install).
+#' @param ignore.full_scan Logical. If TRUE, do not perform a brute-force scan if other installs are not found.  Default is FALSE.
 #' 
 #' @return Sets an option "gdalUtils_gdalPath" with GDAL installation information.
 #' @author Jonathan A. Greenberg (\email{gdalUtils@@estarcion.net}) and Matteo Mattiuzzi
@@ -53,7 +54,8 @@
 # TODO: if nothing is found, give suggestions on where to download GDAL
 # TODO: check if the user has permission to execute the commands
 
-gdal_setInstallation <- function(search_path=NULL,rescan=FALSE)
+gdal_setInstallation <- function(search_path=NULL,rescan=FALSE,
+		ignore.full_scan=FALSE)
 {
 	
 # Returns the available GDAL python utilities
@@ -107,7 +109,7 @@ gdal_setInstallation <- function(search_path=NULL,rescan=FALSE)
 		cmd <- normalizePath(
 				listDirectory(
 #				list.files(
-						path, "gdalinfo",
+						path, "^gdalinfo$|^gdalinfo\\.exe$",
 						fullNames=TRUE)
 #						full.names=TRUE)
 		)
@@ -228,7 +230,7 @@ gdal_setInstallation <- function(search_path=NULL,rescan=FALSE)
 					cmd <- normalizePath(
 							listDirectory(
 #							list.files(
-									path=x,pattern="gdalinfo",
+									path=x,pattern="^gdalinfo$|^gdalinfo\\.exe$",
 									fullNames=TRUE)
 #									full.names=TRUE)
 					)
@@ -295,7 +297,7 @@ gdal_setInstallation <- function(search_path=NULL,rescan=FALSE)
 				search_paths <- 
 								#				list.files(
 								listDirectory(
-										path=search_path,pattern="gdalinfo",
+										path=search_path,pattern="^gdalinfo$|^gdalinfo\\.exe$",
 										recursive=search_path_recursive,
 										fullNames=TRUE)
 #										full.names=TRUE)
@@ -360,7 +362,7 @@ gdal_setInstallation <- function(search_path=NULL,rescan=FALSE)
 												#normalizePath(dirname(
 												listDirectory(
 #														list.files(
-														path=x,pattern="gdalinfo",recursive=TRUE,
+														path=x,pattern="^gdalinfo$|^gdalinfo\\.exe$",recursive=TRUE,
 #																full.names=TRUE)
 														fullNames=TRUE)
 										#	))
@@ -401,7 +403,7 @@ gdal_setInstallation <- function(search_path=NULL,rescan=FALSE)
 					# normalizePath(dirname(
 					listDirectory(
 #							list.files(
-							path=root_dir,pattern="gdalinfo",
+							path=root_dir,pattern="^gdalinfo$|^gdalinfo\\.exe$",
 							recursive=TRUE,
 							fullNames=TRUE)
 #									full.names=TRUE)
@@ -433,10 +435,11 @@ gdal_setInstallation <- function(search_path=NULL,rescan=FALSE)
 			return_python_utilities=TRUE,
 			sort_most_current=TRUE,
 			rescan=FALSE,
-			search_path=NULL
+			search_path=NULL,
+			ignore.full_scan=FALSE
 	)
 	{
-		path <- gdal_path(ignore.options=rescan,search_path=search_path)
+		path <- gdal_path(ignore.options=rescan,search_path=search_path,ignore.full_scan=ignore.full_scan)
 		if(is.null(path)) return(NULL)
 		
 		gdal_installation_results <- lapply(path,
@@ -477,14 +480,14 @@ gdal_setInstallation <- function(search_path=NULL,rescan=FALSE)
 	{
 		rescan=TRUE	
 	}
-	gdal_installation_out <- gdal_installation(search_path=search_path,rescan=rescan)
+	gdal_installation_out <- gdal_installation(search_path=search_path,rescan=rescan,ignore.full_scan=ignore.full_scan)
 	options(gdalUtils_gdalPath=gdal_installation_out)
 	if(is.null(getOption("gdalUtils_gdalPath")))
 	{
 		warning("No GDAL installation found. Please install 'gdal' before continuing:\n\t- www.gdal.org (no HDF4 support!)\n\t- www.trac.osgeo.org/osgeo4w/ (with HDF4 support RECOMMENDED)\n\t- www.fwtools.maptools.org (with HDF4 support)\n") # why not stop?
 	}
-#	else
-#	{
-#		message("GDAL version",unlist(getOption("gdalUtils_gdalPath")[[1]]$version))
-#	}
+	else
+	{
+		message("GDAL version ",unlist(getOption("gdalUtils_gdalPath")[[1]]$version))
+	}
 }
