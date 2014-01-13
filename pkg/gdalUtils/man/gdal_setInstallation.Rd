@@ -2,7 +2,8 @@
 \alias{gdal_setInstallation}
 \title{gdal_setInstallation}
 \usage{
-gdal_setInstallation(search_path = NULL, rescan = FALSE)
+gdal_setInstallation(search_path = NULL, rescan = FALSE,
+  ignore.full_scan = FALSE, verbose = FALSE)
 }
 \arguments{
   \item{search_path}{Character. Force a search in a
@@ -14,6 +15,13 @@ gdal_setInstallation(search_path = NULL, rescan = FALSE)
 
   \item{rescan}{Logical. Force a rescan if neccessary (e.g.
   if you updated your GDAL install).}
+
+  \item{ignore.full_scan}{Logical. If TRUE, do not perform
+  a brute-force scan if other installs are not found.
+  Default is FALSE.}
+
+  \item{verbose}{Logical. Enable verbose execution? Default
+  is FALSE.}
 }
 \value{
 Sets an option "gdalUtils_gdalPath" with GDAL installation

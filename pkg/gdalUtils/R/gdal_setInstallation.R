@@ -5,7 +5,8 @@
 #' @param search_path Character. Force a search in a specified directory.  This directory should contain the gdalinfo(.exe) executable.  If a valid GDAL install is found in this path, this will force gdalUtils to use this installation.  Remember to set rescan=TRUE if you have already set an install.
 #' @param rescan Logical. Force a rescan if neccessary (e.g. if you updated your GDAL install).
 #' @param ignore.full_scan Logical. If TRUE, do not perform a brute-force scan if other installs are not found.  Default is FALSE.
-#' 
+#' @param verbose Logical. Enable verbose execution? Default is FALSE.  
+
 #' @return Sets an option "gdalUtils_gdalPath" with GDAL installation information.
 #' @author Jonathan A. Greenberg (\email{gdalUtils@@estarcion.net}) and Matteo Mattiuzzi
 #' 
@@ -55,7 +56,8 @@
 # TODO: check if the user has permission to execute the commands
 
 gdal_setInstallation <- function(search_path=NULL,rescan=FALSE,
-		ignore.full_scan=FALSE)
+		ignore.full_scan=FALSE,
+		verbose=FALSE)
 {
 	
 # Returns the available GDAL python utilities
