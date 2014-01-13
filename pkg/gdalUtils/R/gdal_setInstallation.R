@@ -441,18 +441,20 @@ gdal_setInstallation <- function(search_path=NULL,rescan=FALSE,
 	)
 	{
 		path <- gdal_path(ignore.options=rescan,search_path=search_path,ignore.full_scan=ignore.full_scan)
+	#	browser()
 		if(is.null(path)) return(NULL)
 		
 		gdal_installation_results <- lapply(path,
 				function(x,return_drivers,return_python_utilities,return_versions)
 				{
+			#		browser()
 					result <- list(path=x)
 					
 					if(return_versions)
 					{
 						version <- gdal_version(x)
-						result$version <- version$version
-						result$date <- version$date
+						result$version <- unlist(version$version)
+						result$date <- unlist(version$date)
 					}
 					
 					if(return_drivers)
