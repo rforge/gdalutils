@@ -261,6 +261,7 @@ gdal_setInstallation <- function(search_path=NULL,rescan=FALSE,
 			search_path_recursive=FALSE,
 			verbose = FALSE)
 	{
+#		browser()
 		owarn <- getOption("warn")
 		options(warn=-2)
 		on.exit(options(warn=owarn))
@@ -312,7 +313,7 @@ gdal_setInstallation <- function(search_path=NULL,rescan=FALSE,
 			}
 			
 			# Next try Sys.which unless ignored:
-			if(!ignore.options && length(path)==0)
+			if(!ignore.which && length(path)==0)
 			{
 				if(verbose) message("Checking Sys.which...")
 				Sys.which_path <- dirname(Sys.which("gdalinfo"))
@@ -424,7 +425,7 @@ gdal_setInstallation <- function(search_path=NULL,rescan=FALSE,
 			return(NULL)
 		} else
 		{	
-			return(correctPath(path))
+			return(correctPath(unique(path)))
 		}
 	}
 	
