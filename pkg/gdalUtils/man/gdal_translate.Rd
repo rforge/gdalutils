@@ -5,7 +5,7 @@
 gdal_translate(src_dataset, dst_dataset, ot, strict, of = "GTiff", b, mask,
   expand, outsize, scale, unscale, srcwin, projwin, epo, eco, a_srs, a_ullr,
   a_nodata, mo, co, gcp, q, sds, stats, additional_commands, sd_index,
-  output_Raster = FALSE, verbose = FALSE, ...)
+  output_Raster = FALSE, ignore.full_scan = TRUE, verbose = FALSE, ...)
 }
 \arguments{
   \item{src_dataset}{Character. The source dataset name. It
@@ -143,6 +143,10 @@ gdal_translate(src_dataset, dst_dataset, ot, strict, of = "GTiff", b, mask,
   \item{output_Raster}{Logical. Return output dst_dataset
   as a RasterBrick?}
 
+  \item{ignore.full_scan}{Logical. If FALSE, perform a
+  brute-force scan if other installs are not found.
+  Default is TRUE.}
+
   \item{verbose}{Logical. Enable verbose execution? Default
   is FALSE.}
 
@@ -177,8 +181,13 @@ the output file (assuming raster/rgdal supports the
 particular output format).
 }
 \examples{
-#' # Run if raster and rgdal are installed:
-if(require(raster) && require(rgdal))
+# We'll pre-check to make sure there is a valid GDAL install
+# and that raster and rgdal are also installed.
+# Note this isn't strictly neccessary, as executing the function will
+# force a search for a valid GDAL install.
+gdal_setInstallation()
+valid_install <- !is.null(getOption("gdalUtils_gdalPath"))
+if(require(raster) && require(rgdal) && valid_install)
 {
 # Example from the original gdal_translate documentation:
 src_dataset <- system.file("external/tahoe_highrez.tif", package="gdalUtils")

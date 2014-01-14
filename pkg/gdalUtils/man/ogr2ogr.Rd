@@ -9,7 +9,7 @@ ogr2ogr(src_datasource_name, dst_datasource_name, layer, skipfailures, append,
   clipdstlayer, clipdstwhere, wrapdateline, datelineoffset, simplify,
   segmentize, addfields, fieldTypeToString, unsetFieldWidth, fieldmap,
   splitlistfields, maxsubfields, explodecollections, zfield, gcp, order,
-  additional_commands, verbose = FALSE)
+  additional_commands, ignore.full_scan = TRUE, verbose = FALSE)
 }
 \arguments{
   \item{src_datasource_name}{Character. Input vector file.}
@@ -238,6 +238,10 @@ ogr2ogr(src_datasource_name, dst_datasource_name, layer, skipfailures, append,
   \item{additional_commands}{Character. Additional commands
   to pass directly to ogrinfo.}
 
+  \item{ignore.full_scan}{Logical. If FALSE, perform a
+  brute-force scan if other installs are not found.
+  Default is TRUE.}
+
   \item{verbose}{Logical. Enable verbose execution? Default
   is FALSE.}
 }
@@ -266,9 +270,12 @@ gdal_setInstallation will be executed to attempt to find a
 working GDAL.
 }
 \examples{
-# We'll pre-check for a proper GDAL installation before running these examples:
+# We'll pre-check to make sure there is a valid GDAL install.
+# Note this isn't strictly neccessary, as executing the function will
+# force a search for a valid GDAL install.
 gdal_setInstallation()
-if(!is.null(getOption("gdalUtils_gdalPath")))
+valid_install <- !is.null(getOption("gdalUtils_gdalPath"))
+if(valid_install)
 {
 src_datasource_name <- system.file("external/tahoe_highrez_training.shp", package="gdalUtils")
 dst_datasource_name <- paste(tempfile(),".shp",sep="")

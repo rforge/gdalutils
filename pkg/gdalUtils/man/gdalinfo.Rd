@@ -4,7 +4,8 @@
 \usage{
 gdalinfo(datasetname, mm, stats, approx_stats, hist, nogcp, nomd, nrat, noct,
   nofl, checksum, proj4, mdd, sd, version, formats, format, optfile, config,
-  debug, additional_commands, raw_output = TRUE, verbose = FALSE)
+  debug, additional_commands, raw_output = TRUE, ignore.full_scan = TRUE,
+  verbose = FALSE)
 }
 \arguments{
   \item{datasetname}{Character. A raster dataset name. It
@@ -102,6 +103,10 @@ gdalinfo(datasetname, mm, stats, approx_stats, hist, nogcp, nomd, nrat, noct,
   clean list (not all parameters will be retained, at
   present).}
 
+  \item{ignore.full_scan}{Logical. If FALSE, perform a
+  brute-force scan if other installs are not found.
+  Default is TRUE.}
+
   \item{verbose}{Logical. Enable verbose execution? Default
   is FALSE.}
 }
@@ -136,10 +141,18 @@ GDALinfo in the rgdal package), although not all parameters
 are preserved.
 }
 \examples{
+# We'll pre-check to make sure there is a valid GDAL install.
+# Note this isn't strictly neccessary, as executing the function will
+# force a search for a valid GDAL install.
+gdal_setInstallation()
+valid_install <- !is.null(getOption("gdalUtils_gdalPath"))
+if(valid_install)
+{
 src_dataset <- system.file("external/tahoe_highrez.tif", package="gdalUtils")
 # Command-line gdalinfo call:
 # gdalinfo tahoe_highrez.tif
 gdalinfo(src_dataset)
+}
 }
 \author{
 Jonathan A. Greenberg (\email{gdalUtils@estarcion.net}) and

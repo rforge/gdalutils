@@ -16,8 +16,13 @@
 #' @author Jonathan A. Greenberg (\email{gdalUtils@@estarcion.net})
 #' @seealso \code{\link{gdalbuildvrt}}, \code{\link{gdal_translate}}
 #' @examples 
-#' # Run if raster and rgdal are installed:
-#' if(require(raster) && require(rgdal))
+#' # We'll pre-check to make sure there is a valid GDAL install
+#' # and that raster and rgdal are also installed.
+#' # Note this isn't strictly neccessary, as executing the function will
+#' # force a search for a valid GDAL install.
+#' gdal_setInstallation()
+#' valid_install <- !is.null(getOption("gdalUtils_gdalPath"))
+#' if(require(raster) && require(rgdal) && valid_install)
 #' {
 #' layer1 <- system.file("external/tahoe_lidar_bareearth.tif", package="gdalUtils")
 #' layer2 <- system.file("external/tahoe_lidar_highesthit.tif", package="gdalUtils")

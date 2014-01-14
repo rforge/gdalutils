@@ -26,6 +26,7 @@
 #' @param q Logical. (GDAL >= 1.8.0) Suppress progress monitor and other non-error output.
 #' @param additional_commands Character. Additional commands to pass directly to gdal_rasterize.
 #' @param output_Raster Logical. Return output dst_filename as a RasterBrick?
+#' @param ignore.full_scan Logical. If FALSE, perform a brute-force scan if other installs are not found.  Default is TRUE.
 #' @param verbose Logical. Enable verbose execution? Default is FALSE.  
 #' @return NULL or if(output_Raster), a RasterBrick.
 #' @author Jonathan A. Greenberg (\email{gdalUtils@@estarcion.net}) (wrapper) and Frank Warmerdam (GDAL lead developer).
@@ -47,8 +48,13 @@
 #'
 #' @references \url{http://www.gdal.org/gdal_rasterize.html}
 #' @examples 
-#' # Run if raster and rgdal are installed:
-#' if(require(raster) && require(rgdal))
+#' # We'll pre-check to make sure there is a valid GDAL install
+#' # and that raster and rgdal are also installed.
+#' # Note this isn't strictly neccessary, as executing the function will
+#' # force a search for a valid GDAL install.
+#' gdal_setInstallation()
+#' valid_install <- !is.null(getOption("gdalUtils_gdalPath"))
+#' if(require(raster) && require(rgdal) && valid_install)
 #' {
 #' # Example from the original gdal_rasterize documentation:
 #' # gdal_rasterize -b 1 -b 2 -b 3 -burn 255 -burn 0 
@@ -73,7 +79,9 @@ gdal_rasterize <- function(
 		of,a_srs,co,a_nodata,init,
 		te,tr,tap,ts,ot,q,
 		additional_commands,
-		output_Raster=FALSE,verbose=FALSE)
+		output_Raster=FALSE,
+		ignore.full_scan=TRUE,
+		verbose=FALSE)
 {
 	if(output_Raster && (!require(raster) || !require(rgdal)))
 	{
@@ -84,7 +92,7 @@ gdal_rasterize <- function(
 	parameter_values <- as.list(environment())
 	
 	if(verbose) message("Checking gdal_installation...")
-	gdal_setInstallation()
+	gdal_setInstallation(ignore.full_scan=ignore.full_scan)
 	if(is.null(getOption("gdalUtils_gdalPath"))) return()
 	
 	# Place all gdal function variables into these groupings:

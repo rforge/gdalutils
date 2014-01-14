@@ -25,6 +25,7 @@
 #' @param nearest_color_entry Logical. (mode=="color-relief") use the RGBA quadruplet corresponding to the closest entry in the color configuration file.
 #' @param additional_commands Character. Additional commands to pass directly to gdalsrsinfo.
 #' @param output_Raster Logical. Return output dst_dataset as a RasterBrick?
+#' @param ignore.full_scan Logical. If FALSE, perform a brute-force scan if other installs are not found.  Default is TRUE.
 #' @param verbose Logical. Enable verbose execution? Default is FALSE.  
 #' 
 #' @return NULL or if(output_Raster), a RasterBrick.
@@ -47,8 +48,13 @@
 #' @references \url{http://www.gdal.org/gdaldem.html}
 #' 
 #' @examples 
-#' # Run if raster and rgdal are installed:
-#' if(require(raster) && require(rgdal))
+#' # We'll pre-check to make sure there is a valid GDAL install
+#' # and that raster and rgdal are also installed.
+#' # Note this isn't strictly neccessary, as executing the function will
+#' # force a search for a valid GDAL install.
+#' gdal_setInstallation()
+#' valid_install <- !is.null(getOption("gdalUtils_gdalPath"))
+#' if(require(raster) && require(rgdal) && valid_install)
 #' {
 #' # We'll pre-check for a proper GDAL installation before running these examples:
 #' gdal_setInstallation()
@@ -92,6 +98,7 @@ gdaldem <- function(
 		color_text_file,alpha,exact_color_entry,nearest_color_entry,
 		additional_commands,
 		output_Raster=FALSE,
+		ignore.full_scan=TRUE,
 		verbose=FALSE)
 {	
 	if(output_Raster && (!require(raster) || !require(rgdal)))
@@ -103,7 +110,7 @@ gdaldem <- function(
 	parameter_values <- as.list(environment())
 	
 	if(verbose) message("Checking gdal_installation...")
-	gdal_setInstallation()
+	gdal_setInstallation(ignore.full_scan=ignore.full_scan,verbose=verbose)
 	if(is.null(getOption("gdalUtils_gdalPath"))) return()
 	
 	# Start gdalinfo setup

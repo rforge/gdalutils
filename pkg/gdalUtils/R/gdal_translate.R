@@ -29,6 +29,7 @@
 #' @param additional_commands Character. Additional commands to pass directly to gdal_translate.
 #' @param sd_index Numeric. If the file is an HDF4 or HDF5 file, which subdataset should be returned (1 to the number of subdatasets)?  If this flag is used, src_dataset should be the filename of the multipart file.
 #' @param output_Raster Logical. Return output dst_dataset as a RasterBrick?
+#' @param ignore.full_scan Logical. If FALSE, perform a brute-force scan if other installs are not found.  Default is TRUE.
 #' @param verbose Logical. Enable verbose execution? Default is FALSE.  
 #' @param ... Other parameters to pass to gdal_translate.
 #' @return NULL or if(output_Raster), a RasterBrick.
@@ -50,9 +51,14 @@
 #' raster/rgdal supports the particular output format).
 #'
 #' @references \url{http://www.gdal.org/gdal_translate.html}
-#' @examples 
-#' #' # Run if raster and rgdal are installed:
-#' if(require(raster) && require(rgdal))
+#' @examples
+#' # We'll pre-check to make sure there is a valid GDAL install
+#' # and that raster and rgdal are also installed.
+#' # Note this isn't strictly neccessary, as executing the function will
+#' # force a search for a valid GDAL install.
+#' gdal_setInstallation()
+#' valid_install <- !is.null(getOption("gdalUtils_gdalPath"))
+#' if(require(raster) && require(rgdal) && valid_install)
 #' {
 #' # Example from the original gdal_translate documentation:
 #' src_dataset <- system.file("external/tahoe_highrez.tif", package="gdalUtils")
@@ -82,7 +88,9 @@ gdal_translate <- function(src_dataset,dst_dataset,ot,strict,of="GTiff",
 		a_srs,a_ullr,a_nodata,mo,co,gcp,q,sds,stats,
 		additional_commands,
 		sd_index,
-		output_Raster=FALSE,verbose=FALSE,
+		output_Raster=FALSE,
+		ignore.full_scan=TRUE,
+		verbose=FALSE,
 		...)
 {
 	if(output_Raster && (!require(raster) || !require(rgdal)))
@@ -94,7 +102,7 @@ gdal_translate <- function(src_dataset,dst_dataset,ot,strict,of="GTiff",
 	parameter_values <- as.list(environment())
 	
 	if(verbose) message("Checking gdal_installation...")
-	gdal_setInstallation()
+	gdal_setInstallation(ignore.full_scan=ignore.full_scan,verbose=verbose)
 	if(is.null(getOption("gdalUtils_gdalPath"))) return()
 	
 	if(!missing(sd_index))

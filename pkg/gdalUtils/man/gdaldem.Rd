@@ -5,7 +5,7 @@
 gdaldem(mode, input_dem, output, of, compute_edges, alg, b, co, q, z, s, az,
   alt, combined, p, trigonometric, zero_for_flat, color_text_file, alpha,
   exact_color_entry, nearest_color_entry, additional_commands,
-  output_Raster = FALSE, verbose = FALSE)
+  output_Raster = FALSE, ignore.full_scan = TRUE, verbose = FALSE)
 }
 \arguments{
   \item{mode}{Character.
@@ -100,6 +100,10 @@ gdaldem(mode, input_dem, output, of, compute_edges, alg, b, co, q, z, s, az,
   \item{output_Raster}{Logical. Return output dst_dataset
   as a RasterBrick?}
 
+  \item{ignore.full_scan}{Logical. If FALSE, perform a
+  brute-force scan if other installs are not found.
+  Default is TRUE.}
+
   \item{verbose}{Logical. Enable verbose execution? Default
   is FALSE.}
 }
@@ -132,8 +136,13 @@ the output file (assuming raster/rgdal supports the
 particular output format).
 }
 \examples{
-# Run if raster and rgdal are installed:
-if(require(raster) && require(rgdal))
+# We'll pre-check to make sure there is a valid GDAL install
+# and that raster and rgdal are also installed.
+# Note this isn't strictly neccessary, as executing the function will
+# force a search for a valid GDAL install.
+gdal_setInstallation()
+valid_install <- !is.null(getOption("gdalUtils_gdalPath"))
+if(require(raster) && require(rgdal) && valid_install)
 {
 # We'll pre-check for a proper GDAL installation before running these examples:
 gdal_setInstallation()

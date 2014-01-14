@@ -41,6 +41,7 @@
 #' @param setci Logical. (GDAL >= 1.10.0) Set the color interpretation of the bands of the target dataset from the source dataset.
 #' @param additional_commands Character. Additional commands to pass directly to gdalwarp.
 #' @param output_Raster Logical. Return output dst_dataset as a RasterBrick?
+#' @param ignore.full_scan Logical. If FALSE, perform a brute-force scan if other installs are not found.  Default is TRUE.
 #' @param verbose Logical. Enable verbose execution? Default is FALSE.  
 #' @return NULL or if(output_Raster), a RasterBrick.
 #' @author Jonathan A. Greenberg (\email{gdalUtils@@estarcion.net}) (wrapper) and Frank Warmerdam (GDAL lead developer).
@@ -71,8 +72,13 @@
 #'
 #' @references \url{http://www.gdal.org/gdalwarp.html}
 #' @examples 
-#' # Run if raster and rgdal are installed:
-#' if(require(raster) && require(rgdal))
+#' # We'll pre-check to make sure there is a valid GDAL install
+#' # and that raster and rgdal are also installed.
+#' # Note this isn't strictly neccessary, as executing the function will
+#' # force a search for a valid GDAL install.
+#' gdal_setInstallation()
+#' valid_install <- !is.null(getOption("gdalUtils_gdalPath"))
+#' if(require(raster) && require(rgdal) && valid_install)
 #' {
 #' # Example from the original gdal_translate documentation:
 #' src_dataset <- system.file("external/tahoe_highrez.tif", package="gdalUtils")
@@ -91,7 +97,9 @@ gdalwarp <- function(
 		dstalpha,wm,multi,q,of="GTiff",co,cutline,cl,cwhere,csql,cblend,crop_to_cutline,
 		overwrite,nomd,cvmd,setci,
 		additional_commands,
-		output_Raster=FALSE,verbose=FALSE)
+		output_Raster=FALSE,
+		ignore.full_scan=TRUE,
+		verbose=FALSE)
 {
 	if(output_Raster && (!require(raster) || !require(rgdal)))
 	{
@@ -102,7 +110,7 @@ gdalwarp <- function(
 	parameter_values <- as.list(environment())
 	
 	if(verbose) message("Checking gdal_installation...")
-	gdal_setInstallation()
+	gdal_setInstallation(ignore.full_scan=ignore.full_scan,verbose=verbose)
 	if(is.null(getOption("gdalUtils_gdalPath"))) return()
 	
 	# Place all gdal function variables into these groupings:

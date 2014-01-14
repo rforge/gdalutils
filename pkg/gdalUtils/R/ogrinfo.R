@@ -18,6 +18,7 @@
 #' @param geom Character. ("YES"|"NO"|"SUMMARY") (starting with GDAL 1.6.0) If set to NO, the feature dump will not display the geometry. If set to SUMMARY, only a summary of the geometry will be displayed. If set to YES, the geometry will be reported in full OGC WKT format. Default value is YES.
 #' @param formats Logical. List the format drivers that are enabled.
 #' @param additional_commands Character. Additional commands to pass directly to ogrinfo.
+#' @param ignore.full_scan Logical. If FALSE, perform a brute-force scan if other installs are not found.  Default is TRUE.
 #' @param verbose Logical. Enable verbose execution? Default is FALSE.  
 #' 
 #' @return character
@@ -37,6 +38,13 @@
 #' @references \url{http://www.gdal.org/ogrinfo.html}
 #' 
 #' @examples 
+#' # We'll pre-check to make sure there is a valid GDAL install.
+#' # Note this isn't strictly neccessary, as executing the function will
+#' # force a search for a valid GDAL install.
+#' gdal_setInstallation()
+#' valid_install <- !is.null(getOption("gdalUtils_gdalPath"))
+#' if(valid_install)
+#' {
 #' datasource_name <- system.file("external/tahoe_highrez_training.shp", package="gdalUtils")
 #' # Display all available formats:
 #' # Command-line ogrinfo call:
@@ -50,7 +58,7 @@
 #' # Get info on the layer of the shapefile:
 #' # ogrinfo tahoe_highrez_training.shp tahoe_highrez_training
 #' ogrinfo(datasource_name,"tahoe_highrez_training")
-#' 
+#' }
 #' @export
 
 # TODO: cleaner output similar to gdalinfo(...,raw_output=FALSE)
@@ -59,13 +67,14 @@ ogrinfo <- function(datasource_name,layer,
 		ro,q,where,spat,geomfield,fid,sql,
 		dialect,al,so,fields,geom,formats,
 		additional_commands,
+		ignore.full_scan=TRUE,
 		verbose=FALSE)
 {
 	
 	parameter_values <- as.list(environment())
 	
 	if(verbose) message("Checking gdal_installation...")
-	gdal_setInstallation()
+	gdal_setInstallation(ignore.full_scan=ignore.full_scan,verbose=verbose)
 	if(is.null(getOption("gdalUtils_gdalPath"))) return()
 	
 	# Start gdalinfo setup

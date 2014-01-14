@@ -3,7 +3,7 @@
 \title{gdalsrsinfo}
 \usage{
 gdalsrsinfo(srs_def, p, V, o, additional_commands, as.CRS = FALSE,
-  verbose = FALSE)
+  ignore.full_scan = TRUE, verbose = FALSE)
 }
 \arguments{
   \item{srs_def}{Character. A raster dataset name. It can
@@ -22,6 +22,10 @@ gdalsrsinfo(srs_def, p, V, o, additional_commands, as.CRS = FALSE,
 
   \item{additional_commands}{Character. Additional commands
   to pass directly to gdalsrsinfo.}
+
+  \item{ignore.full_scan}{Logical. If FALSE, perform a
+  brute-force scan if other installs are not found.
+  Default is TRUE.}
 
   \item{verbose}{Logical. Enable verbose execution? Default
   is FALSE.}
@@ -55,12 +59,20 @@ If as.CRS is set to TRUE, 'o' will automatically be set to
 use with sp.
 }
 \examples{
+# We'll pre-check to make sure there is a valid GDAL install.
+# Note this isn't strictly neccessary, as executing the function will
+# force a search for a valid GDAL install.
+gdal_setInstallation()
+valid_install <- !is.null(getOption("gdalUtils_gdalPath"))
+if(valid_install)
+{
 src_dataset <- system.file("external/tahoe_highrez.tif", package="gdalUtils")
 # Command-line gdalsrsinfo call:
 # gdalsrsinfo -o proj4 tahoe_highrez.tif
 gdalsrsinfo(src_dataset,o="proj4")
 # Export as CRS:
 gdalsrsinfo(src_dataset,as.CRS=TRUE)
+}
 }
 \author{
 Jonathan A. Greenberg (\email{gdalUtils@estarcion.net}) and

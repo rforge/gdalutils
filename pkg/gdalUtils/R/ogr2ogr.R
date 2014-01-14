@@ -51,6 +51,7 @@
 #' @param gcp Numeric. c(ungeoref_x,ungeoref_y,georef_x georef_y,elevation) (starting with GDAL 1.10.0) Add the indicated ground control point. This option may be provided multiple times to provide a set of GCPs.
 #' @param order Numeric. (starting with GDAL 1.10.0) order of polynomial used for warping (1 to 3). The default is to select a polynomial order based on the number of GCPs.
 #' @param additional_commands Character. Additional commands to pass directly to ogrinfo.
+#' @param ignore.full_scan Logical. If FALSE, perform a brute-force scan if other installs are not found.  Default is TRUE.
 #' @param verbose Logical. Enable verbose execution? Default is FALSE.  
 #'  
 #' @return character
@@ -70,9 +71,12 @@
 #' @references \url{http://www.gdal.org/ogr2ogr.html}
 #' 
 #' @examples 
-#' # We'll pre-check for a proper GDAL installation before running these examples:
+#' # We'll pre-check to make sure there is a valid GDAL install.
+#' # Note this isn't strictly neccessary, as executing the function will
+#' # force a search for a valid GDAL install.
 #' gdal_setInstallation()
-#' if(!is.null(getOption("gdalUtils_gdalPath")))
+#' valid_install <- !is.null(getOption("gdalUtils_gdalPath"))
+#' if(valid_install)
 #' {
 #' src_datasource_name <- system.file("external/tahoe_highrez_training.shp", package="gdalUtils")
 #' dst_datasource_name <- paste(tempfile(),".shp",sep="")
@@ -100,13 +104,14 @@ ogr2ogr <- function(src_datasource_name,dst_datasource_name,
 		fieldmap,splitlistfields,maxsubfields,
 		explodecollections,zfield,gcp,order,
 		additional_commands,
+		ignore.full_scan=TRUE,
 		verbose=FALSE)
 {
 	
 	parameter_values <- as.list(environment())
 	
 	if(verbose) message("Checking gdal_installation...")
-	gdal_setInstallation()
+	gdal_setInstallation(ignore.full_scan=ignore.full_scan,verbose=verbose)
 	if(is.null(getOption("gdalUtils_gdalPath"))) return()
 	
 	# Start gdalinfo setup

@@ -4,7 +4,7 @@
 #' 
 #' @param search_path Character. Force a search in a specified directory.  This directory should contain the gdalinfo(.exe) executable.  If a valid GDAL install is found in this path, this will force gdalUtils to use this installation.  Remember to set rescan=TRUE if you have already set an install.
 #' @param rescan Logical. Force a rescan if neccessary (e.g. if you updated your GDAL install).
-#' @param ignore.full_scan Logical. If TRUE, do not perform a brute-force scan if other installs are not found.  Default is FALSE.
+#' @param ignore.full_scan Logical. If FALSE, perform a brute-force scan if other installs are not found.  Default is TRUE.
 #' @param verbose Logical. Enable verbose execution? Default is FALSE.  
 
 #' @return Sets an option "gdalUtils_gdalPath" with GDAL installation information.
@@ -56,7 +56,7 @@
 # TODO: check if the user has permission to execute the commands
 
 gdal_setInstallation <- function(search_path=NULL,rescan=FALSE,
-		ignore.full_scan=FALSE,
+		ignore.full_scan=TRUE,
 		verbose=FALSE)
 {
 	
@@ -277,7 +277,9 @@ gdal_setInstallation <- function(search_path=NULL,rescan=FALSE,
 		# Rescan will override everything.
 		if(!force_full_scan)
 		{
+#			if(verbose) message("No forced full scan...")
 			# Check options first.
+			
 			if(!ignore.options)
 			{
 				if(verbose) message("Checking the gdalUtils_gdalPath option...")
@@ -439,10 +441,13 @@ gdal_setInstallation <- function(search_path=NULL,rescan=FALSE,
 			sort_most_current=TRUE,
 			rescan=FALSE,
 			search_path=NULL,
-			ignore.full_scan=FALSE
+			ignore.full_scan=FALSE,
+			verbose=FALSE
 	)
 	{
-		path <- gdal_path(ignore.options=rescan,search_path=search_path,ignore.full_scan=ignore.full_scan)
+		if(verbose) message("Scanning for GDAL installations...")
+		path <- gdal_path(ignore.options=rescan,search_path=search_path,ignore.full_scan=ignore.full_scan,
+				verbose=verbose)
 	#	browser()
 		if(is.null(path)) return(NULL)
 		
@@ -485,11 +490,13 @@ gdal_setInstallation <- function(search_path=NULL,rescan=FALSE,
 	{
 		rescan=TRUE	
 	}
-	gdal_installation_out <- gdal_installation(search_path=search_path,rescan=rescan,ignore.full_scan=ignore.full_scan)
+	gdal_installation_out <- gdal_installation(search_path=search_path,rescan=rescan,ignore.full_scan=ignore.full_scan,
+			verbose=verbose)
 	options(gdalUtils_gdalPath=gdal_installation_out)
 	if(is.null(getOption("gdalUtils_gdalPath")))
 	{
 		warning("No GDAL installation found. Please install 'gdal' before continuing:\n\t- www.gdal.org (no HDF4 support!)\n\t- www.trac.osgeo.org/osgeo4w/ (with HDF4 support RECOMMENDED)\n\t- www.fwtools.maptools.org (with HDF4 support)\n") # why not stop?
+		if(ignore.full_scan) warning("If you think GDAL is installed, please run:\ngdal_setInstallation(ignore.full_scan=FALSE)")
 	}
 	else
 	{
