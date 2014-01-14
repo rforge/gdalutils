@@ -292,20 +292,28 @@ gdal_setInstallation <- function(search_path=NULL,rescan=FALSE,
 				}
 				path <- c(path,option_paths)
 			}
-						
+			
 			# Next, try scanning the search path
 #			if(!missing(search_path) && length(path)==0)
 			if(!is.null(search_path) && length(path)==0)
-		
+			
 			{
 				if(verbose) message("Checking the search path...")
-				search_paths <- 
-								#				list.files(
-								listDirectory(
-										path=search_path,pattern="^gdalinfo$|^gdalinfo\\.exe$",
-										recursive=search_path_recursive,
-										fullNames=TRUE)
-#										full.names=TRUE)
+				if (.Platform$OS=="unix")
+				{
+					search_paths <- 
+							listDirectory(
+									path=search_path,pattern="^gdalinfo$|^gdalinfo\\.exe$",
+									recursive=search_path_recursive,
+									fullNames=TRUE)
+				} else
+				{
+					search_paths <- 
+							list.files(
+									path=search_path,pattern="^gdalinfo$|^gdalinfo\\.exe$",
+									recursive=search_path_recursive,
+									full.names=TRUE)
+				}
 				if(length(search_paths)==0) search_paths <- NULL else 
 					search_paths <- normalizePath(dirname(search_paths))
 				if(!is.null(search_paths) && checkValidity)
@@ -356,21 +364,33 @@ gdal_setInstallation <- function(search_path=NULL,rescan=FALSE,
 							"C:\\OSGeo4W"
 					)
 				}
-#				browser()
+				
 				
 				if(length(common_locations != 0))
 				{
 					common_paths <- unlist(sapply(common_locations,
 									function(x)
 									{
-										search_common_paths <- 
-												#normalizePath(dirname(
-												listDirectory(
+										if (.Platform$OS=="unix")
+										{
+											search_common_paths <- 
+													#normalizePath(dirname(
+													listDirectory(
 #														list.files(
-														path=x,pattern="^gdalinfo$|^gdalinfo\\.exe$",recursive=TRUE,
+															path=x,pattern="^gdalinfo$|^gdalinfo\\.exe$",recursive=TRUE,
 #																full.names=TRUE)
-														fullNames=TRUE)
-										#	))
+															fullNames=TRUE)
+											#	))
+										} else
+										{
+											search_common_paths <- 
+													#normalizePath(dirname(
+													list.files(
+#														list.files(
+															path=x,pattern="^gdalinfo$|^gdalinfo\\.exe$",recursive=TRUE,
+#																full.names=TRUE)
+															full.names=TRUE)
+										}
 										if(length(search_common_paths)==0)
 											return(search_common_paths)
 										else
@@ -403,16 +423,27 @@ gdal_setInstallation <- function(search_path=NULL,rescan=FALSE,
 			{
 				root_dir <- "C:\\"
 			}
-			
-			search_full_path <- 
-					# normalizePath(dirname(
-					listDirectory(
+			if (.Platform$OS=="unix")
+			{
+				search_full_path <- 
+						# normalizePath(dirname(
+						listDirectory(
 #							list.files(
-							path=root_dir,pattern="^gdalinfo$|^gdalinfo\\.exe$",
-							recursive=TRUE,
-							fullNames=TRUE)
+								path=root_dir,pattern="^gdalinfo$|^gdalinfo\\.exe$",
+								recursive=TRUE,
+								fullNames=TRUE)
 #									full.names=TRUE)
-			# ))
+				# ))
+			} else
+			{
+				search_full_path <- 
+						# normalizePath(dirname(
+						list.files(
+#							list.files(
+								path=root_dir,pattern="^gdalinfo$|^gdalinfo\\.exe$",
+								recursive=TRUE,
+								full.names=TRUE)
+			}
 			if(length(search_full_path)==0) search_full_path <- NULL
 			else search_full_path <- normalizePath(dirname(search_full_path))
 			if(!is.null(search_full_path) && checkValidity)
@@ -448,13 +479,13 @@ gdal_setInstallation <- function(search_path=NULL,rescan=FALSE,
 		if(verbose) message("Scanning for GDAL installations...")
 		path <- gdal_path(ignore.options=rescan,search_path=search_path,ignore.full_scan=ignore.full_scan,
 				verbose=verbose)
-	#	browser()
+		#	browser()
 		if(is.null(path)) return(NULL)
 		
 		gdal_installation_results <- lapply(path,
 				function(x,return_drivers,return_python_utilities,return_versions)
 				{
-			#		browser()
+					#		browser()
 					result <- list(path=x)
 					
 					if(return_versions)
