@@ -158,7 +158,7 @@ gdalwarp <- function(
 	
 	parameter_noflags <- c("srcfile","dstfile")
 	
-	parameter_noquotes <- parameter_variables$vector
+	parameter_noquotes <- unlist(parameter_variables$vector)
 	
 	executable <- "gdalwarp"
 	

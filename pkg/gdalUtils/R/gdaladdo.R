@@ -81,7 +81,7 @@ gdaladdo <- function(filename,levels,
 	
 	parameter_doubledash <- NULL
 	
-	parameter_noquotes <- parameter_variables$vector
+	parameter_noquotes <- unlist(parameter_variables$vector)
 	
 	executable <- "gdaladdo"
 	# End gdalinfo setup

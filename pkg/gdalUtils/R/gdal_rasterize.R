@@ -130,7 +130,7 @@ gdal_rasterize <- function(
 	
 	parameter_noflags <- c("src_datasource","dst_filename")
 	
-	parameter_noquotes <- parameter_variables$vector
+	parameter_noquotes <- unlist(parameter_variables$vector)
 	
 	executable <- "gdal_rasterize"
 	

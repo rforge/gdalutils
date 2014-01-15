@@ -104,7 +104,7 @@ gdalbuildvrt <- function(gdalfile,output.vrt,
 	
 	parameter_doubledash <- NULL
 	
-	parameter_noquotes <- parameter_variables$vector
+	parameter_noquotes <- unlist(parameter_variables$vector)
 	
 	executable <- "gdalbuildvrt"
 	# End gdalinfo setup

@@ -142,7 +142,7 @@ gdaldem <- function(
 	
 	parameter_noflags <- c("mode","input_dem","color_text_file","output")
 	
-	parameter_noquotes <- parameter_variables$vector
+	parameter_noquotes <- unlist(parameter_variables$vector)
 	
 	executable <- "gdaldem"
 	# End gdalinfo setup

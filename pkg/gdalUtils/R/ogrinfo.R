@@ -99,7 +99,7 @@ ogrinfo <- function(datasource_name,layer,
 	
 	parameter_noflags <- c("datasource_name","layer")
 	
-	parameter_noquotes <- parameter_variables$vector
+	parameter_noquotes <- unlist(parameter_variables$vector)
 	
 	parameter_doubledash <- c("formats")
 	
