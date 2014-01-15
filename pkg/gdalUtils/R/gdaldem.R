@@ -142,6 +142,8 @@ gdaldem <- function(
 	
 	parameter_noflags <- c("mode","input_dem","color_text_file","output")
 	
+	parameter_noquotes <- parameter_variables$vector
+	
 	executable <- "gdaldem"
 	# End gdalinfo setup
 	
@@ -150,7 +152,8 @@ gdaldem <- function(
 			parameter_variables=parameter_variables,
 			parameter_values=parameter_values,
 			parameter_order=parameter_order,
-			parameter_noflags=parameter_noflags)
+			parameter_noflags=parameter_noflags,
+			parameter_noquotes=parameter_noquotes)
 	
 	if(verbose) message(paste("GDAL command being used:",cmd))
 	

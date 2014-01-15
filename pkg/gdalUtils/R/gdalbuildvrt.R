@@ -104,6 +104,8 @@ gdalbuildvrt <- function(gdalfile,output.vrt,
 	
 	parameter_doubledash <- NULL
 	
+	parameter_noquotes <- parameter_variables$vector
+	
 	executable <- "gdalbuildvrt"
 	# End gdalinfo setup
 	
@@ -113,6 +115,7 @@ gdalbuildvrt <- function(gdalfile,output.vrt,
 			parameter_values=parameter_values,
 			parameter_order=parameter_order,
 			parameter_noflags=parameter_noflags,
+			parameter_noquotes=parameter_noquotes,
 			parameter_doubledash=parameter_doubledash)
 	
 	if(verbose) message(paste("GDAL command being used:",cmd))

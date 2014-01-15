@@ -158,6 +158,8 @@ gdalwarp <- function(
 	
 	parameter_noflags <- c("srcfile","dstfile")
 	
+	parameter_noquotes <- parameter_variables$vector
+	
 	executable <- "gdalwarp"
 	
 	cmd <- gdal_cmd_builder(
@@ -166,6 +168,7 @@ gdalwarp <- function(
 			parameter_values=parameter_values,
 			parameter_order=parameter_order,
 			parameter_noflags=parameter_noflags,
+			parameter_noquotes=parameter_noquotes,
 			gdal_installation_id=gdal_chooseInstallation(hasDrivers=of))
 	
 	if(verbose) message(paste("GDAL command being used:",cmd))

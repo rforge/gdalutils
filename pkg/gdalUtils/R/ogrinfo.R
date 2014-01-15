@@ -99,6 +99,8 @@ ogrinfo <- function(datasource_name,layer,
 	
 	parameter_noflags <- c("datasource_name","layer")
 	
+	parameter_noquotes <- parameter_variables$vector
+	
 	parameter_doubledash <- c("formats")
 	
 	executable <- "ogrinfo"
@@ -110,7 +112,8 @@ ogrinfo <- function(datasource_name,layer,
 			parameter_values=parameter_values,
 			parameter_order=parameter_order,
 			parameter_noflags=parameter_noflags,
-			parameter_doubledash=parameter_doubledash)
+			parameter_doubledash=parameter_doubledash,
+			parameter_noquotes=parameter_noquotes)
 	
 	if(verbose) message(paste("GDAL command being used:",cmd))
 	

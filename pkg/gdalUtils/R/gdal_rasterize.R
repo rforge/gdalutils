@@ -130,6 +130,8 @@ gdal_rasterize <- function(
 	
 	parameter_noflags <- c("src_datasource","dst_filename")
 	
+	parameter_noquotes <- parameter_variables$vector
+	
 	executable <- "gdal_rasterize"
 	
 	cmd <- gdal_cmd_builder(
@@ -138,6 +140,7 @@ gdal_rasterize <- function(
 			parameter_values=parameter_values,
 			parameter_order=parameter_order,
 			parameter_noflags=parameter_noflags,
+			parameter_noquotes=parameter_noquotes,
 			gdal_installation_id=gdal_chooseInstallation(hasDrivers=of))
 	
 	if(verbose) message(paste("GDAL command being used:",cmd))

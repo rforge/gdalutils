@@ -162,6 +162,8 @@ ogr2ogr <- function(src_datasource_name,dst_datasource_name,
 	
 	parameter_doubledash <- NULL
 	
+	parameter_noquotes <- c("spat")
+	
 	executable <- "ogr2ogr"
 	# End ogr2ogr setup
 	
@@ -171,7 +173,8 @@ ogr2ogr <- function(src_datasource_name,dst_datasource_name,
 			parameter_values=parameter_values,
 			parameter_order=parameter_order,
 			parameter_noflags=parameter_noflags,
-			parameter_doubledash=parameter_doubledash)
+			parameter_doubledash=parameter_doubledash,
+			parameter_noquotes=parameter_noquotes)
 	
 	if(verbose) message(paste("GDAL command being used:",cmd))
 	

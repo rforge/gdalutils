@@ -10,7 +10,7 @@
 #' @param b Numeric or Character. Select an input band band for output. Bands are numbered from 1. Multiple bands may be used to select a set of input bands to write to the output file, or to reorder bands. Starting with GDAL 1.8.0, band can also be set to "mask,1" (or just "mask") to mean the mask band of the first band of the input dataset.
 #' @param mask Numeric. (GDAL >= 1.8.0) Select an input band band to create output dataset mask band. Bands are numbered from 1. band can be set to "none" to avoid copying the global mask of the input dataset if it exists. Otherwise it is copied by default ("auto"), unless the mask is an alpha channel, or if it is explicitly used to be a regular band of the output dataset ("-b mask"). band can also be set to "mask,1" (or just "mask") to mean the mask band of the 1st band of the input dataset.
 #' @param expand Character. ("gray"|"rgb"|"rgba").  (From GDAL 1.6.0) To expose a dataset with 1 band with a color table as a dataset with 3 (RGB) or 4 (RGBA) bands. Useful for output drivers such as JPEG, JPEG2000, MrSID, ECW that don't support color indexed datasets. The 'gray' value (from GDAL 1.7.0) enables to expand a dataset with a color table that only contains gray levels to a gray indexed dataset.
-#' @param outsize Numeric. (c(xsize[%],ysize[%])). Set the size of the output file. Outsize is in pixels and lines unless '%' is attached in which case it is as a fraction of the input image size.
+#' @param outsize Numeric. (c(xsize[percentage],ysize[percentage])). Set the size of the output file. Outsize is in pixels and lines unless '%' is attached in which case it is as a fraction of the input image size.
 #' @param scale Numeric. (c(src_min,src_max,dst_min,dst_max)). Rescale the input pixels values from the range src_min to src_max to the range dst_min to dst_max. If omitted the output range is 0 to 255. If omitted the input range is automatically computed from the source data.
 #' @param unscale Logical. Apply the scale/offset metadata for the bands to convert scaled values to unscaled values. It is also often necessary to reset the output datatype with the -ot switch.
 #' @param srcwin Numeric. (c(xoff,yoff,xsize,ysize)).  Selects a subwindow from the source image for copying based on pixel/line location.
@@ -132,6 +132,8 @@ gdal_translate <- function(src_dataset,dst_dataset,ot,strict,of="GTiff",
 	
 	parameter_noflags <- c("src_dataset","dst_dataset")
 	
+	parameter_noquotes <- parameter_variables$vector
+	
 	executable <- "gdal_translate"
 	
 	cmd <- gdal_cmd_builder(
@@ -140,6 +142,7 @@ gdal_translate <- function(src_dataset,dst_dataset,ot,strict,of="GTiff",
 			parameter_values=parameter_values,
 			parameter_order=parameter_order,
 			parameter_noflags=parameter_noflags,
+			parameter_noquotes=parameter_noquotes,
 			gdal_installation_id=gdal_chooseInstallation(hasDrivers=of))
 	
 	if(verbose) message(paste("GDAL command being used:",cmd))
