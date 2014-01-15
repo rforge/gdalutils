@@ -36,8 +36,10 @@ gdal_setInstallation will be executed to attempt to find a
 working GDAL.
 }
 \examples{
+\dontrun{
 hdf4_dataset <- system.file("external/test_modis.hdf", package="gdalUtils")
 get_subdatasets(hdf4_dataset)
+}
 }
 \author{
 Jonathan A. Greenberg (\email{gdalUtils@estarcion.net}) and

@@ -29,7 +29,7 @@
 #' \item Checks using Sys.which().  This is typically defined
 #' 		in the system's PATH, so will override any other install.
 #' \item Checks in common install locations (OS specific).  
-#' \item Finally, if it can't find a valid GDAL install anywhere else,
+#' \item (optional, if ignore.full_scan=FALSE) Finally, if it can't find a valid GDAL install anywhere else,
 #' 		it will brute-force search the entire local system (which may
 #' 		take a long time).  
 #' }

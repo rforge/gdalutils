@@ -52,10 +52,11 @@ gdal_translate(src_dataset, dst_dataset, ot, strict, of = "GTiff", b, mask,
   a color table that only contains gray levels to a gray
   indexed dataset.}
 
-  \item{outsize}{Numeric. (c(xsize[%],ysize[%])). Set the
-  size of the output file. Outsize is in pixels and lines
-  unless '%' is attached in which case it is as a fraction
-  of the input image size.}
+  \item{outsize}{Numeric.
+  (c(xsize[percentage],ysize[percentage])). Set the size of
+  the output file. Outsize is in pixels and lines unless
+  '%' is attached in which case it is as a fraction of the
+  input image size.}
 
   \item{scale}{Numeric.
   (c(src_min,src_max,dst_min,dst_max)). Rescale the input
@@ -200,9 +201,11 @@ srcwin=c(1,1,100,100),output_Raster=TRUE,verbose=TRUE)
 # Notice this is the equivalent, but follows gdal_translate's parameter format:
 gdal_translate(src_dataset,"tahoe_highrez_tiled.tif",of="GTiff",
 srcwin="1 1 100 100",output_Raster=TRUE,verbose=TRUE)
+\dontrun{
 # Extract the first subdataset from an HDF4 file:
 hdf4_dataset <- system.file("external/test_modis.hdf", package="gdalUtils")
 gdal_translate(hdf4_dataset,"test_modis_sd1.tif",sd_index=1)
+}
 }
 }
 \author{
