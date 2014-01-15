@@ -201,11 +201,11 @@ srcwin=c(1,1,100,100),output_Raster=TRUE,verbose=TRUE)
 # Notice this is the equivalent, but follows gdal_translate's parameter format:
 gdal_translate(src_dataset,"tahoe_highrez_tiled.tif",of="GTiff",
 srcwin="1 1 100 100",output_Raster=TRUE,verbose=TRUE)
+}
 \dontrun{
 # Extract the first subdataset from an HDF4 file:
 hdf4_dataset <- system.file("external/test_modis.hdf", package="gdalUtils")
 gdal_translate(hdf4_dataset,"test_modis_sd1.tif",sd_index=1)
-}
 }
 }
 \author{

@@ -58,7 +58,7 @@
 #' src_dataset <- system.file("external/tahoe_highrez.tif", package="gdalUtils")
 #' # Command-line gdalinfo call:
 #' # gdalinfo tahoe_highrez.tif
-#' gdalinfo(src_dataset)
+#' gdalinfo(src_dataset,verbose=TRUE)
 #' }
 #' @export
 

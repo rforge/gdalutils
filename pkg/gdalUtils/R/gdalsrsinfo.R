@@ -41,9 +41,9 @@
 #' src_dataset <- system.file("external/tahoe_highrez.tif", package="gdalUtils")
 #' # Command-line gdalsrsinfo call:
 #' # gdalsrsinfo -o proj4 tahoe_highrez.tif
-#' gdalsrsinfo(src_dataset,o="proj4")
+#' gdalsrsinfo(src_dataset,o="proj4",verbose=TRUE)
 #' # Export as CRS:
-#' gdalsrsinfo(src_dataset,as.CRS=TRUE)
+#' gdalsrsinfo(src_dataset,as.CRS=TRUE,verbose=TRUE)
 #' }
 #' @import sp
 #' @export

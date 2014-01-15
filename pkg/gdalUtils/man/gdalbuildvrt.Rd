@@ -170,7 +170,7 @@ if(valid_install)
 layer1 <- system.file("external/tahoe_lidar_bareearth.tif", package="gdalUtils")
 layer2 <- system.file("external/tahoe_lidar_highesthit.tif", package="gdalUtils")
 output.vrt <- paste(tempfile(),".vrt",sep="")
-gdalbuildvrt(gdalfile=c(layer1,layer2),output.vrt=output.vrt,separate=TRUE)
+gdalbuildvrt(gdalfile=c(layer1,layer2),output.vrt=output.vrt,separate=TRUE,verbose=TRUE)
 gdalinfo(output.vrt)
 }
 }
