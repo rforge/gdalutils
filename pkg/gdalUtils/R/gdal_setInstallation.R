@@ -224,15 +224,28 @@ gdal_setInstallation <- function(search_path=NULL,rescan=FALSE,
 	}
 	
 # Checks if GDAL is functional
-	gdal_check_validity <- function(path)
+	gdal_check_validity <- function(path,utility="^gdalinfo$|^gdalinfo\\.exe$")
 	{
+#		full_utility_list <- c(
+#				"^gdalinfo$|^gdalinfo\\.exe$",
+#				"^gdal_rasterize$|^gdal_rasterize\\.exe$",
+#				"^gdal_translate$|^gdal_translate\\.exe$",
+#				"^gdaladdo$|^gdaladdo\\.exe$",
+#				"^gdalbuildvrt$|^gdalbuildvrt\\.exe$",
+#				"^gdaldem$|^gdaldem\\.exe$",
+#				"^gdalsrsinfo$|^gdaldem\\.exe$",
+#				
+#				)
+	 	
+		
 		checkValidity <- sapply(path,
 				function(x)
 				{
 					cmd <- normalizePath(
 							listDirectory(
 #							list.files(
-									path=x,pattern="^gdalinfo$|^gdalinfo\\.exe$",
+#									path=x,pattern="^gdalinfo$|^gdalinfo\\.exe$",
+									path=x,pattern=utility,
 									fullNames=TRUE)
 #									full.names=TRUE)
 					)
@@ -361,7 +374,8 @@ gdal_setInstallation <- function(search_path=NULL,rescan=FALSE,
 					common_locations <- c(
 							"C:\\Program Files",
 							"C:\\Program Files (x86)",
-							"C:\\OSGeo4W"
+							"C:\\OSGeo4W",
+							"C:\\OSGeo4W64"
 					)
 				}
 				
