@@ -1,6 +1,6 @@
 #' get_subdatasets
 #' 
-#' Returns HDF4, HDF5, and NetCDF subdataset names
+#' Returns HDF4, HDF5, and NetCDF subdataset names for standardized files.
 #' 
 #' @param datasetname Character. Input HDF4/5 or NetCDF file.
 #' @param names_only Logical. Return subdataset names only?  Default=TRUE.
