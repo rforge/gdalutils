@@ -271,7 +271,7 @@ gdal_setInstallation <- function(search_path=NULL,rescan=FALSE,
 			ignore.which=FALSE,
 			ignore.common=FALSE,
 			ignore.full_scan=FALSE,
-			force_full_scan = FALSE, 
+#			force_full_scan = FALSE, 
 			checkValidity, 
 			search_path_recursive=FALSE,
 			verbose = FALSE)
@@ -288,7 +288,7 @@ gdal_setInstallation <- function(search_path=NULL,rescan=FALSE,
 		
 		path <- NULL
 		# Rescan will override everything.
-		if(!force_full_scan)
+		if(ignore.full_scan)
 		{
 #			if(verbose) message("No forced full scan...")
 			# Check options first.
@@ -419,13 +419,13 @@ gdal_setInstallation <- function(search_path=NULL,rescan=FALSE,
 					path <- c(path,common_paths)
 				}
 			}
-			if(!ignore.full_scan && length(path)==0)
+			if(ignore.full_scan && length(path)==0)
 			{
-				force_full_scan=TRUE
+				ignore.full_scan=FALSE
 			}
 		}
 		
-		if(force_full_scan)
+		if(!ignore.full_scan)
 		{
 			if(verbose) message("Scanning your root-dir for available GDAL installations,... This could take some time...")
 			if (.Platform$OS=="unix")
