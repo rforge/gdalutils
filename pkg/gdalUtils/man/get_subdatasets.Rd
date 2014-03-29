@@ -19,7 +19,8 @@ character vector of subdataset names that can be used in
 gdal_translate.
 }
 \description{
-Returns HDF4, HDF5, and NetCDF subdataset names
+Returns HDF4, HDF5, and NetCDF subdataset names for
+standardized files.
 }
 \details{
 Currently, this only returns the subdataset names of HDF4,
