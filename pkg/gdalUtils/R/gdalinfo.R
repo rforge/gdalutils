@@ -63,16 +63,16 @@
 #' @export
 
 gdalinfo <- function(datasetname,mm,stats,
-	approx_stats,hist,nogcp,nomd,nrat,noct,nofl,checksum,
-	proj4,mdd,sd,
-	version,formats,format,optfile,config,debug,
-	additional_commands,
-	raw_output=TRUE,
-	ignore.full_scan=TRUE,
-	verbose=FALSE)
+		approx_stats,hist,nogcp,nomd,nrat,noct,nofl,checksum,
+		proj4,mdd,sd,
+		version,formats,format,optfile,config,debug,
+		additional_commands,
+		raw_output=TRUE,
+		ignore.full_scan=TRUE,
+		verbose=FALSE)
 {
 	parameter_values <- as.list(environment())
-
+	
 	if(verbose) message("Checking gdal_installation...")
 	gdal_setInstallation(ignore.full_scan=ignore.full_scan,verbose=verbose)
 	if(is.null(getOption("gdalUtils_gdalPath"))) return()
@@ -89,7 +89,7 @@ gdalinfo <- function(datasetname,mm,stats,
 					varnames <- c("sd")),
 			character = list(
 					varnames <- c("mdd","datasetname",
-						"format","optfile","config","debug")),
+							"format","optfile","config","debug")),
 			repeatable = list(
 					varnames <- NULL)
 	)
@@ -144,7 +144,12 @@ gdalinfo <- function(datasetname,mm,stats,
 		
 		result$file <- gsub(grep(cmd_output,pattern="Files: ",value=TRUE),pattern="Files: ",replacement="")
 		
-		
+		if(!missing(proj4))
+		{
+			# Thanks to http://haotu.wordpress.com/2011/12/02/trim-remove-trailing-and-leading-spaces-from-a-character-string-in-r/
+			# for hints.
+			if(proj4) result$proj4 <- sub("\\s+$","",gsub("'","",cmd_output[grep(pattern="PROJ.4 string is:",cmd_output)+1]))			
+		}
 #		result$oblique.x <- NA
 #		result$oblique.y <- NA
 		
@@ -153,22 +158,30 @@ gdalinfo <- function(datasetname,mm,stats,
 		
 		# The coordinate system for the file (in OGC WKT).
 		# TODO
-	
+		
 		# The geotransform associated with the file (rotational coefficients are currently not reported).
 		# TODO
-	
+		
 		# Corner coordinates in georeferenced, and if possible lat/long based on the full geotransform (but not GCPs).
-		# TODO
+		ul <- as.numeric(strsplit(strsplit(strsplit(cmd_output[grep(pattern=glob2rx("Upper Left*"),cmd_output)],"\\(")[[1]][2],"\\)")[[1]][1],",")[[1]])
+		ll <- as.numeric(strsplit(strsplit(strsplit(cmd_output[grep(pattern=glob2rx("Lower Left*"),cmd_output)],"\\(")[[1]][2],"\\)")[[1]][1],",")[[1]])
+		ur <- as.numeric(strsplit(strsplit(strsplit(cmd_output[grep(pattern=glob2rx("Upper Right*"),cmd_output)],"\\(")[[1]][2],"\\)")[[1]][1],",")[[1]])
+		lr <- as.numeric(strsplit(strsplit(strsplit(cmd_output[grep(pattern=glob2rx("Lower Right*"),cmd_output)],"\\(")[[1]][2],"\\)")[[1]][1],",")[[1]])
+		corners_rbind <- rbind(ul,ll,ur,lr)
+		
+		result$bbox <- matrix(c(min(corners_rbind[,1]),max(corners_rbind[,1]),min(corners_rbind[,2]),max(corners_rbind[,2])),nrow=2,ncol=2,byrow=TRUE)
+		colnames(result$bbox) <- c("min","max")
+		rownames(result$bbox) <- c("s1","s2")
 	
 		# Ground control points.
 		# TODO
 		
 		# File wide (including subdatasets) metadata.
 		# TODO
-	
+		
 		# Band data types.
 		# TODO
-	
+		
 		# Band color interpretations.
 		# TODO	
 		
@@ -183,20 +196,20 @@ gdalinfo <- function(datasetname,mm,stats,
 		
 		# Band checksum (if computation asked).
 		# TODO
-
+		
 		# Band NODATA value.
 		# TODO
-
+		
 		# Band overview resolutions available.
 		# TODO
-
+		
 		# Band unit type (i.e.. "meters" or "feet" for elevation bands).
 		# TODO
-
+		
 		# Band pseudo-color tables.
 		# TODO	
-	
+		
 		return(result)
-	
+		
 	}	
 }
