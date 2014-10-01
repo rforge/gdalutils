@@ -12,6 +12,7 @@
 #' @param expand Character. ("gray"|"rgb"|"rgba").  (From GDAL 1.6.0) To expose a dataset with 1 band with a color table as a dataset with 3 (RGB) or 4 (RGBA) bands. Useful for output drivers such as JPEG, JPEG2000, MrSID, ECW that don't support color indexed datasets. The 'gray' value (from GDAL 1.7.0) enables to expand a dataset with a color table that only contains gray levels to a gray indexed dataset.
 #' @param outsize Numeric. (c(xsize[percentage],ysize[percentage])). Set the size of the output file. Outsize is in pixels and lines unless '%' is attached in which case it is as a fraction of the input image size.
 #' @param scale Numeric. (c(src_min,src_max,dst_min,dst_max)). Rescale the input pixels values from the range src_min to src_max to the range dst_min to dst_max. If omitted the output range is 0 to 255. If omitted the input range is automatically computed from the source data.
+#' @param exponent Numeric. (From GDAL 1.11) To apply non-linear scaling with a power function. exp_val is the exponent of the power function (must be postive). This option must be used with the -scale option. If specified only once, -exponent applies to all bands of the output image. It can be repeated several times so as to specify per band parameters. It is also possible to use the "-exponent_bn" syntax where bn is a band number (e.g. "-exponent_2" for the 2nd band of the output dataset) to specify the parameters of one or several specific bands.
 #' @param unscale Logical. Apply the scale/offset metadata for the bands to convert scaled values to unscaled values. It is also often necessary to reset the output datatype with the -ot switch.
 #' @param srcwin Numeric. (c(xoff,yoff,xsize,ysize)).  Selects a subwindow from the source image for copying based on pixel/line location.
 #' @param projwin Numeric. (c(ulx,uly,lrx,lry)).  Selects a subwindow from the source image for copying (like -srcwin) but with the corners given in georeferenced coordinates.
@@ -26,6 +27,7 @@
 #' @param q Logical. Suppress progress monitor and other non-error output.
 #' @param sds Logical. Copy all subdatasets of this file to individual output files. Use with formats like HDF or OGDI that have subdatasets.
 #' @param stats Logical. (GDAL >= 1.8.0) Force (re)computation of statistics.
+#' @param norat Logical. (GDAL >= 1.11) Do not copy source RAT into destination dataset.
 #' @param additional_commands Character. Additional commands to pass directly to gdal_translate.
 #' @param sd_index Numeric. If the file is an HDF4 or HDF5 file, which subdataset should be returned (1 to the number of subdatasets)?  If this flag is used, src_dataset should be the filename of the multipart file.  This parameter only works if the subdataset names follow the SUBDATASET_n_NAME convention.
 #' @param output_Raster Logical. Return output dst_dataset as a RasterBrick?
@@ -86,8 +88,8 @@
 # TODO: return > 1 sd
 
 gdal_translate <- function(src_dataset,dst_dataset,ot,strict,of="GTiff",
-		b,mask,expand,outsize,scale,unscale,srcwin,projwin,epo,eco,
-		a_srs,a_ullr,a_nodata,mo,co,gcp,q,sds,stats,
+		b,mask,expand,outsize,scale,exponent,unscale,srcwin,projwin,epo,eco,
+		a_srs,a_ullr,a_nodata,mo,co,gcp,q,sds,stats,norat,
 		additional_commands,
 		sd_index,
 		output_Raster=FALSE,
@@ -114,9 +116,9 @@ gdal_translate <- function(src_dataset,dst_dataset,ot,strict,of="GTiff",
 	
 	parameter_variables <- list(
 			logical = list(
-					varnames <- c("strict","unscale","epo","eco","q","sds","stats")),
+					varnames <- c("strict","unscale","epo","eco","q","sds","stats","norat")),
 			vector = list(
-					varnames <- c("outsize","scale","srcwin","projwin","a_ullr","gcp")),
+					varnames <- c("outsize","scale","exponent","srcwin","projwin","a_ullr","gcp")),
 			scalar = list(
 					varnames <- c("a_nodata")),
 			character = list(
@@ -125,7 +127,8 @@ gdal_translate <- function(src_dataset,dst_dataset,ot,strict,of="GTiff",
 					varnames <- c("b","mo","co")))
 	
 	parameter_order <- c(
-			"strict","unscale","epo","eco","q","sds","stats",
+			"strict","exponent","unscale","epo","eco","q","sds","stats",
+			"norat",
 			"outsize","scale","srcwin","projwin","a_ullr","gcp",
 			"a_nodata",
 			"ot","of","mask","expand","a_srs",
