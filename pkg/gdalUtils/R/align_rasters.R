@@ -12,7 +12,7 @@
 #' Syncing will use the reference's projection, resolution, and extent.
 #' @param dstfile Character. The filename of the synchronized output file.
 #' @param output_Raster Logical. Return output dst_dataset as a RasterBrick?
-#' @param enable_multithreaded Logical. Enables multithreaded execution with all available CPUs.  Default is FALSE.
+#' @param nThreads Numeric or Character. If numeric, the number of threads to use.  Setting to > 1 enables multithreaded execution.  Can also be "ALL_CPUS" to use all available CPUS. Default is 1.
 #' @param verbose Logical. Enable verbose execution? Default is FALSE.  
 #' @param ... parameters to be passed to {\link{gdalwarp}} (e.g. resampling approach).
 #' @return Either NULL or a RasterBricks depending on whether output_Raster is set to TRUE.
@@ -22,7 +22,7 @@
 #' @export
 
 align_rasters <- function(unaligned,reference,dstfile,output_Raster=FALSE,
-		enable_multithreaded=FALSE,
+		nThreads=1,
 		verbose=FALSE,...)
 {
 	# Get projection from reference
@@ -38,9 +38,30 @@ align_rasters <- function(unaligned,reference,dstfile,output_Raster=FALSE,
 	
 	if(missing(dstfile))
 		dstfile <- tempfile()
-				
+	
+	if(is.character(nThreads))
+	{
+		if(nThreads=="ALL_CPUS")
+		{
+			multi=TRUE
+			wo="NUM_THREADS=ALL_CPUS"
+		}
+	} else
+	{
+		if(nThreads==1)
+		{
+			multi=FALSE
+			wo=NULL
+		}
+		else
+		{
+			multi=TRUE
+			wo=paste("NUM_THREADS=",nThreads,sep="")
+		}
+	}
+	
 	synced <- gdalwarp(srcfile=unaligned,dstfile=dstfile,te=te,t_srs=proj4_string,
-			ts=ts,output_Raster=output_Raster,verbose=verbose,...)
+			ts=ts,output_Raster=output_Raster,multi=multi,wo=wo,verbose=verbose,...)
 	return(synced)
 	
 }

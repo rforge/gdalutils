@@ -16,8 +16,9 @@
 #' @param off Numeric. Offset from zero relative to which to interpret intervals.
 #' @param fl Character. Name one or more "fixed levels" to extract.
 #' @param nln Character. Provide a name for the output vector layer. Defaults to "contour". 
+#' @param output_Vector. Return output dst_filename as a SpatialLines?  Currently only works for shapefiles.
 
- #' @return output vector file and NULL.
+#' @return output vector filename or SpatialLinesDataFrame object.
 #' @author Jonathan A. Greenberg (\email{gdalUtils@@estarcion.net}) (wrapper) and Frank Warmerdam (GDAL lead developer).
 #' @details This is an R wrapper for the 'gdal_contour' function that is part of the 
 #' Geospatial Data Abstraction Library (GDAL).  It follows the parameter naming
@@ -45,34 +46,32 @@
 #' valid_install <- !is.null(getOption("gdalUtils_gdalPath"))
 #' if(require(raster) && require(rgdal) && valid_install)
 #' {
-#' # Example from the original gdal_rasterize documentation:
-#' # gdal_rasterize -b 1 -b 2 -b 3 -burn 255 -burn 0 
-#' # 	-burn 0 -l tahoe_highrez_training tahoe_highrez_training.shp tempfile.tif
-#' dst_filename_original  <- system.file("external/tahoe_highrez.tif", package="gdalUtils")
-#' # Back up the file, since we are going to burn stuff into it.
-#' dst_filename <- paste(tempfile(),".tif",sep="")
-#' file.copy(dst_filename_original,dst_filename,overwrite=TRUE)
-#' #Before plot:
-#' plotRGB(brick(dst_filename))
-#' src_dataset <- system.file("external/tahoe_highrez_training.shp", package="gdalUtils")
-#' tahoe_burned <- gdal_rasterize(src_dataset,dst_filename,
-#' 	b=c(1,2,3),burn=c(0,255,0),l="tahoe_highrez_training",verbose=TRUE,output_Raster=TRUE)
-#' #After plot:
-#' plotRGB(brick(dst_filename))
+#' # Example from the original gdal_contour documentation:
+#' # 	gdal_contour -a elev dem.tif contour.shp -i 10.0 
+#' # Choose a DEM:
+#' input_dem  <- system.file("external/tahoe_lidar_bareearth.tif", package="gdalUtils")
+#' # Setup an output filename (shapefile):
+#' output_shapefile <- paste(tempfile(),".shp",sep="")
+#' contour_output <- gdal_contour(src_filename=input_dem,dst_filename=output_shapefile,
+#' 		a="Elevation",i=5.,output_Vector=TRUE)
+#' # Plot the contours using spplot:
+#' spplot(contour_output["Elevation"],contour=TRUE)
 #' }
 #' @export
 
 gdal_contour <- function(
 		src_filename,dst_filename,
-		b,a,threeD,inodata,snodata,i,f,
+		b,a,threeD,inodata,snodata,i,
+		f="ESRI Shapefile",
 		dsco,lco,off,fl,nln,
+		output_Vector=FALSE,
 		additional_commands,
 		ignore.full_scan=TRUE,
 		verbose=FALSE)
 {
-	if(output_Raster && (!require(raster) || !require(rgdal)))
+	if(output_Vector && (!require(rgdal)))
 	{
-		warning("rgdal and/or raster not installed. Please install.packages(c('rgdal','raster')) or set output_Raster=FALSE")
+		warning("rgdal not installed. Please install.packages('rgdal') or set output_Vector=FALSE")
 		return(NULL)
 	}
 	
@@ -90,7 +89,7 @@ gdal_contour <- function(
 					)),
 			vector = list(
 					varnames <- c(
-								
+					
 					)),
 			scalar = list(
 					varnames <- c(
@@ -125,17 +124,22 @@ gdal_contour <- function(
 			parameter_order=parameter_order,
 			parameter_noflags=parameter_noflags,
 			parameter_noquotes=parameter_noquotes,
-			gdal_installation_id=gdal_chooseInstallation(hasDrivers=of))
+			#		gdal_installation_id=gdal_chooseInstallation(hasDrivers=of))
+			gdal_installation_id=gdal_chooseInstallation())
 	
 	if(verbose) message(paste("GDAL command being used:",cmd))
 	
 	cmd_output <- system(cmd,intern=TRUE) 
 	
-	if(output_Raster)
+	if(output_Vector && f=="ESRI Shapefile")
 	{
-		return(brick(dst_filename))	
+		return(
+				readOGR(dsn=dirname(dst_filename),
+						layer=remove_file_extension(basename(dst_filename)))
+		)
+		#	return(brick(dst_filename))	
 	} else
 	{
-		return(NULL)
+		return(dst_filename)
 	}		
 }
