@@ -26,7 +26,7 @@ align_rasters <- function(unaligned,reference,dstfile,output_Raster=FALSE,
 		verbose=FALSE,...)
 {
 	# Get projection from reference
-	reference_info <- gdalinfo(reference,verbose=TRUE,proj4=TRUE,raw_output=FALSE,verbose=verbose)
+	reference_info <- gdalinfo(reference,proj4=TRUE,raw_output=FALSE,verbose=verbose)
 	
 #	cmd_output <- gdalinfo(reference,verbose=TRUE,proj4=TRUE,raw_output=FALSE)
 	

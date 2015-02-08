@@ -1,5 +1,5 @@
 # For jgrn/tauboa:
-pathtopackage <- "D:\\Users\\jgrn\\Documents\\code\\workspace\\gdalutils\\pkg\\gdalUtils"
+pathtopackage <- "D:\\Users\\jgrn\\workspace\\gdalutils\\pkg\\gdalUtils"
 
 # For jgrn/krypton:
 pathtopackage <- "/Users/jgrn307/Documents/workspace/gdalutils/pkg/gdalUtils"
@@ -11,7 +11,6 @@ setwd(pathtopackage)
 # When in doubt, you can delete all your local man files
 # and this will re-create them.
 require("roxygen2")
-roxygenize(package.dir=pathtopackage,
-		roxygen.dir=pathtopackage,
-		copy.package=FALSE,unlink.target=FALSE)
+roxygenize(package.dir=pathtopackage)
+
 

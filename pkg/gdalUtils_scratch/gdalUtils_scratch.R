@@ -83,4 +83,27 @@ ogrInfo(src_datasource_name,"tahoe_highrez_training")
 ogr2ogr(src_datasource_name,dst_datasource_name,t_srs="EPSG:3395",verbose=TRUE)
 ogrInfo(dirname(dst_datasource_name),layer=remove_file_extension(basename(dst_datasource_name)))
 
+### gdal_contour
+ gdal_setInstallation()
+ valid_install <- !is.null(getOption("gdalUtils_gdalPath"))
+ if(require(raster) && require(rgdal) && valid_install)
+ {
+ # Example from the original gdal_contour documentation:
+ # 	gdal_contour -a elev dem.tif contour.shp -i 10.0 
+ input_dem  <- system.file("external/tahoe_lidar_bareearth.tif", package="gdalUtils")
+ output_shapefile <- paste(tempfile(),".shp",sep="")
+ contour_output <- gdal_contour(src_filename=input_dem,dst_filename=output_shapefile,
+		 a="Elevation",i=5.,output_Vector=TRUE) 
 
+ 
+ # Back up the file, since we are going to burn stuff into it.
+ dst_filename <- paste(tempfile(),".tif",sep="")
+ file.copy(dst_filename_original,dst_filename,overwrite=TRUE)
+ #Before plot:
+ plotRGB(brick(dst_filename))
+ src_dataset <- system.file("external/tahoe_highrez_training.shp", package="gdalUtils")
+ tahoe_burned <- gdal_rasterize(src_dataset,dst_filename,
+ 	b=c(1,2,3),burn=c(0,255,0),l="tahoe_highrez_training",verbose=TRUE,output_Raster=TRUE)
+ #After plot:
+ plotRGB(brick(dst_filename))
+ }
