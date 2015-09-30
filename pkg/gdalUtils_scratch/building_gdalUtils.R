@@ -11,6 +11,10 @@ setwd(pathtopackage)
 # When in doubt, you can delete all your local man files
 # and this will re-create them.
 require("roxygen2")
+<<<<<<< .mine
+roxygenize(package.dir=pathtopackage)
+=======
 roxygenize(package.dir=pathtopackage)
 
+>>>>>>> .r108
 

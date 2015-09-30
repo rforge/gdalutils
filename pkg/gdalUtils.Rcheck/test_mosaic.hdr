@@ -1,0 +1,16 @@
+ENVI
+description = {
+test_mosaic.envi}
+samples = 400
+lines   = 400
+bands   = 2
+header offset = 0
+file type = ENVI Standard
+data type = 4
+interleave = bsq
+byte order = 0
+map info = {Geographic Lat/Lon, 1, 1, -119.93280719323, 39.2914138013941, 5.4728613271e-06, 5.4728613271e-06,WGS-84}
+coordinate system string = {GEOGCS["GCS_WGS_1984",DATUM["D_WGS_1984",SPHEROID["WGS_1984",6378137,298.257223563]],PRIMEM["Greenwich",0],UNIT["Degree",0.017453292519943295]]}
+band names = {
+Band 1,
+Band 2}

@@ -1,0 +1,1107 @@
+
+R version 3.0.2 (2013-09-25) -- "Frisbee Sailing"
+Copyright (C) 2013 The R Foundation for Statistical Computing
+Platform: x86_64-apple-darwin10.8.0 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> pkgname <- "gdalUtils"
+> source(file.path(R.home("share"), "R", "examples-header.R"))
+> options(warn = 1)
+> base::assign(".ExTimings", "gdalUtils-Ex.timings", pos = 'CheckExEnv')
+> base::cat("name\tuser\tsystem\telapsed\n", file=base::get(".ExTimings", pos = 'CheckExEnv'))
+> base::assign(".format_ptime",
++ function(x) {
++   if(!is.na(x[4L])) x[1L] <- x[1L] + x[4L]
++   if(!is.na(x[5L])) x[2L] <- x[2L] + x[5L]
++   options(OutDec = '.')
++   format(x[1L:3L], digits = 7L)
++ },
++ pos = 'CheckExEnv')
+> 
+> ### * </HEADER>
+> library('gdalUtils')
+> 
+> base::assign(".oldSearch", base::search(), pos = 'CheckExEnv')
+> cleanEx()
+> nameEx("batch_gdal_translate")
+> ### * batch_gdal_translate
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: batch_gdal_translate
+> ### Title: batch_gdal_translate
+> ### Aliases: batch_gdal_translate
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D input_folder <- system.file("external",package="gdalUtils")
+> ##D list.files(input_folder,pattern=".tif")
+> ##D output_folder <- tempdir()
+> ##D # library(spatial.tools)
+> ##D # sfQuickInit() # from package spatial.tools to launch a parallel PSOCK cluster
+> ##D batch_gdal_translate(infiles=input_folder,outdir=output_folder,
+> ##D 	outsuffix="_converted.envi",of="ENVI",pattern=".tif$")
+> ##D list.files(output_folder,pattern="_converted.envi$")
+> ##D # sfQuickStop() # from package spatial.tools to stop a parallel PSOCK cluster
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("batch_gdal_translate", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("gdal_chooseInstallation")
+> ### * gdal_chooseInstallation
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: gdal_chooseInstallation
+> ### Title: gdal_chooseInstallation
+> ### Aliases: gdal_chooseInstallation
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D # Choose the best installation that has both HDF4 and HDF5 drivers:
+> ##D gdal_chooseInstallation(hasDrivers=c("HDF4","HDF5"))
+> ##D # Get the version of this installation:
+> ##D getOption("gdalUtils_gdalPath")[[
+> ##D 	gdal_chooseInstallation(hasDrivers=c("HDF4","HDF5"))]]$version
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("gdal_chooseInstallation", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("gdal_cmd_builder")
+> ### * gdal_cmd_builder
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: gdal_cmd_builder
+> ### Title: gdal_cmd_builder
+> ### Aliases: gdal_cmd_builder
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D # This builds a gdal_translate command.
+> ##D executable <- "gdal_translate"
+> ##D 
+> ##D parameter_variables <- list(
+> ##D 			logical = list(
+> ##D 					varnames <- c("strict","unscale","epo",
+> ##D 					"eco","q","sds","stats")),
+> ##D 			vector = list(
+> ##D 					varnames <- c("outsize","scale","srcwin",
+> ##D 					"projwin","a_ullr","gcp")),
+> ##D 			scalar = list(
+> ##D 					varnames <- c("a_nodata")),
+> ##D 			character = list(
+> ##D 					varnames <- c("ot","of","mask","expand","a_srs",
+> ##D 					"src_dataset","dst_dataset")),
+> ##D 			repeatable = list(
+> ##D 					varnames <- c("b","mo","co")))
+> ##D 
+> ##D parameter_order <- c(
+> ##D 			"strict","unscale","epo","eco","q","sds","stats",
+> ##D 			"outsize","scale","srcwin","projwin","a_ullr","gcp",
+> ##D 			"a_nodata",
+> ##D 			"ot","of","mask","expand","a_srs",
+> ##D 			"b","mo","co",
+> ##D 			"src_dataset","dst_dataset")
+> ##D 
+> ##D parameter_noflags <- c("src_dataset","dst_dataset")
+> ##D 
+> ##D # Now assign some parameters:
+> ##D parameter_values = list(
+> ##D 	src_dataset = "input.tif",
+> ##D 	dst_dataset = "output.envi",
+> ##D 	of = "ENVI",
+> ##D 	strict = TRUE
+> ##D )
+> ##D 
+> ##D cmd <- gdal_cmd_builder(
+> ##D 			executable=executable,
+> ##D 			parameter_variables=parameter_variables,
+> ##D 			parameter_values=parameter_values,
+> ##D 			parameter_order=parameter_order,
+> ##D 			parameter_noflags=parameter_noflags)
+> ##D 
+> ##D cmd
+> ##D system(cmd,intern=TRUE)
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("gdal_cmd_builder", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("gdal_rasterize")
+> ### * gdal_rasterize
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: gdal_rasterize
+> ### Title: gdal_rasterize
+> ### Aliases: gdal_rasterize
+> 
+> ### ** Examples
+> 
+> # We'll pre-check to make sure there is a valid GDAL install
+> # and that raster and rgdal are also installed.
+> # Note this isn't strictly neccessary, as executing the function will
+> # force a search for a valid GDAL install.
+> gdal_setInstallation()
+> valid_install <- !is.null(getOption("gdalUtils_gdalPath"))
+> if(require(raster) && require(rgdal) && valid_install)
++ {
++ # Example from the original gdal_rasterize documentation:
++ # gdal_rasterize -b 1 -b 2 -b 3 -burn 255 -burn 0
++ # 	-burn 0 -l tahoe_highrez_training tahoe_highrez_training.shp tempfile.tif
++ dst_filename_original  <- system.file("external/tahoe_highrez.tif", package="gdalUtils")
++ # Back up the file, since we are going to burn stuff into it.
++ dst_filename <- paste(tempfile(),".tif",sep="")
++ file.copy(dst_filename_original,dst_filename,overwrite=TRUE)
++ #Before plot:
++ plotRGB(brick(dst_filename))
++ src_dataset <- system.file("external/tahoe_highrez_training.shp", package="gdalUtils")
++ tahoe_burned <- gdal_rasterize(src_dataset,dst_filename,
++ 	b=c(1,2,3),burn=c(0,255,0),l="tahoe_highrez_training",verbose=TRUE,output_Raster=TRUE)
++ #After plot:
++ plotRGB(brick(dst_filename))
++ }
+Loading required package: raster
+Loading required package: sp
+Loading required package: rgdal
+rgdal: version: 0.8-14, (SVN revision 496)
+Geospatial Data Abstraction Library extensions to R successfully loaded
+Loaded GDAL runtime: GDAL 1.9.2, released 2012/10/08
+Path to GDAL shared files: /Library/Frameworks/R.framework/Versions/3.0/Resources/library/rgdal/gdal
+Loaded PROJ.4 runtime: Rel. 4.8.0, 6 March 2012, [PJ_VERSION: 480]
+Path to PROJ.4 shared files: /Library/Frameworks/R.framework/Versions/3.0/Resources/library/rgdal/proj
+Checking gdal_installation...
+GDAL command being used: "/Library/Frameworks/GDAL.framework/Versions/1.10/Programs/gdal_rasterize" -b "1" -b "2" -b "3" -burn "0" -burn "255" -burn "0" -l "tahoe_highrez_training" "/Users/jgrn307/Documents/workspace/gdalutils/pkg/gdalUtils.Rcheck/gdalUtils/external/tahoe_highrez_training.shp" "/var/folders/7k/6j77__7n6kz0st6bphc3hn080000gn/T//Rtmpnwcik3/file73d641ce0839.tif"
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("gdal_rasterize", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+
+detaching ‘package:rgdal’, ‘package:raster’, ‘package:sp’
+
+> nameEx("gdal_setInstallation")
+> ### * gdal_setInstallation
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: gdal_setInstallation
+> ### Title: gdal_setInstallation
+> ### Aliases: gdal_setInstallation
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D # Assumes you have GDAL installed on your local machine.
+> ##D getOption("gdalUtils_gdalPath")
+> ##D gdal_setInstallation()
+> ##D getOption("gdalUtils_gdalPath")
+> ##D # If there is more than one installation of GDAL, this is the
+> ##D # most recent installation:
+> ##D getOption("gdalUtils_gdalPath")[[1]]
+> ##D # The version number:
+> ##D getOption("gdalUtils_gdalPath")[[1]]$version
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("gdal_setInstallation", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("gdal_translate")
+> ### * gdal_translate
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: gdal_translate
+> ### Title: gdal_translate
+> ### Aliases: gdal_translate
+> 
+> ### ** Examples
+> 
+> # We'll pre-check to make sure there is a valid GDAL install
+> # and that raster and rgdal are also installed.
+> # Note this isn't strictly neccessary, as executing the function will
+> # force a search for a valid GDAL install.
+> gdal_setInstallation()
+> valid_install <- !is.null(getOption("gdalUtils_gdalPath"))
+> if(require(raster) && require(rgdal) && valid_install)
++ {
++ # Example from the original gdal_translate documentation:
++ src_dataset <- system.file("external/tahoe_highrez.tif", package="gdalUtils")
++ # Original gdal_translate call:
++ # gdal_translate -of GTiff -co "TILED=YES" tahoe_highrez.tif tahoe_highrez_tiled.tif
++ gdal_translate(src_dataset,"tahoe_highrez_tiled.tif",of="GTiff",co="TILED=YES",verbose=TRUE)
++ # Pull out a chunk and return as a raster:
++ gdal_translate(src_dataset,"tahoe_highrez_tiled.tif",of="GTiff",
++ srcwin=c(1,1,100,100),output_Raster=TRUE,verbose=TRUE)
++ # Notice this is the equivalent, but follows gdal_translate's parameter format:
++ gdal_translate(src_dataset,"tahoe_highrez_tiled.tif",of="GTiff",
++ srcwin="1 1 100 100",output_Raster=TRUE,verbose=TRUE)
++ ## Not run: 
++ ##D # Extract the first subdataset from an HDF4 file:
++ ##D hdf4_dataset <- system.file("external/test_modis.hdf", package="gdalUtils")
++ ##D gdal_translate(hdf4_dataset,"test_modis_sd1.tif",sd_index=1)
++ ## End(Not run)
++ }
+Loading required package: raster
+Loading required package: sp
+Loading required package: rgdal
+rgdal: version: 0.8-14, (SVN revision 496)
+Geospatial Data Abstraction Library extensions to R successfully loaded
+Loaded GDAL runtime: GDAL 1.9.2, released 2012/10/08
+Path to GDAL shared files: /Library/Frameworks/R.framework/Versions/3.0/Resources/library/rgdal/gdal
+Loaded PROJ.4 runtime: Rel. 4.8.0, 6 March 2012, [PJ_VERSION: 480]
+Path to PROJ.4 shared files: /Library/Frameworks/R.framework/Versions/3.0/Resources/library/rgdal/proj
+Checking gdal_installation...
+Scanning for GDAL installations...
+Checking the gdalUtils_gdalPath option...
+GDAL version 1.10.1
+GDAL command being used: "/Library/Frameworks/GDAL.framework/Versions/1.10/Programs/gdal_translate" -of "GTiff" -co "TILED=YES" "/Users/jgrn307/Documents/workspace/gdalutils/pkg/gdalUtils.Rcheck/gdalUtils/external/tahoe_highrez.tif" "tahoe_highrez_tiled.tif"
+Input file size is 400, 4000...10...20...30...40...50...60...70...80...90...100 - done.
+Checking gdal_installation...
+Scanning for GDAL installations...
+Checking the gdalUtils_gdalPath option...
+GDAL version 1.10.1
+GDAL command being used: "/Library/Frameworks/GDAL.framework/Versions/1.10/Programs/gdal_translate" -srcwin 1 1 100 100 -of "GTiff" "/Users/jgrn307/Documents/workspace/gdalutils/pkg/gdalUtils.Rcheck/gdalUtils/external/tahoe_highrez.tif" "tahoe_highrez_tiled.tif"
+Input file size is 400, 4000...10...20...30...40...50...60...70...80...90...100 - done.
+Checking gdal_installation...
+Scanning for GDAL installations...
+Checking the gdalUtils_gdalPath option...
+GDAL version 1.10.1
+GDAL command being used: "/Library/Frameworks/GDAL.framework/Versions/1.10/Programs/gdal_translate" -srcwin 1 1 100 100 -of "GTiff" "/Users/jgrn307/Documents/workspace/gdalutils/pkg/gdalUtils.Rcheck/gdalUtils/external/tahoe_highrez.tif" "tahoe_highrez_tiled.tif"
+Input file size is 400, 4000...10...20...30...40...50...60...70...80...90...100 - done.
+class       : RasterBrick 
+dimensions  : 100, 100, 10000, 3  (nrow, ncol, ncell, nlayers)
+resolution  : 5.47286e-06, 5.47286e-06  (x, y)
+extent      : -119.9328, -119.9323, 39.29086, 39.29141  (xmin, xmax, ymin, ymax)
+coord. ref. : +proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0 
+data source : /Users/jgrn307/Documents/workspace/gdalutils/pkg/gdalUtils.Rcheck/tahoe_highrez_tiled.tif 
+names       : tahoe_highrez_tiled.1, tahoe_highrez_tiled.2, tahoe_highrez_tiled.3 
+min values  :                     0,                     0,                     0 
+max values  :                   255,                   255,                   255 
+
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("gdal_translate", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+
+detaching ‘package:rgdal’, ‘package:raster’, ‘package:sp’
+
+> nameEx("gdaladdo")
+> ### * gdaladdo
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: gdaladdo
+> ### Title: gdaladdo
+> ### Aliases: gdaladdo
+> 
+> ### ** Examples
+> 
+> # We'll pre-check to make sure there is a valid GDAL install.
+> # Note this isn't strictly neccessary, as executing the function will
+> # force a search for a valid GDAL install.
+> gdal_setInstallation()
+> valid_install <- !is.null(getOption("gdalUtils_gdalPath"))
+> if(valid_install)
++ {
++ filename  <- system.file("external/tahoe_highrez.tif", package="gdalUtils")
++ temp_filename <- paste(tempfile(),".tif",sep="")
++ file.copy(from=filename,to=temp_filename,overwrite=TRUE)
++ gdalinfo(filename)
++ gdaladdo(r="average",temp_filename,levels=c(2,4,8,16),verbose=TRUE)
++ gdalinfo(temp_filename)
++ }
+Checking gdal_installation...
+Scanning for GDAL installations...
+Checking the gdalUtils_gdalPath option...
+GDAL version 1.10.1
+GDAL command being used: "/Library/Frameworks/GDAL.framework/Versions/1.10/Programs/gdaladdo" -r "average" "/var/folders/7k/6j77__7n6kz0st6bphc3hn080000gn/T//Rtmpnwcik3/file73d627a337e8.tif" 2 4 8 16
+ [1] "Driver: GTiff/GeoTIFF"                                                                   
+ [2] "Files: /var/folders/7k/6j77__7n6kz0st6bphc3hn080000gn/T//Rtmpnwcik3/file73d627a337e8.tif"
+ [3] "Size is 400, 400"                                                                        
+ [4] "Coordinate System is:"                                                                   
+ [5] "GEOGCS[\"WGS 84\","                                                                      
+ [6] "    DATUM[\"WGS_1984\","                                                                 
+ [7] "        SPHEROID[\"WGS 84\",6378137,298.257223563,"                                      
+ [8] "            AUTHORITY[\"EPSG\",\"7030\"]],"                                              
+ [9] "        AUTHORITY[\"EPSG\",\"6326\"]],"                                                  
+[10] "    PRIMEM[\"Greenwich\",0],"                                                            
+[11] "    UNIT[\"degree\",0.0174532925199433],"                                                
+[12] "    AUTHORITY[\"EPSG\",\"4326\"]]"                                                       
+[13] "Origin = (-119.932807193230261,39.291413801394071)"                                      
+[14] "Pixel Size = (0.000005472861327,-0.000005472861327)"                                     
+[15] "Metadata:"                                                                               
+[16] "  AREA_OR_POINT=Area"                                                                    
+[17] "  TIFFTAG_XRESOLUTION=1"                                                                 
+[18] "  TIFFTAG_YRESOLUTION=1"                                                                 
+[19] "Image Structure Metadata:"                                                               
+[20] "  INTERLEAVE=BAND"                                                                       
+[21] "Corner Coordinates:"                                                                     
+[22] "Upper Left  (-119.9328072,  39.2914138) (119d55'58.11\"W, 39d17'29.09\"N)"               
+[23] "Lower Left  (-119.9328072,  39.2892247) (119d55'58.11\"W, 39d17'21.21\"N)"               
+[24] "Upper Right (-119.9306180,  39.2914138) (119d55'50.22\"W, 39d17'29.09\"N)"               
+[25] "Lower Right (-119.9306180,  39.2892247) (119d55'50.22\"W, 39d17'21.21\"N)"               
+[26] "Center      (-119.9317126,  39.2903192) (119d55'54.17\"W, 39d17'25.15\"N)"               
+[27] "Band 1 Block=400x1 Type=Byte, ColorInterp=Red"                                           
+[28] "  Overviews: 200x200, 100x100, 50x50, 25x25"                                             
+[29] "Band 2 Block=400x1 Type=Byte, ColorInterp=Green"                                         
+[30] "  Overviews: 200x200, 100x100, 50x50, 25x25"                                             
+[31] "Band 3 Block=400x1 Type=Byte, ColorInterp=Blue"                                          
+[32] "  Overviews: 200x200, 100x100, 50x50, 25x25"                                             
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("gdaladdo", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("gdalbuildvrt")
+> ### * gdalbuildvrt
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: gdalbuildvrt
+> ### Title: gdalbuildvrt
+> ### Aliases: gdalbuildvrt
+> 
+> ### ** Examples
+> 
+> # We'll pre-check to make sure there is a valid GDAL install.
+> # Note this isn't strictly neccessary, as executing the function will
+> # force a search for a valid GDAL install.
+> gdal_setInstallation()
+> valid_install <- !is.null(getOption("gdalUtils_gdalPath"))
+> if(valid_install)
++ {
++ layer1 <- system.file("external/tahoe_lidar_bareearth.tif", package="gdalUtils")
++ layer2 <- system.file("external/tahoe_lidar_highesthit.tif", package="gdalUtils")
++ output.vrt <- paste(tempfile(),".vrt",sep="")
++ gdalbuildvrt(gdalfile=c(layer1,layer2),output.vrt=output.vrt,separate=TRUE)
++ gdalinfo(output.vrt)
++ }
+ [1] "Driver: VRT/Virtual Raster"                                                                                            
+ [2] "Files: /var/folders/7k/6j77__7n6kz0st6bphc3hn080000gn/T//Rtmpnwcik3/file73d64cab74ac.vrt"                              
+ [3] "       /Users/jgrn307/Documents/workspace/gdalutils/pkg/gdalUtils.Rcheck/gdalUtils/external/tahoe_lidar_bareearth.tif" 
+ [4] "       /Users/jgrn307/Documents/workspace/gdalutils/pkg/gdalUtils.Rcheck/gdalUtils/external/tahoe_lidar_highesthit.tif"
+ [5] "Size is 400, 400"                                                                                                      
+ [6] "Coordinate System is:"                                                                                                 
+ [7] "GEOGCS[\"WGS 84\","                                                                                                    
+ [8] "    DATUM[\"WGS_1984\","                                                                                               
+ [9] "        SPHEROID[\"WGS 84\",6378137,298.257223563,"                                                                    
+[10] "            AUTHORITY[\"EPSG\",\"7030\"]],"                                                                            
+[11] "        AUTHORITY[\"EPSG\",\"6326\"]],"                                                                                
+[12] "    PRIMEM[\"Greenwich\",0],"                                                                                          
+[13] "    UNIT[\"degree\",0.0174532925199433],"                                                                              
+[14] "    AUTHORITY[\"EPSG\",\"4326\"]]"                                                                                     
+[15] "Origin = (-119.932807193230261,39.291413801394071)"                                                                    
+[16] "Pixel Size = (0.000005472861327,-0.000005472861327)"                                                                   
+[17] "Corner Coordinates:"                                                                                                   
+[18] "Upper Left  (-119.9328072,  39.2914138) (119d55'58.11\"W, 39d17'29.09\"N)"                                             
+[19] "Lower Left  (-119.9328072,  39.2892247) (119d55'58.11\"W, 39d17'21.21\"N)"                                             
+[20] "Upper Right (-119.9306180,  39.2914138) (119d55'50.22\"W, 39d17'29.09\"N)"                                             
+[21] "Lower Right (-119.9306180,  39.2892247) (119d55'50.22\"W, 39d17'21.21\"N)"                                             
+[22] "Center      (-119.9317126,  39.2903192) (119d55'54.17\"W, 39d17'25.15\"N)"                                             
+[23] "Band 1 Block=128x128 Type=Float32, ColorInterp=Undefined"                                                              
+[24] "Band 2 Block=128x128 Type=Float32, ColorInterp=Undefined"                                                              
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("gdalbuildvrt", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("gdaldem")
+> ### * gdaldem
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: gdaldem
+> ### Title: gdaldem
+> ### Aliases: gdaldem
+> 
+> ### ** Examples
+> 
+> # We'll pre-check to make sure there is a valid GDAL install
+> # and that raster and rgdal are also installed.
+> # Note this isn't strictly neccessary, as executing the function will
+> # force a search for a valid GDAL install.
+> gdal_setInstallation()
+> valid_install <- !is.null(getOption("gdalUtils_gdalPath"))
+> if(require(raster) && require(rgdal) && valid_install)
++ {
++ # We'll pre-check for a proper GDAL installation before running these examples:
++ gdal_setInstallation()
++ if(!is.null(getOption("gdalUtils_gdalPath")))
++ {
++ input_dem  <- system.file("external/tahoe_lidar_highesthit.tif", package="gdalUtils")
++ plot(raster(input_dem),col=gray.colors(256))
++ 
++ # Hillshading:
++ # Command-line gdaldem call:
++ # gdaldem hillshade tahoe_lidar_highesthit.tif output_hillshade.tif
++ output_hillshade <- gdaldem(mode="hillshade",input_dem=input_dem,
++ 	output="output_hillshade.tif",output_Raster=TRUE)
++ plot(output_hillshade,col=gray.colors(256))
++ 
++ # Slope:
++ # Command-line gdaldem call:
++ # gdaldem slope tahoe_lidar_highesthit.tif output_slope.tif -p
++ output_slope <- gdaldem(mode="slope",input_dem=input_dem,
++ 	output="output_slope.tif",p=TRUE,output_Raster=TRUE)
++ plot(output_slope,col=gray.colors(256))
++ 
++ # Aspect:
++ # Command-line gdaldem call:
++ # gdaldem aspect tahoe_lidar_highesthit.tif output_aspect.tif
++ output_aspect <- gdaldem(mode="aspect",input_dem=input_dem,
++ 	output="output_aspect.tif",output_Raster=TRUE)
++ plot(output_aspect,col=gray.colors(256))
++ }
++ }
+Loading required package: raster
+Loading required package: sp
+Loading required package: rgdal
+rgdal: version: 0.8-14, (SVN revision 496)
+Geospatial Data Abstraction Library extensions to R successfully loaded
+Loaded GDAL runtime: GDAL 1.9.2, released 2012/10/08
+Path to GDAL shared files: /Library/Frameworks/R.framework/Versions/3.0/Resources/library/rgdal/gdal
+Loaded PROJ.4 runtime: Rel. 4.8.0, 6 March 2012, [PJ_VERSION: 480]
+Path to PROJ.4 shared files: /Library/Frameworks/R.framework/Versions/3.0/Resources/library/rgdal/proj
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("gdaldem", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+
+detaching ‘package:rgdal’, ‘package:raster’, ‘package:sp’
+
+> nameEx("gdalinfo")
+> ### * gdalinfo
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: gdalinfo
+> ### Title: gdalinfo
+> ### Aliases: gdalinfo
+> 
+> ### ** Examples
+> 
+> # We'll pre-check to make sure there is a valid GDAL install.
+> # Note this isn't strictly neccessary, as executing the function will
+> # force a search for a valid GDAL install.
+> gdal_setInstallation()
+> valid_install <- !is.null(getOption("gdalUtils_gdalPath"))
+> if(valid_install)
++ {
++ src_dataset <- system.file("external/tahoe_highrez.tif", package="gdalUtils")
++ # Command-line gdalinfo call:
++ # gdalinfo tahoe_highrez.tif
++ gdalinfo(src_dataset)
++ }
+ [1] "Driver: GTiff/GeoTIFF"                                                                                        
+ [2] "Files: /Users/jgrn307/Documents/workspace/gdalutils/pkg/gdalUtils.Rcheck/gdalUtils/external/tahoe_highrez.tif"
+ [3] "Size is 400, 400"                                                                                             
+ [4] "Coordinate System is:"                                                                                        
+ [5] "GEOGCS[\"WGS 84\","                                                                                           
+ [6] "    DATUM[\"WGS_1984\","                                                                                      
+ [7] "        SPHEROID[\"WGS 84\",6378137,298.257223563,"                                                           
+ [8] "            AUTHORITY[\"EPSG\",\"7030\"]],"                                                                   
+ [9] "        AUTHORITY[\"EPSG\",\"6326\"]],"                                                                       
+[10] "    PRIMEM[\"Greenwich\",0],"                                                                                 
+[11] "    UNIT[\"degree\",0.0174532925199433],"                                                                     
+[12] "    AUTHORITY[\"EPSG\",\"4326\"]]"                                                                            
+[13] "Origin = (-119.932807193230261,39.291413801394071)"                                                           
+[14] "Pixel Size = (0.000005472861327,-0.000005472861327)"                                                          
+[15] "Metadata:"                                                                                                    
+[16] "  AREA_OR_POINT=Area"                                                                                         
+[17] "  TIFFTAG_XRESOLUTION=1"                                                                                      
+[18] "  TIFFTAG_YRESOLUTION=1"                                                                                      
+[19] "Image Structure Metadata:"                                                                                    
+[20] "  INTERLEAVE=BAND"                                                                                            
+[21] "Corner Coordinates:"                                                                                          
+[22] "Upper Left  (-119.9328072,  39.2914138) (119d55'58.11\"W, 39d17'29.09\"N)"                                    
+[23] "Lower Left  (-119.9328072,  39.2892247) (119d55'58.11\"W, 39d17'21.21\"N)"                                    
+[24] "Upper Right (-119.9306180,  39.2914138) (119d55'50.22\"W, 39d17'29.09\"N)"                                    
+[25] "Lower Right (-119.9306180,  39.2892247) (119d55'50.22\"W, 39d17'21.21\"N)"                                    
+[26] "Center      (-119.9317126,  39.2903192) (119d55'54.17\"W, 39d17'25.15\"N)"                                    
+[27] "Band 1 Block=400x1 Type=Byte, ColorInterp=Red"                                                                
+[28] "Band 2 Block=400x1 Type=Byte, ColorInterp=Green"                                                              
+[29] "Band 3 Block=400x1 Type=Byte, ColorInterp=Blue"                                                               
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("gdalinfo", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("gdalsrsinfo")
+> ### * gdalsrsinfo
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: gdalsrsinfo
+> ### Title: gdalsrsinfo
+> ### Aliases: gdalsrsinfo
+> 
+> ### ** Examples
+> 
+> # We'll pre-check to make sure there is a valid GDAL install.
+> # Note this isn't strictly neccessary, as executing the function will
+> # force a search for a valid GDAL install.
+> gdal_setInstallation()
+> valid_install <- !is.null(getOption("gdalUtils_gdalPath"))
+> if(valid_install)
++ {
++ src_dataset <- system.file("external/tahoe_highrez.tif", package="gdalUtils")
++ # Command-line gdalsrsinfo call:
++ # gdalsrsinfo -o proj4 tahoe_highrez.tif
++ gdalsrsinfo(src_dataset,o="proj4")
++ # Export as CRS:
++ gdalsrsinfo(src_dataset,as.CRS=TRUE)
++ }
+CRS arguments: +proj=longlat +datum=WGS84 +no_defs 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("gdalsrsinfo", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("gdalwarp")
+> ### * gdalwarp
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: gdalwarp
+> ### Title: gdalwarp
+> ### Aliases: gdalwarp
+> 
+> ### ** Examples
+> 
+> # We'll pre-check to make sure there is a valid GDAL install
+> # and that raster and rgdal are also installed.
+> # Note this isn't strictly neccessary, as executing the function will
+> # force a search for a valid GDAL install.
+> gdal_setInstallation()
+> valid_install <- !is.null(getOption("gdalUtils_gdalPath"))
+> if(require(raster) && require(rgdal) && valid_install)
++ {
++ # Example from the original gdal_translate documentation:
++ src_dataset <- system.file("external/tahoe_highrez.tif", package="gdalUtils")
++ # Command-line gdalwarp call:
++ # gdalwarp -t_srs '+proj=utm +zone=11 +datum=WGS84' raw_spot.tif utm11.tif
++ gdalwarp(src_dataset,dstfile="tahoe_highrez_utm11.tif",
++ 		t_srs='+proj=utm +zone=11 +datum=WGS84',output_Raster=TRUE)
++ }
+Loading required package: raster
+Loading required package: sp
+Loading required package: rgdal
+rgdal: version: 0.8-14, (SVN revision 496)
+Geospatial Data Abstraction Library extensions to R successfully loaded
+Loaded GDAL runtime: GDAL 1.9.2, released 2012/10/08
+Path to GDAL shared files: /Library/Frameworks/R.framework/Versions/3.0/Resources/library/rgdal/gdal
+Loaded PROJ.4 runtime: Rel. 4.8.0, 6 March 2012, [PJ_VERSION: 480]
+Path to PROJ.4 shared files: /Library/Frameworks/R.framework/Versions/3.0/Resources/library/rgdal/proj
+class       : RasterBrick 
+dimensions  : 458, 361, 165338, 3  (nrow, ncol, ncell, nlayers)
+resolution  : 0.5443188, 0.5443188  (x, y)
+extent      : 247058.1, 247254.6, 4352968, 4353217  (xmin, xmax, ymin, ymax)
+coord. ref. : +proj=utm +zone=11 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0 
+data source : /Users/jgrn307/Documents/workspace/gdalutils/pkg/gdalUtils.Rcheck/tahoe_highrez_utm11.tif 
+names       : tahoe_highrez_utm11.1, tahoe_highrez_utm11.2, tahoe_highrez_utm11.3 
+min values  :                     0,                     0,                     0 
+max values  :                   255,                   255,                   255 
+
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("gdalwarp", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+
+detaching ‘package:rgdal’, ‘package:raster’, ‘package:sp’
+
+> nameEx("get_subdatasets")
+> ### * get_subdatasets
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: get_subdatasets
+> ### Title: get_subdatasets
+> ### Aliases: get_subdatasets
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D hdf4_dataset <- system.file("external/test_modis.hdf", package="gdalUtils")
+> ##D get_subdatasets(hdf4_dataset)
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("get_subdatasets", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("mosaic_rasters")
+> ### * mosaic_rasters
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: mosaic_rasters
+> ### Title: Mosaic raster files using GDAL Utilities
+> ### Aliases: mosaic_rasters
+> 
+> ### ** Examples
+> 
+> # We'll pre-check to make sure there is a valid GDAL install
+> # and that raster and rgdal are also installed.
+> # Note this isn't strictly neccessary, as executing the function will
+> # force a search for a valid GDAL install.
+> gdal_setInstallation()
+> valid_install <- !is.null(getOption("gdalUtils_gdalPath"))
+> if(require(raster) && require(rgdal) && valid_install)
++ {
++ layer1 <- system.file("external/tahoe_lidar_bareearth.tif", package="gdalUtils")
++ layer2 <- system.file("external/tahoe_lidar_highesthit.tif", package="gdalUtils")
++ mosaic_rasters(gdalfile=c(layer1,layer2),dst_dataset="test_mosaic.envi",separate=TRUE,of="ENVI",
++ 		verbose=TRUE)
++ gdalinfo("test_mosaic.envi")
++ }
+Loading required package: raster
+Loading required package: sp
+Loading required package: rgdal
+rgdal: version: 0.8-14, (SVN revision 496)
+Geospatial Data Abstraction Library extensions to R successfully loaded
+Loaded GDAL runtime: GDAL 1.9.2, released 2012/10/08
+Path to GDAL shared files: /Library/Frameworks/R.framework/Versions/3.0/Resources/library/rgdal/gdal
+Loaded PROJ.4 runtime: Rel. 4.8.0, 6 March 2012, [PJ_VERSION: 480]
+Path to PROJ.4 shared files: /Library/Frameworks/R.framework/Versions/3.0/Resources/library/rgdal/proj
+Checking gdal_installation...
+ [1] "Driver: ENVI/ENVI .hdr Labelled"                                          
+ [2] "Files: test_mosaic.envi"                                                  
+ [3] "       test_mosaic.hdr"                                                   
+ [4] "Size is 400, 400"                                                         
+ [5] "Coordinate System is:"                                                    
+ [6] "GEOGCS[\"GCS_WGS_1984\","                                                 
+ [7] "    DATUM[\"WGS_1984\","                                                  
+ [8] "        SPHEROID[\"WGS_84\",6378137,298.257223563]],"                     
+ [9] "    PRIMEM[\"Greenwich\",0],"                                             
+[10] "    UNIT[\"Degree\",0.017453292519943295]]"                               
+[11] "Origin = (-119.932807193230005,39.291413801394100)"                       
+[12] "Pixel Size = (0.000005472861327,-0.000005472861327)"                      
+[13] "Metadata:"                                                                
+[14] "  Band_1=Band 1"                                                          
+[15] "  Band_2=Band 2"                                                          
+[16] "Image Structure Metadata:"                                                
+[17] "  INTERLEAVE=BAND"                                                        
+[18] "Corner Coordinates:"                                                      
+[19] "Upper Left  (-119.9328072,  39.2914138) (119d55'58.11\"W, 39d17'29.09\"N)"
+[20] "Lower Left  (-119.9328072,  39.2892247) (119d55'58.11\"W, 39d17'21.21\"N)"
+[21] "Upper Right (-119.9306180,  39.2914138) (119d55'50.22\"W, 39d17'29.09\"N)"
+[22] "Lower Right (-119.9306180,  39.2892247) (119d55'50.22\"W, 39d17'21.21\"N)"
+[23] "Center      (-119.9317126,  39.2903192) (119d55'54.17\"W, 39d17'25.15\"N)"
+[24] "Band 1 Block=400x1 Type=Float32, ColorInterp=Undefined"                   
+[25] "  Description = Band 1"                                                   
+[26] "Band 2 Block=400x1 Type=Float32, ColorInterp=Undefined"                   
+[27] "  Description = Band 2"                                                   
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("mosaic_rasters", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+
+detaching ‘package:rgdal’, ‘package:raster’, ‘package:sp’
+
+> nameEx("ogr2ogr")
+> ### * ogr2ogr
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: ogr2ogr
+> ### Title: ogr2ogr
+> ### Aliases: ogr2ogr
+> 
+> ### ** Examples
+> 
+> # We'll pre-check to make sure there is a valid GDAL install.
+> # Note this isn't strictly neccessary, as executing the function will
+> # force a search for a valid GDAL install.
+> gdal_setInstallation()
+> valid_install <- !is.null(getOption("gdalUtils_gdalPath"))
+> if(valid_install)
++ {
++ src_datasource_name <- system.file("external/tahoe_highrez_training.shp", package="gdalUtils")
++ dst_datasource_name <- paste(tempfile(),".shp",sep="")
++ ogrinfo(src_datasource_name,"tahoe_highrez_training")
++ # reproject the input to mercator
++ ogr2ogr(src_datasource_name,dst_datasource_name,t_srs="EPSG:3395",verbose=TRUE)
++ ogrinfo(dirname(dst_datasource_name),layer=remove_file_extension(basename(dst_datasource_name)))
++ }
+Checking gdal_installation...
+Scanning for GDAL installations...
+Checking the gdalUtils_gdalPath option...
+GDAL version 1.10.1
+GDAL command being used: "/Library/Frameworks/GDAL.framework/Versions/1.10/Programs/ogr2ogr" -t_srs "EPSG:3395" "/var/folders/7k/6j77__7n6kz0st6bphc3hn080000gn/T//Rtmpnwcik3/file73d641f3afb.shp" "/Users/jgrn307/Documents/workspace/gdalutils/pkg/gdalUtils.Rcheck/gdalUtils/external/tahoe_highrez_training.shp" 
+ [1] "INFO: Open of `/var/folders/7k/6j77__7n6kz0st6bphc3hn080000gn/T//Rtmpnwcik3'"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       
+ [2] "      using driver `ESRI Shapefile' successful."                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
+ [3] ""                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   
+ [4] "Layer name: file73d641f3afb"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
+ [5] "Geometry: Polygon"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
+ [6] "Feature Count: 8"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   
+ [7] "Extent: (-13350832.829004, 4736171.523956) - (-13350669.553720, 4736428.681535)"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
+ [8] "Layer SRS WKT:"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     
+ [9] "PROJCS[\"WGS_84_World_Mercator\","                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
+[10] "    GEOGCS[\"GCS_WGS_1984\","                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       
+[11] "        DATUM[\"WGS_1984\","                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
+[12] "            SPHEROID[\"WGS_84\",6378137,298.257223563]],"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
+[13] "        PRIMEM[\"Greenwich\",0],"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   
+[14] "        UNIT[\"Degree\",0.017453292519943295]],"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
+[15] "    PROJECTION[\"Mercator_1SP\"],"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
+[16] "    PARAMETER[\"central_meridian\",0],"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
+[17] "    PARAMETER[\"false_easting\",0],"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
+[18] "    PARAMETER[\"false_northing\",0],"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               
+[19] "    UNIT[\"Meter\",1],"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
+[20] "    PARAMETER[\"latitude_of_origin\",0.0]]"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
+[21] "ID: Integer (8.0)"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
+[22] "Class: String (50.0)"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               
+[23] "OGRFeature(file73d641f3afb):0"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      
+[24] "  ID (Integer) = 1"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 
+[25] "  Class (String) = Tree"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
+[26] "  POLYGON ((-13350721.338791489601135 4736402.024648321792483,-13350720.729555351659656 4736401.240623312070966,-13350718.901846943423152 4736401.240623312070966,-13350717.074138535186648 4736398.104523890651762,-13350715.246430126950145 4736392.616352281533182,-13350715.855666263028979 4736390.26427966170013,-13350719.511083079501987 4736389.480255577713251,-13350722.557263761758804 4736389.480255577713251,-13350724.994208306074142 4736393.400376612320542,-13350725.603444440290332 4736397.32049919012934,-13350722.557263761758804 4736401.240623312070966,-13350721.338791489601135 4736402.024648321792483))"
+[27] ""                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   
+[28] "OGRFeature(file73d641f3afb):1"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      
+[29] "  ID (Integer) = 2"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 
+[30] "  Class (String) = Tree"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
+[31] "  POLYGON ((-13350739.006639437749982 4736362.823473506607115,-13350739.006639437749982 4736368.311628684401512,-13350735.960458755493164 4736369.879673576913774,-13350732.305041939020157 4736369.095651101320982,-13350731.695805802941322 4736363.607495489530265,-13350731.695805802941322 4736360.47140792850405,-13350734.13275034725666 4736358.119342905469239,-13350736.569694891571999 4736359.687386193312705,-13350739.006639437749982 4736362.823473506607115))"                                                                                                                                                      
+[32] ""                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   
+[33] "OGRFeature(file73d641f3afb):2"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      
+[34] "  ID (Integer) = 3"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 
+[35] "  Class (String) = Tree"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
+[36] "  POLYGON ((-13350817.59810099564493 4736238.948776074685156,-13350814.551920313388109 4736233.460692239925265,-13350816.379628723487258 4736231.108657235279679,-13350819.425809403881431 4736231.108657235279679,-13350821.253517810255289 4736234.244704029522836,-13350820.644281674176455 4736237.380751812830567,-13350817.59810099564493 4736238.948776074685156))"                                                                                                                                                                                                                                                          
+[37] ""                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   
+[38] "OGRFeature(file73d641f3afb):3"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      
+[39] "  ID (Integer) = 4"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 
+[40] "  Class (String) = Shrub"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
+[41] "  POLYGON ((-13350693.313929226249456 4736291.477731621824205,-13350678.083025824278593 4736304.02200082782656,-13350669.5537199191749 4736292.261747986078262,-13350684.784623323008418 4736271.877342647872865,-13350689.658512409776449 4736275.013402289710939,-13350693.313929226249456 4736288.341666792519391,-13350693.313929226249456 4736291.477731621824205))"                                                                                                                                                                                                                                                           
+[42] ""                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   
+[43] "OGRFeature(file73d641f3afb):4"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      
+[44] "  ID (Integer) = 5"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 
+[45] "  Class (String) = Shrub"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
+[46] "  POLYGON ((-13350767.64073783159256 4736300.885932045057416,-13350764.594557153061032 4736297.749864249490201,-13350765.203793287277222 4736293.829780894331634,-13350769.468446239829063 4736294.613797442987561,-13350770.686918513849378 4736296.965847455896437,-13350767.64073783159256 4736300.885932045057416))"                                                                                                                                                                                                                                                                                                            
+[47] ""                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   
+[48] "OGRFeature(file73d641f3afb):5"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      
+[49] "  ID (Integer) = 6"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 
+[50] "  Class (String) = Shrub"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
+[51] "  POLYGON ((-13350829.173587581142783 4736353.415214529260993,-13350832.829004395753145 4736354.983257074840367,-13350832.219768263399601 4736358.903364519588649,-13350825.518170764669776 4736370.663696116767824,-13350818.816573265939951 4736371.447718716226518,-13350813.33344804123044 4736367.527606329880655,-13350812.724211905151606 4736361.255429726094007,-13350829.173587581142783 4736353.415214529260993))"                                                                                                                                                                                                       
+[52] ""                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   
+[53] "OGRFeature(file73d641f3afb):6"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      
+[54] "  ID (Integer) = 7"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 
+[55] "  Class (String) = Non-vegetated"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   
+[56] "  POLYGON ((-13350731.086569664999843 4736422.409320252016187,-13350723.166499897837639 4736427.897508290596306,-13350719.511083079501987 4736428.681535401381552,-13350717.683374671265483 4736423.977373669855297,-13350721.338791489601135 4736419.273214159533381,-13350724.994208306074142 4736421.625293636694551,-13350729.258861256763339 4736414.569056876935065,-13350732.305041939020157 4736416.13710905611515,-13350731.086569664999843 4736422.409320252016187))"                                                                                                                                                     
+[57] ""                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   
+[58] "OGRFeature(file73d641f3afb):7"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      
+[59] "  ID (Integer) = 8"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 
+[60] "  Class (String) = Non-vegetated"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   
+[61] "  POLYGON ((-13350763.985321016982198 4736180.14803533628583,-13350760.329904200509191 4736182.500058296136558,-13350755.456015110015869 4736180.14803533628583,-13350750.582126023247838 4736182.500058296136558,-13350748.754417613148689 4736177.012005589902401,-13350753.628306701779366 4736176.227998306043446,-13350754.2375428378582 4736172.307962821796536,-13350761.54837647266686 4736171.523955910466611,-13350763.985321016982198 4736180.14803533628583))"                                                                                                                                                          
+[62] ""                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("ogr2ogr", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("ogrinfo")
+> ### * ogrinfo
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: ogrinfo
+> ### Title: ogrinfo
+> ### Aliases: ogrinfo
+> 
+> ### ** Examples
+> 
+> # We'll pre-check to make sure there is a valid GDAL install.
+> # Note this isn't strictly neccessary, as executing the function will
+> # force a search for a valid GDAL install.
+> gdal_setInstallation()
+> valid_install <- !is.null(getOption("gdalUtils_gdalPath"))
+> if(valid_install)
++ {
++ datasource_name <- system.file("external/tahoe_highrez_training.shp", package="gdalUtils")
++ # Display all available formats:
++ # Command-line ogrinfo call:
++ # ogrinfo --formats
++ ogrinfo(formats=TRUE)
++ 
++ # Get info on an entire shapefile:
++ # ogrinfo tahoe_highrez_training.shp
++ ogrinfo(datasource_name)
++ 
++ # Get info on the layer of the shapefile:
++ # ogrinfo tahoe_highrez_training.shp tahoe_highrez_training
++ ogrinfo(datasource_name,"tahoe_highrez_training")
++ }
+ [1] "INFO: Open of `/Users/jgrn307/Documents/workspace/gdalutils/pkg/gdalUtils.Rcheck/gdalUtils/external/tahoe_highrez_training.shp'"                                                                                                                                                                                                                                                                                                                                                                             
+ [2] "      using driver `ESRI Shapefile' successful."                                                                                                                                                                                                                                                                                                                                                                                                                                                             
+ [3] ""                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
+ [4] "Layer name: tahoe_highrez_training"                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
+ [5] "Geometry: Polygon"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
+ [6] "Feature Count: 8"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
+ [7] "Extent: (-119.932572, 39.289559) - (-119.931105, 39.291354)"                                                                                                                                                                                                                                                                                                                                                                                                                                                 
+ [8] "Layer SRS WKT:"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              
+ [9] "GEOGCS[\"GCS_WGS_1984\","                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
+[10] "    DATUM[\"WGS_1984\","                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     
+[11] "        SPHEROID[\"WGS_84\",6378137,298.257223563]],"                                                                                                                                                                                                                                                                                                                                                                                                                                                        
+[12] "    PRIMEM[\"Greenwich\",0],"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
+[13] "    UNIT[\"Degree\",0.017453292519943295]]"                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
+[14] "ID: Integer (8.0)"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
+[15] "Class: String (50.0)"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
+[16] "OGRFeature(tahoe_highrez_training):0"                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
+[17] "  ID (Integer) = 1"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
+[18] "  Class (String) = Tree"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     
+[19] "  POLYGON ((-119.931570326570338 39.291167522634353,-119.931564853709006 39.291162049773028,-119.931548435125023 39.291162049773028,-119.931532016541041 39.291140158327714,-119.931515597957059 39.291101848298425,-119.931521070818391 39.291085429714443,-119.931553907986356 39.291079956853117,-119.931581272292988 39.291079956853117,-119.931603163738302 39.291107321159757,-119.93160863659962 39.291134685466389,-119.931581272292988 39.291162049773028,-119.931570326570338 39.291167522634353))"
+[20] ""                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
+[21] "OGRFeature(tahoe_highrez_training):1"                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
+[22] "  ID (Integer) = 2"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
+[23] "  Class (String) = Tree"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     
+[24] "  POLYGON ((-119.931729039548827 39.290893879567996,-119.931729039548827 39.290932189597285,-119.931701675242181 39.290943135319942,-119.931668838074231 39.290937662458617,-119.931663365212898 39.290899352429321,-119.931663365212898 39.290877460984014,-119.931685256658199 39.290861042400032,-119.931707148103513 39.290871988122689,-119.931729039548827 39.290893879567996))"                                                                                                                       
+[25] ""                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
+[26] "OGRFeature(tahoe_highrez_training):2"                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
+[27] "  ID (Integer) = 3"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
+[28] "  Class (String) = Tree"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     
+[29] "  POLYGON ((-119.932435038660017 39.290029167478316,-119.932407674353385 39.289990857449027,-119.932424092937367 39.289974438865045,-119.932451457243999 39.289974438865045,-119.932467875827982 39.289996330310352,-119.93246240296665 39.290018221755659,-119.932435038660017 39.290029167478316))"                                                                                                                                                                                                        
+[30] ""                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
+[31] "OGRFeature(tahoe_highrez_training):3"                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
+[32] "  ID (Integer) = 4"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
+[33] "  Class (String) = Shrub"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
+[34] "  POLYGON ((-119.931318574949287 39.290395849187227,-119.931181753416112 39.290483414968463,-119.931105133357534 39.29040132204856,-119.931241954890709 39.290259027654052,-119.931285737781323 39.290280919099359,-119.931318574949287 39.29037395774192,-119.931318574949287 39.290395849187227))"                                                                                                                                                                                                         
+[35] ""                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
+[36] "OGRFeature(tahoe_highrez_training):4"                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
+[37] "  ID (Integer) = 5"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
+[38] "  Class (String) = Shrub"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
+[39] "  POLYGON ((-119.931986264031195 39.290461523523156,-119.931958899724563 39.290439632077849,-119.931964372585881 39.29041226777121,-119.932002682615177 39.290417740632542,-119.932013628337828 39.290434159216524,-119.931986264031195 39.290461523523156))"                                                                                                                                                                                                                                                
+[40] ""                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
+[41] "OGRFeature(tahoe_highrez_training):5"                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
+[42] "  ID (Integer) = 6"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
+[43] "  Class (String) = Shrub"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
+[44] "  POLYGON ((-119.932539023025228 39.290828205232074,-119.932571860193192 39.290839150954724,-119.932566387331875 39.290866515261364,-119.932506185857264 39.290948608181267,-119.932445984382667 39.290954081042592,-119.932396728630735 39.29092671673596,-119.932391255769403 39.290882933845346,-119.932539023025228 39.290828205232074))"                                                                                                                                                                
+[45] ""                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
+[46] "OGRFeature(tahoe_highrez_training):6"                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
+[47] "  ID (Integer) = 7"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
+[48] "  Class (String) = Non-vegetated"                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
+[49] "  POLYGON ((-119.931657892351566 39.291309817028854,-119.93158674515432 39.291348127058143,-119.931553907986356 39.291353599919475,-119.931537489402373 39.291320762751511,-119.931570326570338 39.291287925583546,-119.931603163738302 39.291304344167528,-119.931641473767584 39.291255088415589,-119.931668838074231 39.291266034138239,-119.931657892351566 39.291309817028854))"                                                                                                                        
+[50] ""                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
+[51] "OGRFeature(tahoe_highrez_training):7"                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
+[52] "  ID (Integer) = 8"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
+[53] "  Class (String) = Non-vegetated"                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
+[54] "  POLYGON ((-119.931953426863231 39.289618702878784,-119.931920589695267 39.289635121462766,-119.931876806804652 39.289618702878784,-119.931833023914038 39.289635121462766,-119.931816605330056 39.289596811433476,-119.93186038822067 39.289591338572144,-119.931865861082002 39.289563974265512,-119.931931535417931 39.289558501404187,-119.931953426863231 39.289618702878784))"                                                                                                                        
+[55] ""                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("ogrinfo", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("qm")
+> ### * qm
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: qm
+> ### Title: qm
+> ### Aliases: qm
+> 
+> ### ** Examples
+> 
+> {
++ qm("Hi!")
++ qm(42)
++ }
+[1] "\"42\""
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("qm", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("remove_file_extension")
+> ### * remove_file_extension
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: remove_file_extension
+> ### Title: remove_file_extension
+> ### Aliases: remove_file_extension
+> 
+> ### ** Examples
+> 
+> myfilename="my.file.gri"
+> remove_file_extension(myfilename,".")
+[1] "my.file"
+> remove_file_extension(myfilename,".file.gri")
+[1] "my"
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("remove_file_extension", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("tahoe_highrez_training")
+> ### * tahoe_highrez_training
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: tahoe_highrez_training
+> ### Title: Point and polygon files for use with gdalUtils
+> ### Aliases: tahoe_highrez_training
+> ### Keywords: data
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D tahoe_highrez_training_polygons <- readOGR(
+> ##D 	dsn=system.file("external", package="gdalUtils"),layer="tahoe_highrez_training")
+> ##D spplot(tahoe_highrez_training_polygons,zcol="Class")
+> ##D tahoe_highrez_training_points <- readOGR(
+> ##D 	dsn=system.file("external", package="gdalUtils"),layer="tahoe_highrez_training_points")
+> ##D spplot(tahoe_highrez_training_points,zcol="SPECIES")
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("tahoe_highrez_training", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("tahoe_lidar_bareearth.tif")
+> ### * tahoe_lidar_bareearth.tif
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: tahoe_lidar_bareearth.tif
+> ### Title: Lidar-derived bare earth digital elevation model from the Lake
+> ###   Tahoe Basin.
+> ### Aliases: tahoe_lidar_bareearth.tif
+> ### Keywords: data
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D tahoe_lidar_bareearth <-
+> ##D raster(system.file("external/tahoe_lidar_bareearth.tif", package="gdalUtils"))
+> ##D plot(tahoe_lidar_bareearth)
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("tahoe_lidar_bareearth.tif", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("tahoe_lidar_highesthit.tif")
+> ### * tahoe_lidar_highesthit.tif
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: tahoe_lidar_highesthit.tif
+> ### Title: Lidar-derived highest hit (aka canopy) digital elevation model
+> ###   from the Lake Tahoe Basin.
+> ### Aliases: tahoe_lidar_highesthit.tif
+> ### Keywords: data
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D tahoe_lidar_highesthit <-
+> ##D raster(system.file("external/tahoe_lidar_highesthit.tif", package="gdalUtils"))
+> ##D plot(tahoe_lidar_highesthit)
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("tahoe_lidar_highesthit.tif", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("test_modis.hdf")
+> ### * test_modis.hdf
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: test_modis.hdf
+> ### Title: MODIS HDF4 file
+> ### Aliases: test_modis.hdf
+> ### Keywords: data
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D gdalinfo(system.file("external/test_modis.hdf", package="gdalUtils"))
+> ## End(Not run)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("test_modis.hdf", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> ### * <FOOTER>
+> ###
+> options(digits = 7L)
+> base::cat("Time elapsed: ", proc.time() - base::get("ptime", pos = 'CheckExEnv'),"\n")
+Time elapsed:  4.345 0.159 6.988 1.23 0.847 
+> grDevices::dev.off()
+null device 
+          1 
+> ###
+> ### Local variables: ***
+> ### mode: outline-minor ***
+> ### outline-regexp: "\\(> \\)?### [*]+" ***
+> ### End: ***
+> quit('no')
