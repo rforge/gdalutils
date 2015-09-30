@@ -129,7 +129,7 @@ ogr2ogr <- function(src_datasource_name,dst_datasource_name,
 					varnames <- c("dim","gt","simplify","segmentize",
 							"maxsubfields","order")),
 			character = list(
-					varnames <- c("format_name","select","sql","dialect",
+					varnames <- c("f","format_name","select","sql","dialect",
 							"where","geomfield","dsco","lco","nln","nlt",
 							"a_srs","t_srs","s_srs",
 							"fid","clipsrc","clipsrcsql","clipsrclayer",
