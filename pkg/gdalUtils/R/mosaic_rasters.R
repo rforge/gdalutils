@@ -4,6 +4,7 @@
 #' @param dst_dataset Character. The destination file name.
 #' @param output.vrt Character. Output VRT file.  If NULL a temporary .vrt file will be created.
 #' @param output_Raster Logical. Return output dst_dataset as a RasterBrick?
+#' @param trim_margins Numeric. Pre-crop the input tiles by a fixed number of pixels before mosaicking.  Can be a single value or four values representing the left, top, right, and bottom margins, respectively.
 #' @param ... Parameters to pass to \code{\link{gdalbuildvrt}} and \code{\link{gdal_translate}}.
 #' @param verbose Logical. Enable verbose execution? Default is FALSE.  
 #' 
@@ -32,8 +33,21 @@
 #' }
 #' @export
 
-mosaic_rasters <- function(gdalfile,dst_dataset,output.vrt=NULL,output_Raster=FALSE,verbose=FALSE,...)
+mosaic_rasters <- function(gdalfile,dst_dataset,output.vrt=NULL,output_Raster=FALSE,
+		trim_margins = NULL,
+		verbose=FALSE,
+		...)
 {
+	
+	# Check to make sure all the input files exist on the system:
+	if(verbose) message("Checking to make sure all the input files exist...")
+	files_exist <- sapply(gdalfile,file.exists)
+	if(!all(files_exist))
+	{
+		missing_files <- gdalfile[!files_exist]
+		stop(paste("Some of the input files are missing:",missing_files))
+	}
+	
 	if(output_Raster && (!require(raster) || !require(rgdal)))
 	{
 		warning("rgdal and/or raster not installed. Please install.packages(c('rgdal','raster')) or set output_Raster=FALSE")
@@ -48,12 +62,45 @@ mosaic_rasters <- function(gdalfile,dst_dataset,output.vrt=NULL,output_Raster=FA
 	{
 		output.vrt <- paste(tempfile(),".vrt",sep="")
 	}
+
+	# Shrink 
+	if(!is.null(trim_margins))
+	{
+		if(verbose) message("Trimming margins...")
+		if(length(trim_margins)==1) 
+		{
+			trim_margins <- rep(trim_margins,4)
+		}
+		
+		gdalfile_vrts <- foreach(k = seq(gdalfile),.combine="c") %dopar%
+				{
+					temp_gdalfile_info <- gdalinfo(gdalfile[k],raw_output=F)
+					new_xmin <- temp_gdalfile_info$bbox[1,1] + trim_margins[1]*abs(temp_gdalfile_info$res.x)
+					new_xmax <- temp_gdalfile_info$bbox[1,2] - trim_margins[3]*abs(temp_gdalfile_info$res.x)
+					new_ymin <- temp_gdalfile_info$bbox[2,1] + trim_margins[2]*abs(temp_gdalfile_info$res.y)
+					new_ymax <- temp_gdalfile_info$bbox[2,2] - trim_margins[4]*abs(temp_gdalfile_info$res.y)
+					
+					temp_vrt_name <- paste(tempfile(),".vrt",sep="")
+					
+					gdalbuildvrt(gdalfile=gdalfile[k],
+							output.vrt=temp_vrt_name,te=c(new_xmin,new_ymin,new_xmax,new_ymax),
+							verbose=verbose)
+					
+					return(temp_vrt_name)
+				}
+		gdalfile <- gdalfile_vrts
+		
+	}
 	
-	# Do some file exists testing here
+	# There is an error that occurs with a lot of files.  We are going to fix this by
+	#	creating a file list.
 	
-	gdalbuildvrt(gdalfile=gdalfile,output.vrt=output.vrt,...)
+	temp_file_list_name <- paste(tempfile(),".txt",sep="")
+	write.table(gdalfile,temp_file_list_name,row.names=F,col.names=F,quote=F)
+	
+	gdalbuildvrt(input_file_list=temp_file_list_name,output.vrt=output.vrt,verbose=verbose,...)
 	outmosaic <- gdal_translate(src_dataset=output.vrt,dst_dataset=dst_dataset,
-		output_Raster=output_Raster,...)
+		output_Raster=output_Raster,verbose=verbose,...)
 	return(outmosaic)
 	
 }

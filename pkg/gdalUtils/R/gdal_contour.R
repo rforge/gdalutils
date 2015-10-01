@@ -16,12 +16,9 @@
 #' @param off Numeric. Offset from zero relative to which to interpret intervals.
 #' @param fl Character. Name one or more "fixed levels" to extract.
 #' @param nln Character. Provide a name for the output vector layer. Defaults to "contour". 
-#' @param additional_commands Character. Additional commands to pass directly to gdal_rasterize.
-#' @param output_Vector Logical. Return output dst_filename as a SpatialLinesDataFrame?
-#' @param ignore.full_scan Logical. If FALSE, perform a brute-force scan if other installs are not found.  Default is TRUE.
-#' @param verbose Logical. Enable verbose execution? Default is FALSE.  
+#' @param output_Vector. Return output dst_filename as a SpatialLines?  Currently only works for shapefiles.
 
-#' @return output vector file and NULL.
+#' @return output vector filename or SpatialLinesDataFrame object.
 #' @author Jonathan A. Greenberg (\email{gdalUtils@@estarcion.net}) (wrapper) and Frank Warmerdam (GDAL lead developer).
 #' @details This is an R wrapper for the 'gdal_contour' function that is part of the 
 #' Geospatial Data Abstraction Library (GDAL).  It follows the parameter naming
@@ -50,20 +47,25 @@
 #' if(require(raster) && require(rgdal) && valid_install)
 #' {
 #' # Example from the original gdal_contour documentation:
-
-
+#' # 	gdal_contour -a elev dem.tif contour.shp -i 10.0 
+#' # Choose a DEM:
+#' input_dem  <- system.file("external/tahoe_lidar_bareearth.tif", package="gdalUtils")
+#' # Setup an output filename (shapefile):
+#' output_shapefile <- paste(tempfile(),".shp",sep="")
+#' contour_output <- gdal_contour(src_filename=input_dem,dst_filename=output_shapefile,
+#' 		a="Elevation",i=5.,output_Vector=TRUE)
+#' # Plot the contours using spplot:
+#' spplot(contour_output["Elevation"],contour=TRUE)
 #' }
 #' @export
 
-# TODO: output_Vector
-# TODO: choose_installation for OGR drivers
-
 gdal_contour <- function(
 		src_filename,dst_filename,
-		b,a,threeD,inodata,snodata,i,f,
+		b,a,threeD,inodata,snodata,i,
+		f="ESRI Shapefile",
 		dsco,lco,off,fl,nln,
-		additional_commands,
 		output_Vector=FALSE,
+		additional_commands,
 		ignore.full_scan=TRUE,
 		verbose=FALSE)
 {
@@ -87,7 +89,7 @@ gdal_contour <- function(
 					)),
 			vector = list(
 					varnames <- c(
-								
+					
 					)),
 			scalar = list(
 					varnames <- c(
@@ -122,17 +124,22 @@ gdal_contour <- function(
 			parameter_order=parameter_order,
 			parameter_noflags=parameter_noflags,
 			parameter_noquotes=parameter_noquotes,
+			#		gdal_installation_id=gdal_chooseInstallation(hasDrivers=of))
 			gdal_installation_id=gdal_chooseInstallation())
 	
 	if(verbose) message(paste("GDAL command being used:",cmd))
 	
 	cmd_output <- system(cmd,intern=TRUE) 
 	
-	if(output_Vector)
+	if(output_Vector && f=="ESRI Shapefile")
 	{
-		return(readOGR(dsn=".",layer=remove_file_extension(dst_filename)))	
+		return(
+				readOGR(dsn=dirname(dst_filename),
+						layer=remove_file_extension(basename(dst_filename)))
+		)
+		#	return(brick(dst_filename))	
 	} else
 	{
-		return(NULL)
+		return(dst_filename)
 	}		
 }
