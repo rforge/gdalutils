@@ -71,6 +71,7 @@
 #' #After plot:
 #' plotRGB(brick(dst_filename))
 #' }
+#' @import rgdal
 #' @export
 
 gdal_rasterize <- function(
@@ -83,7 +84,7 @@ gdal_rasterize <- function(
 		ignore.full_scan=TRUE,
 		verbose=FALSE)
 {
-	if(output_Raster && (!require(raster) || !require(rgdal)))
+	if(output_Raster && (!requireNamespace("raster") || !requireNamespace("rgdal")))
 	{
 		warning("rgdal and/or raster not installed. Please install.packages(c('rgdal','raster')) or set output_Raster=FALSE")
 		return(NULL)

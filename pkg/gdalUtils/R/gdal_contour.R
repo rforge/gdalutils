@@ -9,14 +9,16 @@
 #' @param threeD Logical. (GDAL parameter '3d') Force production of 3D vectors instead of 2D. Includes elevation at every vertex.
 #' @param inodata Logical. Ignore any nodata value implied in the dataset - treat all values as valid.
 #' @param snodata Numeric. Input pixel value to treat as "nodata".
-#' @param f Character. Create output in a particular format, default is shapefiles.
+#' @param f Character. Create output in a particular format, default is "ESRI Shapefiles".
 #' @param dsco Character. Dataset creation option (format specific).  Follows "NAME=VALUE" format.
 #' @param lco Character. Layer creation option (format specific).  Follows "NAME=VALUE" format.
 #' @param i Numeric. Elevation interval between contours.
 #' @param off Numeric. Offset from zero relative to which to interpret intervals.
 #' @param fl Character. Name one or more "fixed levels" to extract.
 #' @param nln Character. Provide a name for the output vector layer. Defaults to "contour". 
-#' @param output_Vector. Return output dst_filename as a SpatialLines?  Currently only works for shapefiles.
+#' @param output_Vector Logical. Return output dst_filename as a Spatial* object.  Currently only works with f="ESRI Shapefile".
+#' @param ignore.full_scan Logical. If FALSE, perform a brute-force scan if other installs are not found.  Default is TRUE.
+#' @param verbose Logical. Enable verbose execution? Default is FALSE.  
 
 #' @return output vector filename or SpatialLinesDataFrame object.
 #' @author Jonathan A. Greenberg (\email{gdalUtils@@estarcion.net}) (wrapper) and Frank Warmerdam (GDAL lead developer).
@@ -57,6 +59,7 @@
 #' # Plot the contours using spplot:
 #' spplot(contour_output["Elevation"],contour=TRUE)
 #' }
+#' @import rgdal
 #' @export
 
 gdal_contour <- function(
@@ -65,11 +68,10 @@ gdal_contour <- function(
 		f="ESRI Shapefile",
 		dsco,lco,off,fl,nln,
 		output_Vector=FALSE,
-		additional_commands,
 		ignore.full_scan=TRUE,
 		verbose=FALSE)
 {
-	if(output_Vector && (!require(rgdal)))
+	if(output_Vector && (!requireNamespace("rgdal")))
 	{
 		warning("rgdal not installed. Please install.packages('rgdal') or set output_Vector=FALSE")
 		return(NULL)

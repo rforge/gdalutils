@@ -5,7 +5,7 @@
 \title{Mosaic raster files using GDAL Utilities}
 \usage{
 mosaic_rasters(gdalfile, dst_dataset, output.vrt = NULL,
-  output_Raster = FALSE, verbose = FALSE, ...)
+  output_Raster = FALSE, trim_margins = NULL, verbose = FALSE, ...)
 }
 \arguments{
 \item{gdalfile}{Character. Input files (as a character vector) or a wildcard search term (e.g. "*.tif")}
@@ -15,6 +15,8 @@ mosaic_rasters(gdalfile, dst_dataset, output.vrt = NULL,
 \item{output.vrt}{Character. Output VRT file.  If NULL a temporary .vrt file will be created.}
 
 \item{output_Raster}{Logical. Return output dst_dataset as a RasterBrick?}
+
+\item{trim_margins}{Numeric. Pre-crop the input tiles by a fixed number of pixels before mosaicking.  Can be a single value or four values representing the left, top, right, and bottom margins, respectively.}
 
 \item{verbose}{Logical. Enable verbose execution? Default is FALSE.}
 

@@ -85,6 +85,7 @@
 #' plot(output_aspect,col=gray.colors(256))
 #' }
 #' }
+#' @import rgdal
 #' @export
 
 # TODO: Fully document this.
@@ -101,7 +102,7 @@ gdaldem <- function(
 		ignore.full_scan=TRUE,
 		verbose=FALSE)
 {	
-	if(output_Raster && (!require(raster) || !require(rgdal)))
+	if(output_Raster && (!requireNamespace("raster") || !requireNamespace("rgdal")))
 	{
 		warning("rgdal and/or raster not installed. Please install.packages(c('rgdal','raster')) or set output_Raster=FALSE")
 		return(NULL)

@@ -4,8 +4,8 @@
 \alias{gdal_contour}
 \title{gdal_contour}
 \usage{
-gdal_contour(src_filename, dst_filename, b, a, threeD, inodata, snodata, i, f,
-  dsco, lco, off, fl, nln, additional_commands, output_Vector = FALSE,
+gdal_contour(src_filename, dst_filename, b, a, threeD, inodata, snodata, i,
+  f = "ESRI Shapefile", dsco, lco, off, fl, nln, output_Vector = FALSE,
   ignore.full_scan = TRUE, verbose = FALSE)
 }
 \arguments{
@@ -25,7 +25,7 @@ gdal_contour(src_filename, dst_filename, b, a, threeD, inodata, snodata, i, f,
 
 \item{i}{Numeric. Elevation interval between contours.}
 
-\item{f}{Character. Create output in a particular format, default is shapefiles.}
+\item{f}{Character. Create output in a particular format, default is "ESRI Shapefiles".}
 
 \item{dsco}{Character. Dataset creation option (format specific).  Follows "NAME=VALUE" format.}
 
@@ -37,16 +37,14 @@ gdal_contour(src_filename, dst_filename, b, a, threeD, inodata, snodata, i, f,
 
 \item{nln}{Character. Provide a name for the output vector layer. Defaults to "contour".}
 
-\item{additional_commands}{Character. Additional commands to pass directly to gdal_rasterize.}
-
-\item{output_Vector}{Logical. Return output dst_filename as a SpatialLinesDataFrame?}
+\item{output_Vector}{Logical. Return output dst_filename as a Spatial* object.  Currently only works with f="ESRI Shapefile".}
 
 \item{ignore.full_scan}{Logical. If FALSE, perform a brute-force scan if other installs are not found.  Default is TRUE.}
 
 \item{verbose}{Logical. Enable verbose execution? Default is FALSE.}
 }
 \value{
-output vector file and NULL.
+output vector filename or SpatialLinesDataFrame object.
 }
 \description{
 R wrapper for gdal_contour: builds vector contour lines from a raster elevation model
@@ -78,6 +76,15 @@ valid_install <- !is.null(getOption("gdalUtils_gdalPath"))
 if(require(raster) && require(rgdal) && valid_install)
 {
 # Example from the original gdal_contour documentation:
+# 	gdal_contour -a elev dem.tif contour.shp -i 10.0
+# Choose a DEM:
+input_dem  <- system.file("external/tahoe_lidar_bareearth.tif", package="gdalUtils")
+# Setup an output filename (shapefile):
+output_shapefile <- paste(tempfile(),".shp",sep="")
+contour_output <- gdal_contour(src_filename=input_dem,dst_filename=output_shapefile,
+		a="Elevation",i=5.,output_Vector=TRUE)
+# Plot the contours using spplot:
+spplot(contour_output["Elevation"],contour=TRUE)
 }
 }
 \author{

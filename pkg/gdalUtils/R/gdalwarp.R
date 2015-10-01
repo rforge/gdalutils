@@ -88,6 +88,7 @@
 #' 		t_srs='+proj=utm +zone=11 +datum=WGS84',output_Raster=TRUE,
 #' 		overwrite=TRUE,verbose=TRUE)
 #' }
+#' @import rgdal
 #' @export
 
 gdalwarp <- function(
@@ -102,7 +103,7 @@ gdalwarp <- function(
 		ignore.full_scan=TRUE,
 		verbose=FALSE)
 {
-	if(output_Raster && (!require(raster) || !require(rgdal)))
+	if(output_Raster && (!requireNamespace("raster") || !requireNamespace("rgdal")))
 	{
 		warning("rgdal and/or raster not installed. Please install.packages(c('rgdal','raster')) or set output_Raster=FALSE")
 		return(NULL)

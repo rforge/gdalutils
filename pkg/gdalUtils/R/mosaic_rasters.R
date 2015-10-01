@@ -5,8 +5,8 @@
 #' @param output.vrt Character. Output VRT file.  If NULL a temporary .vrt file will be created.
 #' @param output_Raster Logical. Return output dst_dataset as a RasterBrick?
 #' @param trim_margins Numeric. Pre-crop the input tiles by a fixed number of pixels before mosaicking.  Can be a single value or four values representing the left, top, right, and bottom margins, respectively.
-#' @param ... Parameters to pass to \code{\link{gdalbuildvrt}} and \code{\link{gdal_translate}}.
 #' @param verbose Logical. Enable verbose execution? Default is FALSE.  
+#' @param ... Parameters to pass to \code{\link{gdalbuildvrt}} and \code{\link{gdal_translate}}.
 #' 
 #' @details This function mosaics a set of input rasters (gdalfile) using parameters
 #' found in \code{\link{gdalbuildvrt}} and subsequently exports the mosaic to 
@@ -31,6 +31,7 @@
 #' 		verbose=TRUE)
 #' gdalinfo("test_mosaic.envi")
 #' }
+#' @import rgdal
 #' @export
 
 mosaic_rasters <- function(gdalfile,dst_dataset,output.vrt=NULL,output_Raster=FALSE,
@@ -38,6 +39,9 @@ mosaic_rasters <- function(gdalfile,dst_dataset,output.vrt=NULL,output_Raster=FA
 		verbose=FALSE,
 		...)
 {
+	# CRAN check to fix foreach variable errors:
+	k <- NULL
+	
 	
 	# Check to make sure all the input files exist on the system:
 	if(verbose) message("Checking to make sure all the input files exist...")
@@ -48,7 +52,7 @@ mosaic_rasters <- function(gdalfile,dst_dataset,output.vrt=NULL,output_Raster=FA
 		stop(paste("Some of the input files are missing:",missing_files))
 	}
 	
-	if(output_Raster && (!require(raster) || !require(rgdal)))
+	if(output_Raster && (!requireNamespace("raster") || !requireNamespace("rgdal")))
 	{
 		warning("rgdal and/or raster not installed. Please install.packages(c('rgdal','raster')) or set output_Raster=FALSE")
 		return(NULL)

@@ -6,7 +6,7 @@ Type: Package
 LazyLoad: yes
 Author: Jonathan Asher Greenberg and Matteo Mattiuzzi
 Description: Wrappers for the Geospatial Data Abstraction Library (GDAL)
-    Utilities
+    Utilities.
 Version: 0.5.1
 Date: 2015-10-01
 Depends:
@@ -15,7 +15,6 @@ Imports:
     sp,
     foreach,
     R.utils,
-    raster
-Suggests:
+    raster,
     rgdal
 SystemRequirements: GDAL binaries
