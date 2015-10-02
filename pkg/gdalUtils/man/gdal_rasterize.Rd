@@ -5,7 +5,7 @@
 \title{gdal_rasterize}
 \usage{
 gdal_rasterize(src_datasource, dst_filename, b, i, at, burn, a, threeD, l,
-  where, sql, of, a_srs, co, a_nodata, init, te, tr, tap, ts, ot, q,
+  where, sql, dialect, of, a_srs, co, a_nodata, init, te, tr, tap, ts, ot, q,
   additional_commands, output_Raster = FALSE, ignore.full_scan = TRUE,
   verbose = FALSE)
 }
@@ -31,6 +31,8 @@ gdal_rasterize(src_datasource, dst_filename, b, i, at, burn, a, threeD, l,
 \item{where}{Character. An optional SQL WHERE style query expression to be applied to select features to burn in from the input layer(s).}
 
 \item{sql}{Character. An SQL statement to be evaluated against the datasource to produce a virtual layer of features to be burned in.}
+
+\item{dialect}{Character. (starting with GDAL 2.1) The SQL dialect. In some cases can be used to use (unoptimized) OGR SQL instead of the native SQL of an RDBMS by passing OGRSQL. Starting with GDAL 1.10, the "SQLITE" dialect can also be used with any datasource.}
 
 \item{of}{Character. (GDAL >= 1.8.0) Select the output format. The default is GeoTIFF (GTiff). Use the short format name.}
 

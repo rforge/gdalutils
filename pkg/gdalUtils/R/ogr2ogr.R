@@ -162,7 +162,9 @@ ogr2ogr <- function(src_datasource_name,dst_datasource_name,
 					varnames <- c("f","select","sql","dialect",
 							"where","spat_srs","geomfield","dsco","lco","nln","nlt",
 							"a_srs","t_srs","s_srs",
-							"fid","oo","doo","clipsrc","clipsrcsql","clipsrclayer",
+							"fid","oo","doo",
+	#						"clipsrc",
+							"clipsrcsql","clipsrclayer",
 							"clipsrcwhere","clipdst","clipdstsql",
 							"clipdstlayer","clipdstwhere","fieldTypeToString",
 							"mapFieldType",
@@ -172,6 +174,20 @@ ogr2ogr <- function(src_datasource_name,dst_datasource_name,
 			repeatable = list(
 					varnames <- c("gcp"))
 	)
+	
+	# Fix for clipsrc bug reported by Alex Zvoleff, 5/11/2015
+	if(!missing(clipsrc))
+	{
+		if(is.numeric(clipsrc))
+		{
+			parameter_variables$vector[[1]] <- c(parameter_variables$vector[[1]],"clipsrc")
+		} else
+		{
+			parameter_variables$character[[1]] <- c(parameter_variables$character[[1]],"clipsrc")
+		}
+	}
+	
+#	browser()
 	
 	parameter_order <- c(
 			"append","overwrite","update",
@@ -204,7 +220,7 @@ ogr2ogr <- function(src_datasource_name,dst_datasource_name,
 	
 	parameter_doubledash <- NULL
 	
-	parameter_noquotes <- c("spat")
+	parameter_noquotes <- c("spat","clipsrc")
 	
 	executable <- "ogr2ogr"
 	# End ogr2ogr setup

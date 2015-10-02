@@ -5,8 +5,8 @@
 \title{ogrinfo}
 \usage{
 ogrinfo(datasource_name, layer, ro, q, where, spat, geomfield, fid, sql,
-  dialect, al, so, fields, geom, formats, additional_commands,
-  ignore.full_scan = TRUE, verbose = FALSE)
+  dialect, al, so, fields, geom, oo, nomd, listmdd, mdd, nocount, noextent,
+  formats, additional_commands, ignore.full_scan = TRUE, verbose = FALSE)
 }
 \arguments{
 \item{datasource_name}{Character. The data source to open. May be a filename, directory or other virtual name. See the OGR Vector Formats list for supported datasources.}
@@ -36,6 +36,18 @@ ogrinfo(datasource_name, layer, ro, q, where, spat, geomfield, fid, sql,
 \item{fields}{Character. ("YES"|"NO") (starting with GDAL 1.6.0) If set to NO, the feature dump will not display field values. Default value is YES.}
 
 \item{geom}{Character. ("YES"|"NO"|"SUMMARY") (starting with GDAL 1.6.0) If set to NO, the feature dump will not display the geometry. If set to SUMMARY, only a summary of the geometry will be displayed. If set to YES, the geometry will be reported in full OGC WKT format. Default value is YES.}
+
+\item{oo}{Character. "NAME=VALUE". (starting with GDAL 2.0) Dataset open option (format specific).}
+
+\item{nomd}{Logical. (starting with GDAL 2.0) Suppress metadata printing. Some datasets may contain a lot of metadata strings.}
+
+\item{listmdd}{Logical. (starting with GDAL 2.0) List all metadata domains available for the dataset.}
+
+\item{mdd}{Character. (starting with GDAL 2.0) Report metadata for the specified domain. "all" can be used to report metadata in all domains.}
+
+\item{nocount}{Logical. (starting with GDAL 2.0) Suppress feature count printing.}
+
+\item{noextent}{Logical. (starting with GDAL 2.0) Suppress spatial extent printing.}
 
 \item{formats}{Logical. List the format drivers that are enabled.}
 
