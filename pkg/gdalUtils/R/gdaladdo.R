@@ -8,6 +8,7 @@
 #' @param b Numeric. (available from GDAL 1.10) Select an input band band for overview generation. Band numbering starts from 1. Multiple -b switches may be used to select a set of input bands to generate overviews.
 #' @param ro Logical. (available from GDAL 1.6.0) open the dataset in read-only mode, in order to generate external overview (for GeoTIFF especially).
 #' @param clean Logical. (available from GDAL 1.7.0) remove all overviews.
+#' @param oo Character. NAME=VALUE. (starting with GDAL 2.0) Dataset open option (format specific)
 #' @param additional_commands Character. Additional commands to pass directly to gdaladdo.
 #' @param ignore.full_scan Logical. If FALSE, perform a brute-force scan if other installs are not found.  Default is TRUE.
 #' @param verbose Logical. Enable verbose execution? Default is FALSE.  
@@ -47,7 +48,7 @@
 #' @export
 
 gdaladdo <- function(filename,levels,
-		r,b,ro,clean,
+		r,b,ro,clean,oo,
 		additional_commands,
 		ignore.full_scan=TRUE,
 		verbose=FALSE,
@@ -69,13 +70,13 @@ gdaladdo <- function(filename,levels,
 			scalar = list(
 					varnames <- c("")),
 			character = list(
-					varnames <- c("r","filename")),
+					varnames <- c("r","oo","filename")),
 			repeatable = list(
 					varnames <- c("b"))
 	)
 	
 	parameter_order <- c(
-			"r","b","ro","clean","filename","levels")
+			"r","b","ro","clean","oo","filename","levels")
 	
 	parameter_noflags <- c("filename","levels")
 	

@@ -5,10 +5,11 @@
 \title{gdalwarp}
 \usage{
 gdalwarp(srcfile, dstfile, s_srs, t_srs, to, order, tps, rpc, geoloc, et,
-  refine_gcps, te, tr, tap, ts, wo, ot, wt, r, srcnodata, dstnodata, dstalpha,
-  wm, multi, q, of = "GTiff", co, cutline, cl, cwhere, csql, cblend,
-  crop_to_cutline, overwrite, nomd, cvmd, setci, additional_commands,
-  output_Raster = FALSE, ignore.full_scan = TRUE, verbose = FALSE)
+  refine_gcps, te, te_srs, tr, tap, ts, ovr, wo, ot, wt, r, srcnodata,
+  dstnodata, dstalpha, wm, multi, q, of = "GTiff", co, cutline, cl, cwhere,
+  csql, cblend, crop_to_cutline, overwrite, nomd, cvmd, setci, oo, doo,
+  additional_commands, output_Raster = FALSE, ignore.full_scan = TRUE,
+  verbose = FALSE)
 }
 \arguments{
 \item{srcfile}{Character. The source file name(s).}
@@ -35,11 +36,15 @@ gdalwarp(srcfile, dstfile, s_srs, t_srs, to, order, tps, rpc, geoloc, et,
 
 \item{te}{Numeric. (c(xmin,ymin,xmax,ymax)). set georeferenced extents of output file to be created (in target SRS).}
 
+\item{te_srs}{Character. srs_def. (GDAL >= 2.0) Specifies the SRS in which to interpret the coordinates given with -te. The srs_def may be any of the usual GDAL/OGR forms, complete WKT, PROJ.4, EPSG:n or a file containing the WKT. This must not be confused with -t_srs which is the target SRS of the output dataset. -te_srs is a conveniency e.g. when knowing the output coordinates in a geodetic long/lat SRS, but still wanting a result in a projected coordinate system.}
+
 \item{tr}{Numeric. (c(xres,yres)). set output file resolution (in target georeferenced units)}
 
 \item{tap}{Logical. (GDAL >= 1.8.0) (target aligned pixels) align the coordinates of the extent of the output file to the values of the -tr, such that the aligned extent includes the minimum extent.}
 
 \item{ts}{Numeric. (c(width,height)). set output file size in pixels and lines. If width or height is set to 0, the other dimension will be guessed from the computed resolution. Note that -ts cannot be used with -tr}
+
+\item{ovr}{Character. (level | "AUTO" | "AUTO-n" | "NONE"). (GDAL >= 2.0) To specify which overview level of source files must be used. The default choice, AUTO, will select the overview level whose resolution is the closest to the target resolution. Specify an integer value (0-based, i.e. 0=1st overview level) to select a particular level. Specify AUTO-n where n is an integer greater or equal to 1, to select an overview level below the AUTO one. Or specify NONE to force the base resolution to be used.}
 
 \item{wo}{Character. Set a warp options. The GDALWarpOptions::papszWarpOptions docs show all options. Multiple -wo options may be listed.}
 
@@ -47,7 +52,7 @@ gdalwarp(srcfile, dstfile, s_srs, t_srs, to, order, tps, rpc, geoloc, et,
 
 \item{wt}{Character. Working pixel data type. The data type of pixels in the source image and destination image buffers.}
 
-\item{r}{Character. resampling_method. ("near"|"bilinear"|"cubic"|"cubicspline"|"lanczos"|"average"|"mode")  See Description.}
+\item{r}{Character. resampling_method. ("near"|"bilinear"|"cubic"|"cubicspline"|"lanczos"|"average"|"mode"|"max"|"min"|"med"|"q1"|"q3")  See Description.}
 
 \item{srcnodata}{Character. Set nodata masking values for input bands (different values can be supplied for each band). If more than one value is supplied all values should be quoted to keep them together as a single operating system argument. Masked values will not be used in interpolation. Use a value of None to ignore intrinsic nodata settings on the source dataset.}
 
@@ -85,6 +90,10 @@ gdalwarp(srcfile, dstfile, s_srs, t_srs, to, order, tps, rpc, geoloc, et,
 
 \item{setci}{Logical. (GDAL >= 1.10.0) Set the color interpretation of the bands of the target dataset from the source dataset.}
 
+\item{oo}{Character. NAME=VALUE. (starting with GDAL 2.0) Dataset open option (format specific).}
+
+\item{doo}{Character. NAME=VALUE. (starting with GDAL 2.1) Output dataset open option (format specific).}
+
 \item{additional_commands}{Character. Additional commands to pass directly to gdalwarp.}
 
 \item{output_Raster}{Logical. Return output dst_dataset as a RasterBrick?}
@@ -121,7 +130,11 @@ cubicspline: cubic spline resampling.
 lanczos: Lanczos windowed sinc resampling.
 average: average resampling, computes the average of all non-NODATA contributing pixels. (GDAL >= 1.10.0)
 mode: mode resampling, selects the value which appears most often of all the sampled points. (GDAL >= 1.10.0)
-
+max: maximum resampling, selects the maximum value from all non-NODATA contributing pixels. (GDAL >= 2.0.0)
+min: minimum resampling, selects the minimum value from all non-NODATA contributing pixels. (GDAL >= 2.0.0)
+med: median resampling, selects the median value of all non-NODATA contributing pixels. (GDAL >= 2.0.0)
+q1: first quartile resampling, selects the first quartile value of all non-NODATA contributing pixels. (GDAL >= 2.0.0)
+q3: third quartile resampling, selects the third quartile value of all non-NODATA contributing pixels. (GDAL >= 2.0.0)
 The user can choose to (optionally) return a RasterBrick of the output file (assuming
 raster/rgdal supports the particular output format).
 }

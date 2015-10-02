@@ -5,7 +5,7 @@
 \title{gdalinfo}
 \usage{
 gdalinfo(datasetname, mm, stats, approx_stats, hist, nogcp, nomd, nrat, noct,
-  nofl, checksum, proj4, mdd, sd, version, formats, format, optfile, config,
+  nofl, checksum, proj4, oo, mdd, sd, version, formats, format, optfile, config,
   debug, additional_commands, raw_output = TRUE, ignore.full_scan = TRUE,
   verbose = FALSE)
 }
@@ -33,6 +33,8 @@ gdalinfo(datasetname, mm, stats, approx_stats, hist, nogcp, nomd, nrat, noct,
 \item{checksum}{Logical. Force computation of the checksum for each band in the dataset.}
 
 \item{proj4}{Logical. (GDAL >= 1.9.0) Report a PROJ.4 string corresponding to the file's coordinate system.}
+
+\item{oo}{Character. (starting with GDAL 2.0) NAME=VALUE. Dataset open option (format specific).}
 
 \item{mdd}{Character. Report metadata for the specified domain.}
 

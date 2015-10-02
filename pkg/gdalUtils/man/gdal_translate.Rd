@@ -5,10 +5,10 @@
 \title{gdal_translate}
 \usage{
 gdal_translate(src_dataset, dst_dataset, ot, strict, of = "GTiff", b, mask,
-  expand, outsize, scale, exponent, unscale, srcwin, projwin, epo, eco, a_srs,
-  a_ullr, a_nodata, mo, co, gcp, q, sds, stats, norat, additional_commands,
-  sd_index, output_Raster = FALSE, ignore.full_scan = TRUE,
-  verbose = FALSE, ...)
+  expand, outsize, tr, r, scale, exponent, unscale, srcwin, projwin,
+  projwin_srs, epo, eco, a_srs, a_ullr, a_nodata, mo, co, gcp, q, sds, stats,
+  norat, oo, additional_commands, sd_index, output_Raster = FALSE,
+  ignore.full_scan = TRUE, verbose = FALSE, ...)
 }
 \arguments{
 \item{src_dataset}{Character. The source dataset name. It can be either file name, URL of data source or subdataset name for multi-dataset files.}
@@ -29,6 +29,10 @@ gdal_translate(src_dataset, dst_dataset, ot, strict, of = "GTiff", b, mask,
 
 \item{outsize}{Numeric. (c(xsize[percentage],ysize[percentage])). Set the size of the output file. Outsize is in pixels and lines unless '\%' is attached in which case it is as a fraction of the input image size.}
 
+\item{tr}{Numeric. c(xres,yres). (starting with GDAL 2.0) set target resolution. The values must be expressed in georeferenced units. Both must be positive values. This is exclusive with -outsize and -a_ullr.}
+
+\item{r}{Character. resampling_method. ("nearest"|"bilinear"|"cubic"|"cubicspline"|"lanczos"|"average"|"mode")  (GDAL >= 2.0) Select a resampling algorithm.}
+
 \item{scale}{Numeric. (c(src_min,src_max,dst_min,dst_max)). Rescale the input pixels values from the range src_min to src_max to the range dst_min to dst_max. If omitted the output range is 0 to 255. If omitted the input range is automatically computed from the source data.}
 
 \item{exponent}{Numeric. (From GDAL 1.11) To apply non-linear scaling with a power function. exp_val is the exponent of the power function (must be postive). This option must be used with the -scale option. If specified only once, -exponent applies to all bands of the output image. It can be repeated several times so as to specify per band parameters. It is also possible to use the "-exponent_bn" syntax where bn is a band number (e.g. "-exponent_2" for the 2nd band of the output dataset) to specify the parameters of one or several specific bands.}
@@ -38,6 +42,8 @@ gdal_translate(src_dataset, dst_dataset, ot, strict, of = "GTiff", b, mask,
 \item{srcwin}{Numeric. (c(xoff,yoff,xsize,ysize)).  Selects a subwindow from the source image for copying based on pixel/line location.}
 
 \item{projwin}{Numeric. (c(ulx,uly,lrx,lry)).  Selects a subwindow from the source image for copying (like -srcwin) but with the corners given in georeferenced coordinates.}
+
+\item{projwin_srs}{Character. srs_def. (GDAL >= 2.0) Specifies the SRS in which to interpret the coordinates given with -projwin. The srs_def may be any of the usual GDAL/OGR forms, complete WKT, PROJ.4, EPSG:n or a file containing the WKT. Note that this does not cause reprojection of the dataset to the specified SRS.}
 
 \item{epo}{Logical. (Error when Partially Outside)  (GDAL >= 1.10) If this option is set, -srcwin or -projwin values that falls partially outside the source raster extent will be considered as an error. The default behaviour starting with GDAL 1.10 is to accept such requests, when they were considered as an error before.}
 
@@ -62,6 +68,8 @@ gdal_translate(src_dataset, dst_dataset, ot, strict, of = "GTiff", b, mask,
 \item{stats}{Logical. (GDAL >= 1.8.0) Force (re)computation of statistics.}
 
 \item{norat}{Logical. (GDAL >= 1.11) Do not copy source RAT into destination dataset.}
+
+\item{oo}{Character. NAME=VALUE. (starting with GDAL 2.0) Dataset open option (format specific)}
 
 \item{additional_commands}{Character. Additional commands to pass directly to gdal_translate.}
 

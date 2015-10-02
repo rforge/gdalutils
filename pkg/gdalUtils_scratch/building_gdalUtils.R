@@ -3,7 +3,6 @@ pathtopackage <- "D:\\Users\\jgrn\\workspace\\gdalutils\\pkg\\gdalUtils"
 
 # For jgrn/krypton:
 pathtopackage <- "/Users/jgrn307/Documents/workspace/gdalutils/pkg/gdalUtils"
-Sys.setenv(PATH=paste(Sys.getenv("PATH"),"/usr/texbin",sep=":"))
 
 setwd(pathtopackage)
 

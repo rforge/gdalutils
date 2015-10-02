@@ -6,7 +6,7 @@
 \usage{
 gdalbuildvrt(gdalfile, output.vrt, tileindex, resolution, te, tr, tap, separate,
   b, sd, allow_projection_difference, q, addalpha, hidenodata, srcnodata,
-  vrtnodata, a_srs, input_file_list, overwrite, additional_commands,
+  vrtnodata, a_srs, r, input_file_list, overwrite, additional_commands,
   ignore.full_scan = TRUE, verbose = FALSE, ...)
 }
 \arguments{
@@ -43,6 +43,8 @@ gdalbuildvrt(gdalfile, output.vrt, tileindex, resolution, te, tr, tap, separate,
 \item{vrtnodata}{Character. (starting with GDAL 1.7.0) Set nodata values at the VRT band level (different values can be supplied for each band). If more than one value is supplied all values should be quoted to keep them together as a single operating system argument. If the option is not specified, intrinsic nodata settings on the first dataset will be used (if they exist). The value set by this option is written in the NoDataValue element of each VRTRasterBand element. Use a value of None to ignore intrinsic nodata settings on the source datasets.}
 
 \item{a_srs}{Character. (starting with GDAL 1.10) Override the projection for the output file. The srs_def may be any of the usual GDAL/OGR forms, complete WKT, PROJ.4, EPSG:n or a file containing the WKT.}
+
+\item{r}{Character. ("nearest" (default) | "bilinear" | "cubic" | "cubicspline" | "lanczos" | "average" | "mode"). (GDAL >= 2.0) Select a resampling algorithm.}
 
 \item{input_file_list}{Character. To specify a text file with an input filename on each line.}
 

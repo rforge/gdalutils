@@ -16,6 +16,7 @@
 #' @param nofl Logical. (GDAL >= 1.9.0) Only display the first file of the file list.
 #' @param sd Numeric. (GDAL >= 1.9.0) If the input dataset contains several subdatasets read and display a subdataset with specified number (starting from 1). This is an alternative of giving the full subdataset name.
 #' @param proj4 Logical. (GDAL >= 1.9.0) Report a PROJ.4 string corresponding to the file's coordinate system.
+#' @param oo Character. (starting with GDAL 2.0) NAME=VALUE. Dataset open option (format specific).
 #' @param version Logical. Report the version of GDAL and exit.
 #' @param formats Logical. List all raster formats supported by this GDAL build (read-only and read-write) and exit. The format support is indicated as follows: 'ro' is read-only driver; 'rw' is read or write (ie. supports CreateCopy); 'rw+' is read, write and update (ie. supports Create). A 'v' is appended for formats supporting virtual IO (/vsimem, /vsigzip, /vsizip, etc). A 's' is appended for formats supporting subdatasets. Note: The valid formats for the output of gdalwarp are formats that support the Create() method (marked as rw+), not just the CreateCopy() method.
 #' @param format Character. List detailed information about a single format driver. The format should be the short name reported in the --formats list, such as GTiff.
@@ -64,7 +65,7 @@
 
 gdalinfo <- function(datasetname,mm,stats,
 		approx_stats,hist,nogcp,nomd,nrat,noct,nofl,checksum,
-		proj4,mdd,sd,
+		proj4,oo,mdd,sd,
 		version,formats,format,optfile,config,debug,
 		additional_commands,
 		raw_output=TRUE,
@@ -89,7 +90,7 @@ gdalinfo <- function(datasetname,mm,stats,
 					varnames <- c("sd")),
 			character = list(
 					varnames <- c("mdd","datasetname",
-							"format","optfile","config","debug")),
+							"format","optfile","config","debug","oo")),
 			repeatable = list(
 					varnames <- NULL)
 	)
@@ -97,7 +98,7 @@ gdalinfo <- function(datasetname,mm,stats,
 	parameter_order <- c(
 			"mm","stats","approx_stats","hist","nogcp","nomd","nrat","noct","nofl","checksum",
 			"proj4","mdd","sd",
-			"version","formats","format","optfile","config","debug",
+			"version","formats","format","optfile","config","debug","oo",
 			"datasetname")
 	
 	parameter_noflags <- c("datasetname")

@@ -4,7 +4,7 @@
 \alias{gdaladdo}
 \title{gdaladdo}
 \usage{
-gdaladdo(filename, levels, r, b, ro, clean, additional_commands,
+gdaladdo(filename, levels, r, b, ro, clean, oo, additional_commands,
   ignore.full_scan = TRUE, verbose = FALSE, ...)
 }
 \arguments{
@@ -19,6 +19,8 @@ gdaladdo(filename, levels, r, b, ro, clean, additional_commands,
 \item{ro}{Logical. (available from GDAL 1.6.0) open the dataset in read-only mode, in order to generate external overview (for GeoTIFF especially).}
 
 \item{clean}{Logical. (available from GDAL 1.7.0) remove all overviews.}
+
+\item{oo}{Character. NAME=VALUE. (starting with GDAL 2.0) Dataset open option (format specific)}
 
 \item{additional_commands}{Character. Additional commands to pass directly to gdaladdo.}
 
