@@ -346,3 +346,15 @@ if(valid_install)
 	
 	}
 }
+
+#### ogrtindex
+gdal_setInstallation()
+valid_install <- !is.null(getOption("gdalUtils_gdalPath"))
+if(require(rgdal) && valid_install)
+{
+	tempindex <- tempfile(fileext=".shp")
+	src_dir <- system.file("external/", package="gdalUtils")
+	src_files <- list.files(src_dir,pattern=".shp",full.names=TRUE)
+	ogrtindex(output_dataset=tempindex,src_dataset=src_files,
+			accept_different_schemas=TRUE,output_Vector=TRUE)
+}
