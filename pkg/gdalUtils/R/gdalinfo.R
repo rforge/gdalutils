@@ -130,10 +130,19 @@ gdalinfo <- function(datasetname,mm,stats,
 	{
 		result <- list()
 		
+		# browser()
+		
 		# Raster size (in pixels and lines).
 		dims          <- strsplit(gsub(grep(cmd_output,pattern="Size is ",value=TRUE), pattern="Size is ",replacement=""),",")[[1]]
 		result$rows   <- as.numeric(dims[2])
 		result$columns<- as.numeric(dims[1])
+		
+		# Bands!
+		bands <- grep(cmd_output,pattern="Band ",value=TRUE)
+		if(length(bands)==0) result$bands=1 else
+		{
+			result$bands <- length(bands)
+		}
 		
 		orig          <- as.numeric(strsplit(gsub(strsplit(grep(cmd_output,pattern="Lower Left  \\(",value=TRUE), "\\) \\(")[[1]][1],pattern="Lower Left  \\(",replacement=""),",")[[1]])
 		result$ll.x   <- orig[1]

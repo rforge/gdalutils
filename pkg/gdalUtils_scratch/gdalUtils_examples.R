@@ -249,13 +249,17 @@ gdaltindex(output_shapefile,list.files(path=src_folder,pattern=glob2rx("*.tif"),
 output_Vector=TRUE,verbose=TRUE)
 }
 
+
+
+
 #### gdal_grid
 gdal_setInstallation()
 valid_install <- !is.null(getOption("gdalUtils_gdalPath"))
 if(require(raster) && valid_install)
 {
 	# Create a properly formatted CSV:
-	tempfname_base <- tempfile()
+	temporary_dir <- tempdir()
+	tempfname_base <- file.path(temporary_dir,"dem")
 	tempfname_csv <- paste(tempfname_base,".csv",sep="")
 	
 	pts <- data.frame(
@@ -284,9 +288,25 @@ if(require(raster) && valid_install)
 	# Now run gdal_grid:
 	tempfname_tif <- paste(tempfname_base,".tiff",sep="")
 	
-	# Original:
-	# gdal_grid -a invdist:power=2.0:smoothing=1.0 -txe 85000 89000 -tye 894000 890000 -outsize 400 400 -of GTiff -ot Float64 -l dem dem.vrt dem.tiff
+	setMinMax(gdal_grid(src_datasource=tempfname_vrt,
+			dst_filename=tempfname_tif,a="invdist:power=2.0:smoothing=1.0",
+			txe=c(85000,89000),tye=c(894000,890000),outsize=c(400,400),of="GTiff",ot="Float64",
+			l="dem",output_Raster=TRUE))
+}
+
+
+#### gdallocationinfo
+gdal_setInstallation()
+valid_install <- !is.null(getOption("gdalUtils_gdalPath"))
+if(valid_install)
+{
+	src_dataset <- system.file("external/tahoe_highrez.tif", package="gdalUtils")
+	# Raw output of a single coordinate:
+	gdallocationinfo(srcfile=src_dataset,x=10,y=10)
 	
-	gdal_grid(src_datasource=tempfname_vrt,dst_filename=tempfname_tif,a=invdist:power=2.0:smoothing=1.0,
-			txe=c(85000,89000),tye=c())
+	# A matrix of coordinates and a clean, matrix output:
+	coords <- rbind(c(10,10),c(20,20),c(30,30))
+	gdallocationinfo(srcfile=src_dataset,coords=coords,valonly=TRUE,raw_output=FALSE)
+	
+	
 }
