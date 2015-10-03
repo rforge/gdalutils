@@ -248,3 +248,45 @@ output_shapefile <- paste(tempfile(),".shp",sep="")
 gdaltindex(output_shapefile,list.files(path=src_folder,pattern=glob2rx("*.tif"),full.names=TRUE),
 output_Vector=TRUE,verbose=TRUE)
 }
+
+#### gdal_grid
+gdal_setInstallation()
+valid_install <- !is.null(getOption("gdalUtils_gdalPath"))
+if(require(raster) && valid_install)
+{
+	# Create a properly formatted CSV:
+	tempfname_base <- tempfile()
+	tempfname_csv <- paste(tempfname_base,".csv",sep="")
+	
+	pts <- data.frame(
+			Easting=c(86943.4,87124.3,86962.4,87077.6),
+			Northing=c(891957,892075,892321,891995),
+			Elevation=c(139.13,135.01,182.04,135.01)
+		)
+			
+	write.csv(pts,file=tempfname_csv,row.names=FALSE)
+	
+	# Now make a matching VRT file
+	tempfname_vrt <- paste(tempfname_base,".vrt",sep="")
+	vrt_header <- c(
+			'<OGRVRTDataSource>',
+					'\t<OGRVRTLayer name="dem">',
+					'\t<SrcDataSource>dem.csv</SrcDataSource>',
+					'\t<GeometryType>wkbPoint</GeometryType>', 
+					'\t<GeometryField encoding="PointFromColumns" x="Easting" y="Northing" z="Elevation"/>',
+					'\t</OGRVRTLayer>',
+					'\t</OGRVRTDataSource>'			
+			)
+	vrt_filecon <- file(tempfname_vrt,"w")
+	writeLines(vrt_header,con=vrt_filecon)
+	close(vrt_filecon)
+	
+	# Now run gdal_grid:
+	tempfname_tif <- paste(tempfname_base,".tiff",sep="")
+	
+	# Original:
+	# gdal_grid -a invdist:power=2.0:smoothing=1.0 -txe 85000 89000 -tye 894000 890000 -outsize 400 400 -of GTiff -ot Float64 -l dem dem.vrt dem.tiff
+	
+	gdal_grid(src_datasource=tempfname_vrt,dst_filename=tempfname_tif,a=invdist:power=2.0:smoothing=1.0,
+			txe=c(85000,89000),tye=c())
+}
