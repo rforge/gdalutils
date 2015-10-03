@@ -12,8 +12,11 @@
 #' @param skip_different_projection Logical. Only layers with same projection ref as layers already inserted in the tileindex will be inserted.
 #' @param accept_different_schemas Logical. By default ogrtindex checks that all layers inserted into the index have the same attribute schemas. If you specify this option, this test will be disabled. Be aware that resulting index may be incompatible with MapServer!
 #' @param output_Vector Logical. Return output output_dataset as a Spatial* object.  Currently only works with f="ESRI Shapefile".
+#' @param additional_commands Character. Additional commands to pass directly to ogrtindex.
 #' @param ignore.full_scan Logical. If FALSE, perform a brute-force scan if other installs are not found.  Default is TRUE.
 #' @param verbose Logical. Enable verbose execution? Default is FALSE.  
+#' @param ... Other parameters to pass to gdal_translate.
+
 
 #' @return NULL or SpatialPolygonsDataFrame
 #' 
