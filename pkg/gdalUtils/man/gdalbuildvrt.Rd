@@ -6,8 +6,8 @@
 \usage{
 gdalbuildvrt(gdalfile, output.vrt, tileindex, resolution, te, tr, tap, separate,
   b, sd, allow_projection_difference, q, addalpha, hidenodata, srcnodata,
-  vrtnodata, a_srs, r, input_file_list, overwrite, additional_commands,
-  ignore.full_scan = TRUE, verbose = FALSE, ...)
+  vrtnodata, a_srs, r, input_file_list, overwrite, ignore.full_scan = TRUE,
+  verbose = FALSE, ...)
 }
 \arguments{
 \item{gdalfile}{Character. Input files (as a character vector) or a wildcard search term (e.g. "*.tif")}
@@ -50,13 +50,11 @@ gdalbuildvrt(gdalfile, output.vrt, tileindex, resolution, te, tr, tap, separate,
 
 \item{overwrite}{Logical. Overwrite the VRT if it already exists.}
 
-\item{additional_commands}{Character. Additional commands to pass directly to ogrinfo.}
-
 \item{ignore.full_scan}{Logical. If FALSE, perform a brute-force scan if other installs are not found.  Default is TRUE.}
 
 \item{verbose}{Logical. Enable verbose execution? Default is FALSE.}
 
-\item{...}{Other parameters to pass to gdal_translate.}
+\item{...}{Additional arguments.}
 }
 \description{
 R wrapper for gdalbuildvrt: Builds a VRT from a list of datasets

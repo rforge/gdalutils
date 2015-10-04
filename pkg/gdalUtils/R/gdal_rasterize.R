@@ -25,7 +25,6 @@
 #' @param ts Numeric. c(width,height) (GDAL >= 1.8.0) set output file size in pixels and lines. Note that -ts cannot be used with -tr
 #' @param ot Character. (GDAL >= 1.8.0) For the output bands to be of the indicated data type. Defaults to Float64
 #' @param q Logical. (GDAL >= 1.8.0) Suppress progress monitor and other non-error output.
-#' @param additional_commands Character. Additional commands to pass directly to gdal_rasterize.
 #' @param output_Raster Logical. Return output dst_filename as a RasterBrick?
 #' @param ignore.full_scan Logical. If FALSE, perform a brute-force scan if other installs are not found.  Default is TRUE.
 #' @param verbose Logical. Enable verbose execution? Default is FALSE.  
@@ -80,7 +79,7 @@ gdal_rasterize <- function(
 		b,i,at,burn,a,threeD,l,where,sql,dialect,
 		of,a_srs,co,a_nodata,init,
 		te,tr,tap,ts,ot,q,
-		additional_commands,
+#		additional_commands,
 		output_Raster=FALSE,
 		ignore.full_scan=TRUE,
 		verbose=FALSE)

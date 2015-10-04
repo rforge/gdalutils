@@ -4,8 +4,8 @@
 \alias{gdalsrsinfo}
 \title{gdalsrsinfo}
 \usage{
-gdalsrsinfo(srs_def, p, V, o, additional_commands, as.CRS = FALSE,
-  ignore.full_scan = TRUE, verbose = FALSE)
+gdalsrsinfo(srs_def, p, V, o, as.CRS = FALSE, ignore.full_scan = TRUE,
+  verbose = FALSE)
 }
 \arguments{
 \item{srs_def}{Character. A raster dataset name. It can be either file name.}
@@ -15,8 +15,6 @@ gdalsrsinfo(srs_def, p, V, o, additional_commands, as.CRS = FALSE,
 \item{V}{Logical. Validate SRS.}
 
 \item{o}{Character. Output type ("default"|"all"|"wkt_all"|"proj4"|"wkt"|"wkt_simple"|"wkt_noct"|"wkt_esri"|"mapinfo"|"xml")}
-
-\item{additional_commands}{Character. Additional commands to pass directly to gdalsrsinfo.}
 
 \item{as.CRS}{Logical. Return a CRS object?  Default=FALSE.}
 
@@ -66,6 +64,6 @@ gdalsrsinfo(src_dataset,as.CRS=TRUE,verbose=TRUE)
 Jonathan A. Greenberg (\email{gdalUtils@estarcion.net}) and Matteo Mattiuzzi (wrapper) and Frank Warmerdam (GDAL lead developer).
 }
 \references{
-\url{http://www.gdal.org/gdalinfo.html}
+\url{http://www.gdal.org/gdalsrsinfo.html}
 }
 

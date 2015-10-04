@@ -6,7 +6,7 @@
 #' @param output_Raster Logical. Return output dst_dataset as a RasterBrick?
 #' @param trim_margins Numeric. Pre-crop the input tiles by a fixed number of pixels before mosaicking.  Can be a single value or four values representing the left, top, right, and bottom margins, respectively.
 #' @param verbose Logical. Enable verbose execution? Default is FALSE.  
-#' @param ... Parameters to pass to \code{\link{gdalbuildvrt}} and \code{\link{gdal_translate}}.
+#' @param ... Parameters to pass to \code{\link{gdalbuildvrt}} or \code{\link{gdal_translate}}.
 #' 
 #' @details This function mosaics a set of input rasters (gdalfile) using parameters
 #' found in \code{\link{gdalbuildvrt}} and subsequently exports the mosaic to 
@@ -40,8 +40,7 @@ mosaic_rasters <- function(gdalfile,dst_dataset,output.vrt=NULL,output_Raster=FA
 		...)
 {
 	# CRAN check to fix foreach variable errors:
-	k <- NULL
-	
+	k <- NULL	
 	
 	# Check to make sure all the input files exist on the system:
 	if(verbose) message("Checking to make sure all the input files exist...")
@@ -102,6 +101,16 @@ mosaic_rasters <- function(gdalfile,dst_dataset,output.vrt=NULL,output_Raster=FA
 	temp_file_list_name <- paste(tempfile(),".txt",sep="")
 	write.table(gdalfile,temp_file_list_name,row.names=F,col.names=F,quote=F)
 	
+	# Now pass the right arguments to each function:
+#browser()
+#	additional_arguments <- list(...)
+#	gdalbuildvrt_formals <- names(formals(gdalbuildvrt))
+#	gdal_translate_formals <- names(formals(gdal_translate))
+#	
+#	gdalbuildvrt_additional_args <- additional_arguments[names(additional_arguments) %in% gdalbuildvrt_formals]
+#	gdal_translate_additional_args <- additional_arguments[names(additional_arguments) %in% gdal_translate_formals]
+#	
+#	
 	gdalbuildvrt(input_file_list=temp_file_list_name,output.vrt=output.vrt,verbose=verbose,...)
 	outmosaic <- gdal_translate(src_dataset=output.vrt,dst_dataset=dst_dataset,
 		output_Raster=output_Raster,verbose=verbose,...)

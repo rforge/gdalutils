@@ -6,8 +6,7 @@
 \usage{
 ogrtindex(output_dataset, src_dataset, lnum, lname, f, tileindex,
   write_absolute_path, skip_different_projection, accept_different_schemas,
-  additional_commands, output_Vector = FALSE, ignore.full_scan = TRUE,
-  verbose = FALSE, ...)
+  output_Vector = FALSE, ignore.full_scan = TRUE, verbose = FALSE)
 }
 \arguments{
 \item{output_dataset}{Character. Output tile index.}
@@ -28,15 +27,11 @@ ogrtindex(output_dataset, src_dataset, lnum, lname, f, tileindex,
 
 \item{accept_different_schemas}{Logical. By default ogrtindex checks that all layers inserted into the index have the same attribute schemas. If you specify this option, this test will be disabled. Be aware that resulting index may be incompatible with MapServer!}
 
-\item{additional_commands}{Character. Additional commands to pass directly to ogrtindex.}
-
 \item{output_Vector}{Logical. Return output output_dataset as a Spatial* object.  Currently only works with f="ESRI Shapefile".}
 
 \item{ignore.full_scan}{Logical. If FALSE, perform a brute-force scan if other installs are not found.  Default is TRUE.}
 
 \item{verbose}{Logical. Enable verbose execution? Default is FALSE.}
-
-\item{...}{Other parameters to pass to gdal_translate.}
 }
 \value{
 NULL or SpatialPolygonsDataFrame

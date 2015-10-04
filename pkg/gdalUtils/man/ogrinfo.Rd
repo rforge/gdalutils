@@ -6,7 +6,7 @@
 \usage{
 ogrinfo(datasource_name, layer, ro, q, where, spat, geomfield, fid, sql,
   dialect, al, so, fields, geom, oo, nomd, listmdd, mdd, nocount, noextent,
-  formats, additional_commands, ignore.full_scan = TRUE, verbose = FALSE)
+  formats, ignore.full_scan = TRUE, verbose = FALSE)
 }
 \arguments{
 \item{datasource_name}{Character. The data source to open. May be a filename, directory or other virtual name. See the OGR Vector Formats list for supported datasources.}
@@ -50,8 +50,6 @@ ogrinfo(datasource_name, layer, ro, q, where, spat, geomfield, fid, sql,
 \item{noextent}{Logical. (starting with GDAL 2.0) Suppress spatial extent printing.}
 
 \item{formats}{Logical. List the format drivers that are enabled.}
-
-\item{additional_commands}{Character. Additional commands to pass directly to ogrinfo.}
 
 \item{ignore.full_scan}{Logical. If FALSE, perform a brute-force scan if other installs are not found.  Default is TRUE.}
 

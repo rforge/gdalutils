@@ -6,8 +6,7 @@
 \usage{
 gdal_rasterize(src_datasource, dst_filename, b, i, at, burn, a, threeD, l,
   where, sql, dialect, of, a_srs, co, a_nodata, init, te, tr, tap, ts, ot, q,
-  additional_commands, output_Raster = FALSE, ignore.full_scan = TRUE,
-  verbose = FALSE)
+  output_Raster = FALSE, ignore.full_scan = TRUE, verbose = FALSE)
 }
 \arguments{
 \item{src_datasource}{Character. Any OGR supported readable datasource.}
@@ -55,8 +54,6 @@ gdal_rasterize(src_datasource, dst_filename, b, i, at, burn, a, threeD, l,
 \item{ot}{Character. (GDAL >= 1.8.0) For the output bands to be of the indicated data type. Defaults to Float64}
 
 \item{q}{Logical. (GDAL >= 1.8.0) Suppress progress monitor and other non-error output.}
-
-\item{additional_commands}{Character. Additional commands to pass directly to gdal_rasterize.}
 
 \item{output_Raster}{Logical. Return output dst_filename as a RasterBrick?}
 

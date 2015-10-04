@@ -8,10 +8,10 @@
 #' @param f Character. format. Specify format of raster file if unknown by the application. Uses short data format name (e.g. GTiff).
 #' @param datasetname Character. Raster file to operate on.
 #' @param newdatasetname Character. For copy and rename modes, you provide a source filename and a target filename, just like copy and move commands in an operating system.
-#' @param additional_commands Character. Additional commands to pass directly to gdaladdo.
+## @param additional_commands Character. Additional commands to pass directly to gdaladdo.
 #' @param ignore.full_scan Logical. If FALSE, perform a brute-force scan if other installs are not found.  Default is TRUE.
 #' @param verbose Logical. Enable verbose execution? Default is FALSE.  
-#' @param ... Other parameters to pass to gdaladdo.
+## @param ... Other parameters to pass to gdaladdo.
 #' 
 #' @return Character.
 #' @author Jonathan A. Greenberg (\email{gdalUtils@@estarcion.net}) (wrapper) and Frank Warmerdam (GDAL lead developer).
@@ -23,12 +23,12 @@
 #' in some cases, can use R vectors to achieve the same end.  
 #' 
 #' Mode of operation
-#' 
-#' mode="identify",datasetname: List data format of file.
-#' mode="copy",datasetname,newdatasetname: Create a copy of the raster file with a new name.
-#' mode="rename",datasetname,newdatasetname: Change the name of the raster file.
-#' mode="delete",datasetname: Delete raster file.
-#' 
+#' \itemize{
+#' \item{mode="identify",datasetname: List data format of file.}
+#' \item{mode="copy",datasetname,newdatasetname: Create a copy of the raster file with a new name.}
+#' \item{mode="rename",datasetname,newdatasetname: Change the name of the raster file.}
+#' \item{mode="delete",datasetname: Delete raster file.}
+#' }
 #' This function assumes the user has a working GDAL on their system.  If the 
 #' "gdalUtils_gdalPath" option has been set (usually by gdal_setInstallation),
 #' the GDAL found in that path will be used.  If nothing is found, gdal_setInstallation
@@ -42,7 +42,8 @@
 #' if(valid_install)
 #' {
 #' 	# Using identify mode
-#' 	# Report the data format of the raster file by using the identify mode and specifying a data file name:
+#' 	# Report the data format of the raster file by using the identify mode 
+#'  # and specifying a data file name:
 #' 	src_dataset <- system.file("external/tahoe_highrez.tif", package="gdalUtils")
 #' 	gdalmanage(mode="identify",datasetname=src_dataset)
 #' 	
@@ -50,7 +51,7 @@
 #' 	src_dir <- system.file("external/", package="gdalUtils")
 #' 	gdalmanage(mode="identify",datasetname=src_dir,r=TRUE)
 #' 	
-#' 	\dontrun{
+#' \dontrun{
 #' 		# Using copy mode	
 #' 		# Copy the raster data:
 #' 		file_copy <- tempfile(fileext=".tif")
@@ -67,7 +68,7 @@
 #' 		# Delete the raster data:
 #' 		gdalmanage(mode="delete",new_name)	
 #' 		file.exists(new_name)		
-#' 	}
+#' }
 #' }
 #' @export
 
@@ -75,10 +76,11 @@ gdalmanage <- function(
 		mode,
 		datasetname,newdatasetname,
 		r,u,f,
-		additional_commands,
+#		additional_commands,
 		ignore.full_scan=TRUE,
-		verbose=FALSE,
-		...)
+		verbose=FALSE#,
+#		...
+)
 {
 	
 	parameter_values <- as.list(environment())

@@ -43,10 +43,12 @@
 #' @param setci Logical. (GDAL >= 1.10.0) Set the color interpretation of the bands of the target dataset from the source dataset.
 #' @param oo Character. NAME=VALUE. (starting with GDAL 2.0) Dataset open option (format specific).
 #' @param doo Character. NAME=VALUE. (starting with GDAL 2.1) Output dataset open option (format specific).
-#' @param additional_commands Character. Additional commands to pass directly to gdalwarp.
+## @param additional_commands Character. Additional commands to pass directly to gdalwarp.
 #' @param output_Raster Logical. Return output dst_dataset as a RasterBrick?
 #' @param ignore.full_scan Logical. If FALSE, perform a brute-force scan if other installs are not found.  Default is TRUE.
 #' @param verbose Logical. Enable verbose execution? Default is FALSE.  
+#' @param ... Additional arguments.
+#' 
 #' @return NULL or if(output_Raster), a RasterBrick.
 #' @author Jonathan A. Greenberg (\email{gdalUtils@@estarcion.net}) (wrapper) and Frank Warmerdam (GDAL lead developer).
 #' @details This is an R wrapper for the 'gdalwarp' function that is part of the 
@@ -63,19 +65,20 @@
 #' as specified with the "of" (output format) parameter.
 #' 
 #' The resampling_methods available are as follows:
-#' near: nearest neighbour resampling (default, fastest algorithm, worst interpolation quality).
-#' bilinear: bilinear resampling.
-#' cubic: cubic resampling.
-#' cubicspline: cubic spline resampling.
-#' lanczos: Lanczos windowed sinc resampling.
-#' average: average resampling, computes the average of all non-NODATA contributing pixels. (GDAL >= 1.10.0)
-#' mode: mode resampling, selects the value which appears most often of all the sampled points. (GDAL >= 1.10.0)
-#' max: maximum resampling, selects the maximum value from all non-NODATA contributing pixels. (GDAL >= 2.0.0)
-#' min: minimum resampling, selects the minimum value from all non-NODATA contributing pixels. (GDAL >= 2.0.0)
-#' med: median resampling, selects the median value of all non-NODATA contributing pixels. (GDAL >= 2.0.0)
-#' q1: first quartile resampling, selects the first quartile value of all non-NODATA contributing pixels. (GDAL >= 2.0.0)
-#' q3: third quartile resampling, selects the third quartile value of all non-NODATA contributing pixels. (GDAL >= 2.0.0)
-
+#' \itemize{
+#' \item{near: nearest neighbour resampling (default, fastest algorithm, worst interpolation quality).}
+#' \item{bilinear: bilinear resampling.}
+#' \item{cubic: cubic resampling.}
+#' \item{cubicspline: cubic spline resampling.}
+#' \item{lanczos: Lanczos windowed sinc resampling.}
+#' \item{average: average resampling, computes the average of all non-NODATA contributing pixels. (GDAL >= 1.10.0)}
+#' \item{mode: mode resampling, selects the value which appears most often of all the sampled points. (GDAL >= 1.10.0)}
+#' \item{max: maximum resampling, selects the maximum value from all non-NODATA contributing pixels. (GDAL >= 2.0.0)}
+#' \item{min: minimum resampling, selects the minimum value from all non-NODATA contributing pixels. (GDAL >= 2.0.0)}
+#' \item{med: median resampling, selects the median value of all non-NODATA contributing pixels. (GDAL >= 2.0.0)}
+#' \item{q1: first quartile resampling, selects the first quartile value of all non-NODATA contributing pixels. (GDAL >= 2.0.0)}
+#' \item{q3: third quartile resampling, selects the third quartile value of all non-NODATA contributing pixels. (GDAL >= 2.0.0)}
+#' }
 
 #' The user can choose to (optionally) return a RasterBrick of the output file (assuming
 #' raster/rgdal supports the particular output format).
@@ -108,10 +111,11 @@ gdalwarp <- function(
 		order,tps,rpc,geoloc,et,refine_gcps,te,te_srs,tr,tap,ts,ovr,wo,ot,wt,r,srcnodata,dstnodata,
 		dstalpha,wm,multi,q,of="GTiff",co,cutline,cl,cwhere,csql,cblend,crop_to_cutline,
 		overwrite,nomd,cvmd,setci,oo,doo,
-		additional_commands,
+#		additional_commands,
 		output_Raster=FALSE,
 		ignore.full_scan=TRUE,
-		verbose=FALSE)
+		verbose=FALSE,
+		...)
 {
 	if(output_Raster && (!requireNamespace("raster") || !requireNamespace("rgdal")))
 	{

@@ -63,7 +63,7 @@
 #' @param unsetFid Logical. (starting with GDAL 2.0) Can be specify to prevent the new default behaviour that consists in, if the output driver has a FID layer creation option and we are not in append mode, to preserve the name of the source FID column and source feature IDs.
 #' @param nomd Logical. (starting with GDAL 2.0) To disable copying of metadata from source dataset and layers into target dataset and layers, when supported by output driver.
 #' @param mo Character. "META-TAG=VALUE". (starting with GDAL 2.0) Passes a metadata key and value to set on the output dataset, when supported by output driver.
-#' @param additional_commands Character. Additional commands to pass directly to ogrinfo.
+## @param additional_commands Character. Additional commands to pass directly to ogrinfo.
 #' @param ignore.full_scan Logical. If FALSE, perform a brute-force scan if other installs are not found.  Default is TRUE.
 #' @param verbose Logical. Enable verbose execution? Default is FALSE.  
 #'  
@@ -77,6 +77,7 @@
 #' in some cases, can use R vectors to achieve the same end.  
 #' 
 #' PERFORMANCE HINTS
+#' 
 #' When writing into transactional DBMS (SQLite/PostgreSQL,MySQL, etc...), it might be 
 #' beneficial to increase the number of INSERT statements executed between BEGIN TRANSACTION 
 #' and COMMIT TRANSACTION statements. This number is specified with the -gt option. For 
@@ -129,7 +130,7 @@ ogr2ogr <- function(src_datasource_name,dst_datasource_name,
 		tps,fieldmap,addfields,relaxedFieldNameMatch,
 		forceNullable,unsetDefault,unsetFid,
 		nomd,mo,
-		additional_commands,
+#		additional_commands,
 		ignore.full_scan=TRUE,
 		verbose=FALSE)
 {

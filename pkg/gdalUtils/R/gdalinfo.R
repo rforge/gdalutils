@@ -23,7 +23,7 @@
 #' @param optfile Character. Read the named file and substitute the contents into the commandline options list. Lines beginning with # will be ignored. Multi-word arguments may be kept together with double quotes.
 #' @param config Character. Sets the named configuration keyword to the given value, as opposed to setting them as environment variables. Some common configuration keywords are GDAL_CACHEMAX (memory used internally for caching in megabytes) and GDAL_DATA (path of the GDAL "data" directory). Individual drivers may be influenced by other configuration options.
 #' @param debug Character. Control what debugging messages are emitted. A value of ON will enable all debug messages. A value of OFF will disable all debug messages. Another value will select only debug messages containing that string in the debug prefix code.
-#' @param additional_commands Character. Additional commands to pass directly to gdalinfo.
+## @param additional_commands Character. Additional commands to pass directly to gdalinfo.
 #' @param raw_output Logical. Dump the raw output of the gdalinfo (default=TRUE). If not, attempt to return a clean list (not all parameters will be retained, at present). 
 #' @param ignore.full_scan Logical. If FALSE, perform a brute-force scan if other installs are not found.  Default is TRUE.
 #' @param verbose Logical. Enable verbose execution? Default is FALSE.  
@@ -67,7 +67,7 @@ gdalinfo <- function(datasetname,mm,stats,
 		approx_stats,hist,nogcp,nomd,nrat,noct,nofl,checksum,
 		proj4,oo,mdd,sd,
 		version,formats,format,optfile,config,debug,
-		additional_commands,
+#		additional_commands,
 		raw_output=TRUE,
 		ignore.full_scan=TRUE,
 		verbose=FALSE)

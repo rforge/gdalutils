@@ -4,8 +4,8 @@
 \alias{gdaladdo}
 \title{gdaladdo}
 \usage{
-gdaladdo(filename, levels, r, b, ro, clean, oo, additional_commands,
-  ignore.full_scan = TRUE, verbose = FALSE, ...)
+gdaladdo(filename, levels, r, b, ro, clean, oo, ignore.full_scan = TRUE,
+  verbose = FALSE)
 }
 \arguments{
 \item{filename}{Character. The file to build overviews for (or whose overviews must be removed).}
@@ -22,13 +22,9 @@ gdaladdo(filename, levels, r, b, ro, clean, oo, additional_commands,
 
 \item{oo}{Character. NAME=VALUE. (starting with GDAL 2.0) Dataset open option (format specific)}
 
-\item{additional_commands}{Character. Additional commands to pass directly to gdaladdo.}
-
 \item{ignore.full_scan}{Logical. If FALSE, perform a brute-force scan if other installs are not found.  Default is TRUE.}
 
 \item{verbose}{Logical. Enable verbose execution? Default is FALSE.}
-
-\item{...}{Other parameters to pass to gdaladdo.}
 }
 \description{
 R wrapper for gdaladdo: builds or rebuilds overview images

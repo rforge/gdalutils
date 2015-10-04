@@ -6,8 +6,8 @@
 \usage{
 gdaldem(mode, input_dem, output, of, compute_edges, alg, b, co, q, z, s, az,
   alt, combined, p, trigonometric, zero_for_flat, color_text_file, alpha,
-  exact_color_entry, nearest_color_entry, additional_commands,
-  output_Raster = FALSE, ignore.full_scan = TRUE, verbose = FALSE)
+  exact_color_entry, nearest_color_entry, output_Raster = FALSE,
+  ignore.full_scan = TRUE, verbose = FALSE)
 }
 \arguments{
 \item{mode}{Character. ("hillshade"|"slope"|"aspect"|"color-relief"|"TRI"|"TPI"|"roughness")}
@@ -51,8 +51,6 @@ gdaldem(mode, input_dem, output, of, compute_edges, alg, b, co, q, z, s, az,
 \item{exact_color_entry}{Logical. (mode=="color-relief") use strict matching when searching in the color configuration file. If none matching color entry is found, the "0,0,0,0" RGBA quadruplet will be used.}
 
 \item{nearest_color_entry}{Logical. (mode=="color-relief") use the RGBA quadruplet corresponding to the closest entry in the color configuration file.}
-
-\item{additional_commands}{Character. Additional commands to pass directly to gdalsrsinfo.}
 
 \item{output_Raster}{Logical. Return output dst_dataset as a RasterBrick?}
 

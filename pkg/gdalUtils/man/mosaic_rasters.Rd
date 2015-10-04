@@ -20,7 +20,7 @@ mosaic_rasters(gdalfile, dst_dataset, output.vrt = NULL,
 
 \item{verbose}{Logical. Enable verbose execution? Default is FALSE.}
 
-\item{...}{Parameters to pass to \code{\link{gdalbuildvrt}} and \code{\link{gdal_translate}}.}
+\item{...}{Parameters to pass to \code{\link{gdalbuildvrt}} or \code{\link{gdal_translate}}.}
 }
 \value{
 Either a list of NULLs or a list of RasterBricks depending on whether output_Raster is set to TRUE.

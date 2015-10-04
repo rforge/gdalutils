@@ -15,11 +15,11 @@
 #' @param i Logical. Inverse transformation: from destination to source.
 #' @param gcp Character. pixel line easting northing [elevation]: Provide a GCP to be used for transformation (generally three or more are required)
 #' @param output_xy Logical. (GDAL >= 2.0) Restrict output to "x y" instead of "x y z"
-#' @param additional_commands Character. Additional commands to pass directly to gdaladdo.
+## @param additional_commands Character. Additional commands to pass directly to gdaladdo.
 #' @param ignore.full_scan Logical. If FALSE, perform a brute-force scan if other installs are not found.  Default is TRUE.
 #' @param verbose Logical. Enable verbose execution? Default is FALSE.  
-#' #' @param ... Other parameters to pass to gdaltransform.
- 
+## @param ... Other parameters to pass to gdaltransform.
+
 #' @return Numeric.
 #' @author Jonathan A. Greenberg (\email{gdalUtils@@estarcion.net}) (wrapper) and Frank Warmerdam (GDAL lead developer).
 #' @details This is an R wrapper for the 'gdaltransform' function that is part of the 
@@ -52,10 +52,11 @@
 gdaltransform <- function(srcfile,dstfile,
 		coords,
 		s_srs,t_srs,to,order,tps,rpc,geoloc,i,gcp,output_xy,
-		additional_commands,
+#		additional_commands,
 		ignore.full_scan=TRUE,
-		verbose=FALSE,
-		...)
+		verbose=FALSE#,
+#		...
+)
 {
 	
 	if(missing(coords)) stop("You must set coords...")
@@ -70,7 +71,7 @@ gdaltransform <- function(srcfile,dstfile,
 	parameter_variables <- list(
 			logical = list(
 					varnames <- c("tps","rpc","geoloc","i","output_xy"
-							)),
+					)),
 			vector = list(
 					varnames <- c()),
 			scalar = list(
@@ -119,6 +120,6 @@ gdaltransform <- function(srcfile,dstfile,
 	# Convert to numeric:
 	
 	output_coords <- matrix(as.numeric(unlist(strsplit(cmd_output,split=" "))),ncol=3,byrow=T)
-		
+	
 	return(output_coords)
 }

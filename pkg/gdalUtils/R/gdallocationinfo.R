@@ -15,12 +15,10 @@
 #' @param geoloc Logical. Indicates input x,y points are in the georeferencing system of the image.
 #' @param wgs84 Logical. Indicates input x,y points are WGS84 long, lat.
 #' @param oo Character. "NAME=VALUE". (starting with GDAL 2.0) Dataset open option (format specific)
-#' @param additional_commands Character. Additional commands to pass directly to gdallocationinfo.
+## @param additional_commands Character. Additional commands to pass directly to gdallocationinfo.
 #' @param raw_output Logical. Dump the raw output of the gdallocationinfo (default=TRUE). If not, attempt to return a matrix of data. 
 #' @param ignore.full_scan Logical. If FALSE, perform a brute-force scan if other installs are not found.  Default is TRUE.
 #' @param verbose Logical. Enable verbose execution? Default is FALSE.  
-#
-
 #' @return Character or matrix (if valonly=T &  raw_output=F)
 #' 
 #' @author Jonathan A. Greenberg (\email{gdalUtils@@estarcion.net}) (wrapper) and Frank Warmerdam (GDAL lead developer).
@@ -77,7 +75,7 @@ gdallocationinfo <- function(
 		x,y,
 		coords,
 		xml,lifonly,valonly,b,overview,l_srs,geoloc,wgs84,oo,
-		additional_commands,
+#		additional_commands,
 		raw_output=TRUE,
 		ignore.full_scan=TRUE,
 		verbose=FALSE)

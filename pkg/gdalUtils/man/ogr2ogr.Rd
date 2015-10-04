@@ -12,8 +12,7 @@ ogr2ogr(src_datasource_name, dst_datasource_name, layer, f, append, overwrite,
   simplify, segmentize, fieldTypeToString, mapFieldType, unsetFieldWidth,
   splitlistfields, maxsubfields, explodecollections, zfield, gcp, order, tps,
   fieldmap, addfields, relaxedFieldNameMatch, forceNullable, unsetDefault,
-  unsetFid, nomd, mo, additional_commands, ignore.full_scan = TRUE,
-  verbose = FALSE)
+  unsetFid, nomd, mo, ignore.full_scan = TRUE, verbose = FALSE)
 }
 \arguments{
 \item{src_datasource_name}{Character. Input vector file.}
@@ -136,8 +135,6 @@ ogr2ogr(src_datasource_name, dst_datasource_name, layer, f, append, overwrite,
 
 \item{mo}{Character. "META-TAG=VALUE". (starting with GDAL 2.0) Passes a metadata key and value to set on the output dataset, when supported by output driver.}
 
-\item{additional_commands}{Character. Additional commands to pass directly to ogrinfo.}
-
 \item{ignore.full_scan}{Logical. If FALSE, perform a brute-force scan if other installs are not found.  Default is TRUE.}
 
 \item{verbose}{Logical. Enable verbose execution? Default is FALSE.}
@@ -157,6 +154,7 @@ precisely, the gdalinfo format (\url{http://gdal.org/ogrinfo.html}), or,
 in some cases, can use R vectors to achieve the same end.
 
 PERFORMANCE HINTS
+
 When writing into transactional DBMS (SQLite/PostgreSQL,MySQL, etc...), it might be
 beneficial to increase the number of INSERT statements executed between BEGIN TRANSACTION
 and COMMIT TRANSACTION statements. This number is specified with the -gt option. For

@@ -5,8 +5,7 @@
 \title{gdaltransform}
 \usage{
 gdaltransform(srcfile, dstfile, coords, s_srs, t_srs, to, order, tps, rpc,
-  geoloc, i, gcp, output_xy, additional_commands, ignore.full_scan = TRUE,
-  verbose = FALSE, ...)
+  geoloc, i, gcp, output_xy, ignore.full_scan = TRUE, verbose = FALSE)
 }
 \arguments{
 \item{srcfile}{Character. File with source projection definition or GCP's. If not given, source projection is read from the command-line -s_srs or -gcp parameters.}
@@ -35,14 +34,9 @@ gdaltransform(srcfile, dstfile, coords, s_srs, t_srs, to, order, tps, rpc,
 
 \item{output_xy}{Logical. (GDAL >= 2.0) Restrict output to "x y" instead of "x y z"}
 
-\item{additional_commands}{Character. Additional commands to pass directly to gdaladdo.}
-
 \item{ignore.full_scan}{Logical. If FALSE, perform a brute-force scan if other installs are not found.  Default is TRUE.}
 
-\item{verbose}{Logical. Enable verbose execution? Default is FALSE.
-#'}
-
-\item{...}{Other parameters to pass to gdaltransform.}
+\item{verbose}{Logical. Enable verbose execution? Default is FALSE.}
 }
 \value{
 Numeric.

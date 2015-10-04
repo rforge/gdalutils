@@ -30,10 +30,10 @@
 #' @param get_subline Logical. Return the portion of the input path from and to input linear positions
 #' @param mb Numeric. position. The input begin linear distance.
 #' @param me Numeric. position. The input end linear distance
-#' @param additional_commands Character. Additional commands to pass directly to ogrlineref.
+## @param additional_commands Character. Additional commands to pass directly to ogrlineref.
 #' @param ignore.full_scan Logical. If FALSE, perform a brute-force scan if other installs are not found.  Default is TRUE.
 #' @param verbose Logical. Enable verbose execution? Default is FALSE.  
-#' @param ... Other parameters to pass to ogrlineref.
+## @param ... Other parameters to pass to ogrlineref.
 #' 
 #' @return NULL
 #' @author Jonathan A. Greenberg (\email{gdalUtils@@estarcion.net}) (wrapper) and Frank Warmerdam (GDAL lead developer).
@@ -45,12 +45,12 @@
 #' in some cases, can use R vectors to achieve the same end.  
 #' 
 #' The utility can be used for:
-#' 
-#' create linear reference file from input data
-#' return the "linear referenced" distance for the projection of the input coordinates (point) on the path
-#' return the coordinates (point) on the path according to the "linear referenced" distance
-#' return the portion of the path according to the "linear referenced" begin and end distances
-#' 
+#' \itemize{
+#' \item{create linear reference file from input data}
+#' \item{return the "linear referenced" distance for the projection of the input coordinates (point) on the path}
+#' \item{return the coordinates (point) on the path according to the "linear referenced" distance}
+#' \item{return the portion of the path according to the "linear referenced" begin and end distances}
+#' }
 #' The ogrlineref program can be used to create a linear reference - a file containing 
 #' a segments of special length (e.g. 1 km in reference units) and get coordinates, 
 #' linear referenced distances or sublines (subpaths) from this file. The utility not 
@@ -76,10 +76,11 @@ ogrlineref <- function(
 		r,rn,o,on,of,s,
 		get_pos,x,y,get_coord,m,
 		get_subline,mb,me,		
-		additional_commands,
+#		additional_commands,
 		ignore.full_scan=TRUE,
-		verbose=FALSE,
-		...)
+		verbose=FALSE#,
+#		...
+		)
 {
 	
 	parameter_values <- as.list(environment())

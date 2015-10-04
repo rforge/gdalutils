@@ -13,13 +13,12 @@
 #' @param setalpha Logical. (GDAL 1.8.0 or later) Adds an alpha band if the output file is specified and the input file has 3 bands, or sets the alpha band of the output file if it is specified and the input file has 4 bands, or sets the alpha band of the input file if it has 4 bands and no output file is specified. The alpha band is set to 0 in the image collar and to 255 elsewhere.
 #' @param setmask Logical. (GDAL 1.8.0 or later) Adds a mask band to the output file, or adds a mask band to the input file if it does not already have one and no output file is specified. The mask band is set to 0 in the image collar and to 255 elsewhere.
 #' @param q Logical. (GDAL 1.8.0 or later) Suppress progress monitor and other non-error output. 
-#' @param additional_commands Character. Additional commands to pass directly to gdaladdo.
+## @param additional_commands Character. Additional commands to pass directly to gdaladdo.
 #' @param output_Raster Logical. Return outfile as a RasterBrick?
 #' @param overwrite Logical. If output file exists, OR if output file is not set (which would defualt to overwriting the input file), allow overwriting? 
-
 #' @param ignore.full_scan Logical. If FALSE, perform a brute-force scan if other installs are not found.  Default is TRUE.
 #' @param verbose Logical. Enable verbose execution? Default is FALSE.  
-#' @param ... Other parameters to pass to nearblack.
+## @param ... Other parameters to pass to nearblack.
 #' 
 #' @return NULL
 #' @author Jonathan A. Greenberg (\email{gdalUtils@@estarcion.net}) (wrapper) and Frank Warmerdam (GDAL lead developer).
@@ -49,12 +48,13 @@
 nearblack <- function(
 		infile,o,
 		of,co,white,color,near,nb,setalpha,setmask,q,
-		additional_commands,
+#		additional_commands,
 		output_Raster=FALSE,
 		overwrite=FALSE,
 		ignore.full_scan=TRUE,
-		verbose=FALSE,
-		...)
+		verbose=FALSE#,
+#		...
+)
 {
 	
 	if(output_Raster && (!requireNamespace("raster") || !requireNamespace("rgdal")))

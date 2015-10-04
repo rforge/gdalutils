@@ -5,8 +5,8 @@
 \title{nearblack}
 \usage{
 nearblack(infile, o, of, co, white, color, near, nb, setalpha, setmask, q,
-  additional_commands, output_Raster = FALSE, overwrite = FALSE,
-  ignore.full_scan = TRUE, verbose = FALSE, ...)
+  output_Raster = FALSE, overwrite = FALSE, ignore.full_scan = TRUE,
+  verbose = FALSE)
 }
 \arguments{
 \item{infile}{Character. The input file. Any GDAL supported format, any number of bands, normally 8bit Byte bands.}
@@ -31,8 +31,6 @@ nearblack(infile, o, of, co, white, color, near, nb, setalpha, setmask, q,
 
 \item{q}{Logical. (GDAL 1.8.0 or later) Suppress progress monitor and other non-error output.}
 
-\item{additional_commands}{Character. Additional commands to pass directly to gdaladdo.}
-
 \item{output_Raster}{Logical. Return outfile as a RasterBrick?}
 
 \item{overwrite}{Logical. If output file exists, OR if output file is not set (which would defualt to overwriting the input file), allow overwriting?}
@@ -40,8 +38,6 @@ nearblack(infile, o, of, co, white, color, near, nb, setalpha, setmask, q,
 \item{ignore.full_scan}{Logical. If FALSE, perform a brute-force scan if other installs are not found.  Default is TRUE.}
 
 \item{verbose}{Logical. Enable verbose execution? Default is FALSE.}
-
-\item{...}{Other parameters to pass to nearblack.}
 }
 \description{
 R wrapper for nearblack: convert nearly black/white borders to black

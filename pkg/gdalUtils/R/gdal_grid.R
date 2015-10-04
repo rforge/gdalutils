@@ -27,7 +27,6 @@
 #' @param output_Raster Logical. Return output dst_filename as a RasterBrick?
 #' @param ignore.full_scan Logical. If FALSE, perform a brute-force scan if other installs are not found.  Default is TRUE.
 #' @param verbose Logical. Enable verbose execution? Default is FALSE.  
-#' @param ... Other parameters to pass to gdal_translate.
 
 
 #' @return NULL or if(output_Raster), a RasterBrick.
@@ -42,116 +41,163 @@
 #' INTERPOLATION ALGORITHMS
 #' 
 #' There are number of interpolation algorithms to choose from.
-#' 
-#' invdist
+#' \itemize{
+#' \item{invdist
 #' 
 #' Inverse distance to a power. This is default algorithm. It has following parameters:
-#' 
-#' power:
+#' \itemize{
+#' \item{power:
 #' Weighting power (default 2.0).
+#' }
+#' \item{
 #' smoothing:
 #' Smoothing parameter (default 0.0).
+#' }
+#' \item{
 #' radius1:
 #' The first radius (X axis if rotation angle is 0) of search ellipse. Set this parameter to zero to use whole point array. Default is 0.0.
+#' }
+#' \item{
 #' radius2:
 #' The second radius (Y axis if rotation angle is 0) of search ellipse. Set this parameter to zero to use whole point array. Default is 0.0.
+#' }
+#' \item{
 #' angle:
 #' Angle of search ellipse rotation in degrees (counter clockwise, default 0.0).
+#' }
+#' \item{
 #' max_points:
 #' Maximum number of data points to use. Do not search for more points than this number. This is only used if search ellipse is set (both radii are non-zero). Zero means that all found points should be used. Default is 0.
+#' }
+#' \item{
 #' min_points:
 #' Minimum number of data points to use. If less amount of points found the grid node considered empty and will be filled with NODATA marker. This is only used if search ellipse is set (both radii are non-zero). Default is 0.
+#' }
+#' \item{
 #' nodata:
 #' NODATA marker to fill empty points (default 0.0).
-#' invdistnn
+#' }
+#' }
+#' }
+#' \item{invdistnn
 #' 
 #' (Since GDAL 2.1) Inverse distance to a power with nearest neighbor searching, ideal when max_points is used. It has following parameters:
-#' 
-#' power:
+#' \itemize{
+#' \item{power:
 #' Weighting power (default 2.0).
-#' radius:
+#' }
+#' \item{radius:
 #' The radius of the search circle, which should be non-zero. Default is 1.0.
-#' max_points:
+#' }
+#' \item{max_points:
 #' Maximum number of data points to use. Do not search for more points than this number. Found points will be ranked from nearest to furthest distance when weighting. Default is 12.
-#' min_points:
+#' }
+#' \item{min_points:
 #' Minimum number of data points to use. If less amount of points found the grid node is considered empty and will be filled with NODATA marker. Default is 0.
-#' nodata:
+#' }
+#' \item{nodata:
 #' NODATA marker to fill empty points (default 0.0).
-#' average
+#' }
+#' }
+#' }
+#' \item{average
 #' 
 #' Moving average algorithm. It has following parameters:
-#' 
-#' radius1:
+#' \itemize{
+#' \item{radius1:
 #' The first radius (X axis if rotation angle is 0) of search ellipse. Set this parameter to zero to use whole point array. Default is 0.0.
-#' radius2:
+#' }
+#' \item{radius2:
 #' The second radius (Y axis if rotation angle is 0) of search ellipse. Set this parameter to zero to use whole point array. Default is 0.0.
-#' angle:
+#' }
+#' \item{angle:
 #' Angle of search ellipse rotation in degrees (counter clockwise, default 0.0).
-#' min_points:
+#' }
+#' \item{min_points:
 #' Minimum number of data points to use. If less amount of points found the grid node considered empty and will be filled with NODATA marker. Default is 0.
-#' nodata:
+#' }
+#' \item{nodata:
 #' NODATA marker to fill empty points (default 0.0).
 #' Note, that it is essential to set search ellipse for moving average method. It is a window that will be averaged when computing grid nodes values.
-#' 
-#' nearest
+#' }
+#' }
+#' }
+#' \item{nearest
 #' 
 #' Nearest neighbor algorithm. It has following parameters:
-#' 
-#' radius1:
+#' \itemize{
+#' \item{radius1:
 #' The first radius (X axis if rotation angle is 0) of search ellipse. Set this parameter to zero to use whole point array. Default is 0.0.
-#' radius2:
+#' }
+#' \item{radius2:
 #' The second radius (Y axis if rotation angle is 0) of search ellipse. Set this parameter to zero to use whole point array. Default is 0.0.
-#' angle:
+#' }
+#' \item{angle:
 #' Angle of search ellipse rotation in degrees (counter clockwise, default 0.0).
-#' nodata:
+#' }
+#' \item{nodata:
 #' NODATA marker to fill empty points (default 0.0).
-#' linear
+#' }
+#' }
+#' }
+#' \item{linear
 #' 
 #' (Since GDAL 2.1) Linear interpolation algorithm.
 #' 
 #' The Linear method performs linear interpolation by compution a Delaunay triangulation of the point cloud, finding in which triangle of the triangulation the point is, and by doing linear interpolation from its barycentric coordinates within the triangle. If the point is not in any triangle, depending on the radius, the algorithm will use the value of the nearest point or the nodata value.
 #' 
 #' It has following parameters:
-#' 
-#' radius:
+#' \itemize{
+#' \item{radius:
 #' In case the point to be interpolated does not fit into a triangle of the Delaunay triangulation, use that maximum distance to search a nearest neighbour, or use nodata otherwise. If set to -1, the search distance is infinite. If set to 0, nodata value will be always used. Default is -1.
-#' nodata:
+#' }
+#' \item{nodata:
 #' NODATA marker to fill empty points (default 0.0).
+#' }
+#' }
+#' }
+#' }
 #' DATA METRICS
 #' 
 #' Besides the interpolation functionality gdal_grid can be used to compute some data metrics using the specified window and output grid geometry. These metrics are:
-#' 
-#' minimum:
+#' \itemize{
+#' \item{minimum:
 #' Minimum value found in grid node search ellipse.
-#' 
-#' maximum:
+#' }
+#' \item{maximum:
 #' Maximum value found in grid node search ellipse.
-#' 
-#' range:
+#' }
+#' \item{range:
 #' A difference between the minimum and maximum values found in grid node search ellipse.
-#' 
-#' count:
+#' }
+#' \item{count:
 #' A number of data points found in grid node search ellipse.
-#' 
-#' average_distance:
+#' }
+#' \item{average_distance:
 #' An average distance between the grid node (center of the search ellipse) and all of the data points found in grid node search ellipse.
-#' 
-#' average_distance_pts:
+#' }
+#' \item{average_distance_pts:
 #' An average distance between the data points found in grid node search ellipse. The distance between each pair of points within ellipse is calculated and average of all distances is set as a grid node value.
-#' 
+#' }
+#' }
 #' All the metrics have the same set of options:
-#' 
-#' radius1:
+#' \itemize{
+#' \item{radius1:
 #' The first radius (X axis if rotation angle is 0) of search ellipse. Set this parameter to zero to use whole point array. Default is 0.0.
-#' radius2:
+#' }
+#' \item{radius2:
 #' The second radius (Y axis if rotation angle is 0) of search ellipse. Set this parameter to zero to use whole point array. Default is 0.0.
-#' angle:
+#' }
+#' \item{angle:
 #' Angle of search ellipse rotation in degrees (counter clockwise, default 0.0).
-#' min_points:
+#' }
+#' \item{min_points:
 #' Minimum number of data points to use. If less amount of points found the grid node considered empty and will be filled with NODATA marker. This is only used if search ellipse is set (both radii are non-zero). Default is 0.
-#' nodata:
+#' }
+#' \item{nodata:
 #' NODATA marker to fill empty points (default 0.0).
-#' 
+#' }
+#' }
 #' 
 #' This function assumes the user has a working GDAL on their system.  If the 
 #' "gdalUtils_gdalPath" option has been set (usually by gdal_setInstallation),
@@ -188,13 +234,13 @@
 #' 	# Now make a matching VRT file
 #' 	tempfname_vrt <- paste(tempfname_base,".vrt",sep="")
 #' 	vrt_header <- c(
-#' 			'<OGRVRTDataSource>',
-#' 			'\t<OGRVRTLayer name="dem">',
-#' 			'\t<SrcDataSource>dem.csv</SrcDataSource>',
-#' 			'\t<GeometryType>wkbPoint</GeometryType>', 
-#' 			'\t<GeometryField encoding="PointFromColumns" x="Easting" y="Northing" z="Elevation"/>',
-#' 			'\t</OGRVRTLayer>',
-#' 			'\t</OGRVRTDataSource>'			
+#' 	'<OGRVRTDataSource>',
+#' 	'\t<OGRVRTLayer name="dem">',
+#' 	'\t<SrcDataSource>dem.csv</SrcDataSource>',
+#' 	'\t<GeometryType>wkbPoint</GeometryType>', 
+#'  '\t<GeometryField encoding="PointFromColumns" x="Easting" y="Northing" z="Elevation"/>',
+#' 	'\t</OGRVRTLayer>',
+#' 	'\t</OGRVRTDataSource>'			
 #' 	)
 #' 	vrt_filecon <- file(tempfname_vrt,"w")
 #' 	writeLines(vrt_header,con=vrt_filecon)
@@ -204,9 +250,9 @@
 #' 	
 #' 	# Now run gdal_grid:
 #' 	setMinMax(gdal_grid(src_datasource=tempfname_vrt,
-#' 					dst_filename=tempfname_tif,a="invdist:power=2.0:smoothing=1.0",
-#' 					txe=c(85000,89000),tye=c(894000,890000),outsize=c(400,400),of="GTiff",ot="Float64",
-#' 					l="dem",output_Raster=TRUE))
+#' 		dst_filename=tempfname_tif,a="invdist:power=2.0:smoothing=1.0",
+#' 		txe=c(85000,89000),tye=c(894000,890000),outsize=c(400,400),
+#' 		of="GTiff",ot="Float64",l="dem",output_Raster=TRUE))
 #' }
 #' @import rgdal
 #' @export
@@ -219,8 +265,9 @@ gdal_grid <- function(
 		l,where,sql,co,q,
 		output_Raster=FALSE,
 		ignore.full_scan=TRUE,
-		verbose=FALSE,
-		...)
+		verbose=FALSE #,
+#		...
+)
 {
 	if(output_Raster && (!requireNamespace("raster") || !requireNamespace("rgdal")))
 	{
@@ -242,7 +289,7 @@ gdal_grid <- function(
 					)),
 			vector = list(
 					varnames <- c(
-					"txe","tye","outsize","spat"
+							"txe","tye","outsize","spat"
 					)),
 			scalar = list(
 					varnames <- c(
@@ -255,7 +302,7 @@ gdal_grid <- function(
 					)),
 			repeatable = list(
 					varnames <- c(
-							
+					
 					))
 	)
 	
@@ -277,7 +324,7 @@ gdal_grid <- function(
 			"z_increase","z_multiply",
 			"ot","of","a_srs","zfield","a","clipsrc","clipsrcsql","clipsrclayer",
 			"l","where","sql","co","src_datasource","dst_filename"
-			
+	
 	)
 	
 	parameter_noflags <- c("src_datasource","dst_filename")

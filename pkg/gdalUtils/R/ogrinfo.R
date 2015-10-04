@@ -23,7 +23,7 @@
 #' @param nocount Logical. (starting with GDAL 2.0) Suppress feature count printing.
 #' @param noextent Logical. (starting with GDAL 2.0) Suppress spatial extent printing.
 #' @param formats Logical. List the format drivers that are enabled.
-#' @param additional_commands Character. Additional commands to pass directly to ogrinfo.
+## @param additional_commands Character. Additional commands to pass directly to ogrinfo.
 #' @param ignore.full_scan Logical. If FALSE, perform a brute-force scan if other installs are not found.  Default is TRUE.
 #' @param verbose Logical. Enable verbose execution? Default is FALSE.  
 #' 
@@ -74,7 +74,7 @@ ogrinfo <- function(datasource_name,layer,
 		dialect,al,so,fields,geom,
 		oo,nomd,listmdd,mdd,nocount,noextent,
 		formats,
-		additional_commands,
+#		additional_commands,
 		ignore.full_scan=TRUE,
 		verbose=FALSE)
 {

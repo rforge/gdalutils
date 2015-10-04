@@ -5,8 +5,8 @@
 \title{gdallocationinfo}
 \usage{
 gdallocationinfo(srcfile, x, y, coords, xml, lifonly, valonly, b, overview,
-  l_srs, geoloc, wgs84, oo, additional_commands, raw_output = TRUE,
-  ignore.full_scan = TRUE, verbose = FALSE)
+  l_srs, geoloc, wgs84, oo, raw_output = TRUE, ignore.full_scan = TRUE,
+  verbose = FALSE)
 }
 \arguments{
 \item{srcfile}{Character. The source GDAL raster datasource name.}
@@ -34,8 +34,6 @@ gdallocationinfo(srcfile, x, y, coords, xml, lifonly, valonly, b, overview,
 \item{wgs84}{Logical. Indicates input x,y points are WGS84 long, lat.}
 
 \item{oo}{Character. "NAME=VALUE". (starting with GDAL 2.0) Dataset open option (format specific)}
-
-\item{additional_commands}{Character. Additional commands to pass directly to gdallocationinfo.}
 
 \item{raw_output}{Logical. Dump the raw output of the gdallocationinfo (default=TRUE). If not, attempt to return a matrix of data.}
 

@@ -22,10 +22,10 @@
 #' @param r Character. ("nearest" (default) | "bilinear" | "cubic" | "cubicspline" | "lanczos" | "average" | "mode"). (GDAL >= 2.0) Select a resampling algorithm.
 #' @param input_file_list Character. To specify a text file with an input filename on each line.
 #' @param overwrite Logical. Overwrite the VRT if it already exists.
-#' @param additional_commands Character. Additional commands to pass directly to ogrinfo.
+## @param additional_commands Character. Additional commands to pass directly to ogrinfo.
 #' @param ignore.full_scan Logical. If FALSE, perform a brute-force scan if other installs are not found.  Default is TRUE.
 #' @param verbose Logical. Enable verbose execution? Default is FALSE.  
-#' @param ... Other parameters to pass to gdal_translate.
+#' @param ... Additional arguments.
 #' 
 #' @return NULL
 #' @author Jonathan A. Greenberg (\email{gdalUtils@@estarcion.net}) (wrapper) and Frank Warmerdam (GDAL lead developer).
@@ -64,10 +64,11 @@ gdalbuildvrt <- function(gdalfile,output.vrt,
 		separate,b,sd,allow_projection_difference,q,
 		addalpha,hidenodata,srcnodata,vrtnodata,
 		a_srs,r,input_file_list,overwrite,
-		additional_commands,
+#		additional_commands,
 		ignore.full_scan=TRUE,
 		verbose=FALSE,
-		...)
+		...
+)
 {
 	
 	parameter_values <- as.list(environment())
