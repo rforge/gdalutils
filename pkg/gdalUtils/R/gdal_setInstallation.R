@@ -46,6 +46,7 @@
 #' getOption("gdalUtils_gdalPath")[[1]]$version
 #' }
 #' @importFrom R.utils listDirectory
+#' @import utils
 ## @importFrom utils shortPathName
 #' @export
 
@@ -212,7 +213,7 @@ gdal_setInstallation <- function(search_path=NULL,rescan=FALSE,
 		{
 			if (.Platform$OS.type=="windows")
 			{
-				x <- shortPathName(x)
+				x <- utils::shortPathName(x)
 			} else
 			{
 				x <- path.expand(x)
