@@ -32,6 +32,7 @@
 #' gdalinfo("test_mosaic.envi")
 #' }
 #' @import rgdal
+#' @importFrom utils write.table
 #' @export
 
 mosaic_rasters <- function(gdalfile,dst_dataset,output.vrt=NULL,output_Raster=FALSE,

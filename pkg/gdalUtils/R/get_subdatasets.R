@@ -24,6 +24,7 @@
 #' hdf4_dataset <- system.file("external/test_modis.hdf", package="gdalUtils")
 #' get_subdatasets(hdf4_dataset)
 #' }
+#' @importFrom utils glob2rx
 #' @export
 
 get_subdatasets <- function(datasetname,names_only=TRUE,verbose=FALSE)

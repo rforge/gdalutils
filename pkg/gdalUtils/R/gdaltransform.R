@@ -47,6 +47,7 @@
 #' pts <- matrix(c(177502,311865,177503,311866),ncol=2,byrow=TRUE)
 #' gdaltransform(s_srs="EPSG:28992",t_srs="EPSG:31370",coords=pts,verbose=TRUE)
 #' }
+#' @importFrom utils write.table
 #' @export
 
 gdaltransform <- function(srcfile,dstfile,

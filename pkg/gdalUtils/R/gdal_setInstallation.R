@@ -46,6 +46,7 @@
 #' getOption("gdalUtils_gdalPath")[[1]]$version
 #' }
 #' @importFrom R.utils listDirectory
+#' @importFrom utils shortPathName
 #' @export
 
 # TODO: interface with gdal_chooseInstallation to remove some installs.

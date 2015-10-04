@@ -68,6 +68,7 @@
 #' 	gdallocationinfo(srcfile=src_dataset,coords=coords,valonly=TRUE,raw_output=FALSE)
 #' }
 #' @importFrom R.utils countLines
+#' @importFrom utils write.table
 #' @export
 
 gdallocationinfo <- function(

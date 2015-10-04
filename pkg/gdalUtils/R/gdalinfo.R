@@ -61,6 +61,7 @@
 #' # gdalinfo tahoe_highrez.tif
 #' gdalinfo(src_dataset,verbose=TRUE)
 #' }
+#' @importFrom utils glob2rx
 #' @export
 
 gdalinfo <- function(datasetname,mm,stats,
