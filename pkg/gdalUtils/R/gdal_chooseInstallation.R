@@ -42,11 +42,16 @@ gdal_chooseInstallation <- function(hasDrivers)
 				function(x,hasDrivers)
 				{
 					installation_drivers <- x$drivers
-					# GDAL 2.0 BROKE DIRECT MATCH.  GOING TO GREP NOW:
-					matching_drivers <- grep(hasDrivers,installation_drivers$format_code)
-					return(length(matching_drivers)==length(hasDrivers))				
-	#				return(length(intersect(hasDrivers,installation_drivers$format_code)) 
-	#					== length(hasDrivers))
+					if(grepl("^1",x$version))
+					{
+						return(length(intersect(hasDrivers,installation_drivers$format_code)) 
+										== length(hasDrivers))
+					} else
+					{
+						# FIX FOR VERSION 2.0						
+						matching_drivers <- grep(paste(hasDrivers,"-",sep=""),installation_drivers$format_code)
+						return(length(matching_drivers)==length(hasDrivers))
+					}				
 				},
 				hasDrivers=hasDrivers)	
 		current_match <- current_match&driver_match
