@@ -15,9 +15,9 @@ ogr2ogr(src_datasource_name, dst_datasource_name, layer, f, append, overwrite,
   unsetFid, nomd, mo, ignore.full_scan = TRUE, verbose = FALSE)
 }
 \arguments{
-\item{src_datasource_name}{Character. Input vector file.}
+\item{src_datasource_name}{Character. Input vector file or input directory.}
 
-\item{dst_datasource_name}{Character. Output vector file.}
+\item{dst_datasource_name}{Character. Output vector file or input directory.}
 
 \item{layer}{Character. Layer to use.}
 
@@ -166,6 +166,10 @@ For PostgreSQL, the PG_USE_COPY config option can be set to YES for significantl
 performance boot. See the PG driver documentation page.
 
 More generally, consult the documentation page of the input and output drivers for performance hints.
+
+NOTE FOR SQL USERS: When using SQL statements via the sql="some sql statement", be aware the src_datasource_name and
+dst_datasource_name should still be set.  src_datasource_name is treated as the path to the 
+tables/vectors called in the SQL statement, and dst_datasource_name will be the folder the outputs will be stored in.
 
 This function assumes the user has a working GDAL on their system.  If the 
 "gdalUtils_gdalPath" option has been set (usually by gdal_setInstallation),
