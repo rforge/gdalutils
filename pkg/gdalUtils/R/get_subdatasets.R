@@ -34,6 +34,10 @@ get_subdatasets <- function(datasetname,names_only=TRUE,normalizePath=FALSE,verb
 	gdal_setInstallation()
 	if(is.null(getOption("gdalUtils_gdalPath"))) return()
 	
+	if(normalizePath) {
+		datasetname <- normalizePath(datasetname)
+	}
+	
 	if(names_only)
 	{
 		gdalinfo_raw <- gdalinfo(datasetname)
@@ -43,6 +47,7 @@ get_subdatasets <- function(datasetname,names_only=TRUE,normalizePath=FALSE,verb
 					split1 <- strsplit(subdataset_rawnames[X],"=")
 					return(gsub("\"","",split1[[1]][2]))	
 				})
-		if(normalizePath) return(normalizePath(subdataset_names)) else return(subdataset_names)
+	#	if(normalizePath) return(normalizePath(subdataset_names)) else return(subdataset_names)
+		return(subdataset_names)
 	}	
 }
