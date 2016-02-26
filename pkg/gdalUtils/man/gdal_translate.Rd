@@ -7,8 +7,8 @@
 gdal_translate(src_dataset, dst_dataset, ot, strict, of = "GTiff", b, mask,
   expand, outsize, tr, r, scale, exponent, unscale, srcwin, projwin,
   projwin_srs, epo, eco, a_srs, a_ullr, a_nodata, mo, co, gcp, q, sds, stats,
-  norat, oo, sd_index, output_Raster = FALSE, ignore.full_scan = TRUE,
-  verbose = FALSE, ...)
+  norat, oo, sd_index, config, output_Raster = FALSE,
+  ignore.full_scan = TRUE, verbose = FALSE, ...)
 }
 \arguments{
 \item{src_dataset}{Character. The source dataset name. It can be either file name, URL of data source or subdataset name for multi-dataset files.}
@@ -72,6 +72,8 @@ gdal_translate(src_dataset, dst_dataset, ot, strict, of = "GTiff", b, mask,
 \item{oo}{Character. NAME=VALUE. (starting with GDAL 2.0) Dataset open option (format specific)}
 
 \item{sd_index}{Numeric. If the file is an HDF4 or HDF5 file, which subdataset should be returned (1 to the number of subdatasets)?  If this flag is used, src_dataset should be the filename of the multipart file.  This parameter only works if the subdataset names follow the SUBDATASET_n_NAME convention.}
+
+\item{config}{Character. Sets runtime configuration options for GDAL.  See https://trac.osgeo.org/gdal/wiki/ConfigOptions for more information.}
 
 \item{output_Raster}{Logical. Return output dst_dataset as a RasterBrick?}
 

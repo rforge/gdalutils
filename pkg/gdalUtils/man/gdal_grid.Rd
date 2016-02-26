@@ -6,7 +6,7 @@
 \usage{
 gdal_grid(src_datasource, dst_filename, ot, of, txe, tye, outsize, a_srs,
   zfield, z_increase, z_multiply, a, spat, clipsrc, clipsrcsql, clipsrclayer,
-  clipsrcwhere, l, where, sql, co, q, output_Raster = FALSE,
+  clipsrcwhere, l, where, sql, co, q, config, output_Raster = FALSE,
   ignore.full_scan = TRUE, verbose = FALSE)
 }
 \arguments{
@@ -53,6 +53,8 @@ gdal_grid(src_datasource, dst_filename, ot, of, txe, tye, outsize, a_srs,
 \item{co}{Character. "NAME=VALUE". Passes a creation option to the output format driver. Multiple -co options may be listed. See format specific documentation for legal creation options for each format.}
 
 \item{q}{Logical. Suppress progress monitor and other non-error output.}
+
+\item{config}{Character. Sets runtime configuration options for GDAL.  See https://trac.osgeo.org/gdal/wiki/ConfigOptions for more information.}
 
 \item{output_Raster}{Logical. Return output dst_filename as a RasterBrick?}
 

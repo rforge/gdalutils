@@ -6,7 +6,7 @@
 \usage{
 gdal_contour(src_filename, dst_filename, b, a, threeD, inodata, snodata, i,
   f = "ESRI Shapefile", dsco, lco, off, fl, nln, output_Vector = FALSE,
-  ignore.full_scan = TRUE, verbose = FALSE)
+  config, ignore.full_scan = TRUE, verbose = FALSE)
 }
 \arguments{
 \item{src_filename}{Character. Any OGR supported readable datasource.}
@@ -38,6 +38,8 @@ gdal_contour(src_filename, dst_filename, b, a, threeD, inodata, snodata, i,
 \item{nln}{Character. Provide a name for the output vector layer. Defaults to "contour".}
 
 \item{output_Vector}{Logical. Return output dst_filename as a Spatial* object.  Currently only works with f="ESRI Shapefile".}
+
+\item{config}{Character. Sets runtime configuration options for GDAL.  See https://trac.osgeo.org/gdal/wiki/ConfigOptions for more information.}
 
 \item{ignore.full_scan}{Logical. If FALSE, perform a brute-force scan if other installs are not found.  Default is TRUE.}
 

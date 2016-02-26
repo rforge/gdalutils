@@ -33,6 +33,7 @@
 #' @param norat Logical. (GDAL >= 1.11) Do not copy source RAT into destination dataset.
 #' @param oo Character. NAME=VALUE. (starting with GDAL 2.0) Dataset open option (format specific)
 #' @param sd_index Numeric. If the file is an HDF4 or HDF5 file, which subdataset should be returned (1 to the number of subdatasets)?  If this flag is used, src_dataset should be the filename of the multipart file.  This parameter only works if the subdataset names follow the SUBDATASET_n_NAME convention.
+#' @param config Character. Sets runtime configuration options for GDAL.  See https://trac.osgeo.org/gdal/wiki/ConfigOptions for more information.
 #' @param output_Raster Logical. Return output dst_dataset as a RasterBrick?
 #' @param ignore.full_scan Logical. If FALSE, perform a brute-force scan if other installs are not found.  Default is TRUE.
 #' @param verbose Logical. Enable verbose execution? Default is FALSE.  
@@ -98,6 +99,7 @@ gdal_translate <- function(src_dataset,dst_dataset,ot,strict,of="GTiff",
 		a_srs,a_ullr,a_nodata,mo,co,gcp,q,sds,stats,norat,oo,
 #		additional_commands,
 		sd_index,
+		config,
 		output_Raster=FALSE,
 		ignore.full_scan=TRUE,
 		verbose=FALSE,
@@ -131,7 +133,7 @@ gdal_translate <- function(src_dataset,dst_dataset,ot,strict,of="GTiff",
 			character = list(
 					varnames <- c("ot","of","mask","expand","r","projwin_srs","a_srs","oo","src_dataset","dst_dataset")),
 			repeatable = list(
-					varnames <- c("b","mo","co")))
+					varnames <- c("b","mo","co","config")))
 	
 	parameter_order <- c(
 			"strict","exponent","unscale","epo","eco","q","sds","stats",
@@ -145,7 +147,9 @@ gdal_translate <- function(src_dataset,dst_dataset,ot,strict,of="GTiff",
 	parameter_noflags <- c("src_dataset","dst_dataset")
 	
 	parameter_noquotes <- unlist(parameter_variables$vector)
-		
+	
+	parameter_doubledash <- c("config")
+	
 	executable <- "gdal_translate"
 	
 	cmd <- gdal_cmd_builder(
@@ -155,6 +159,7 @@ gdal_translate <- function(src_dataset,dst_dataset,ot,strict,of="GTiff",
 			parameter_order=parameter_order,
 			parameter_noflags=parameter_noflags,
 			parameter_noquotes=parameter_noquotes,
+			parameter_doubledash=parameter_doubledash,
 			gdal_installation_id=gdal_chooseInstallation(hasDrivers=of))
 	
 	if(verbose) message(paste("GDAL command being used:",cmd))
