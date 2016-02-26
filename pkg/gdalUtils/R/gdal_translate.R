@@ -142,7 +142,7 @@ gdal_translate <- function(src_dataset,dst_dataset,ot,strict,of="GTiff",
 			"a_nodata",
 			"ot","of","mask","expand","r","projwin_srs","a_srs",
 			"b","mo","co","oo",
-			"src_dataset","dst_dataset")
+			"src_dataset","dst_dataset","config")
 	
 	parameter_noflags <- c("src_dataset","dst_dataset")
 	
