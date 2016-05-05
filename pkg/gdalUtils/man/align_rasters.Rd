@@ -5,7 +5,7 @@
 \title{Aligns raster files}
 \usage{
 align_rasters(unaligned, reference, dstfile, output_Raster = FALSE,
-  nThreads = 1, verbose = FALSE, ...)
+  nThreads = 1, projres_only = FALSE, verbose = FALSE, ...)
 }
 \arguments{
 \item{unaligned}{Character.  The filename of a raster to be aligned to the reference raster.}
@@ -18,6 +18,8 @@ Syncing will use the reference's projection, resolution, and extent.}
 \item{output_Raster}{Logical. Return output dst_dataset as a RasterBrick?}
 
 \item{nThreads}{Numeric or Character. If numeric, the number of threads to use.  Setting to > 1 enables multithreaded execution.  Can also be "ALL_CPUS" to use all available CPUS. Default is 1.}
+
+\item{projres_only}{Logical.  Matches projection and pixel resolution only, but leaves the spatial extent unchanged.  Useful for mosaicking.  Default = FALSE.}
 
 \item{verbose}{Logical. Enable verbose execution? Default is FALSE.}
 

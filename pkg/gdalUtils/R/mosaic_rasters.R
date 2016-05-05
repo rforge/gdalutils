@@ -5,6 +5,8 @@
 #' @param output.vrt Character. Output VRT file.  If NULL a temporary .vrt file will be created.
 #' @param output_Raster Logical. Return output dst_dataset as a RasterBrick?
 #' @param trim_margins Numeric. Pre-crop the input tiles by a fixed number of pixels before mosaicking.  Can be a single value or four values representing the left, top, right, and bottom margins, respectively.
+#' @param gdalwarp_index Numeric. If gdalwarp_index is numeric, the value is used as the index of the gdalfile to match projections and resolutions against when file projections don't match.  The default = 1 (the first input file).
+#' @param gdalwarp_params List.  Set gdalwarp parameters if input file projections don't match.  t_srs and tr set here will override those chosen by gdalwarp_index.  In general, the only thing you would set here is the resampling algorithm, which defaults to nearest neighbor ("near").
 #' @param verbose Logical. Enable verbose execution? Default is FALSE.  
 #' @param ... Parameters to pass to \code{\link{gdalbuildvrt}} or \code{\link{gdal_translate}}.
 #' 
@@ -37,6 +39,8 @@
 
 mosaic_rasters <- function(gdalfile,dst_dataset,output.vrt=NULL,output_Raster=FALSE,
 		trim_margins = NULL,
+		gdalwarp_index=1,
+		gdalwarp_params=list(r="near"),
 		verbose=FALSE,
 		...)
 {
@@ -62,11 +66,71 @@ mosaic_rasters <- function(gdalfile,dst_dataset,output.vrt=NULL,output_Raster=FA
 	gdal_setInstallation()
 	if(is.null(getOption("gdalUtils_gdalPath"))) return()
 	
+	# Need to check for projection differences before mosaicking...
+	# This is probably not worth doing in parallel:
+	gdalfile_proj4s <- foreach(k=gdalfile,.packages="gdalUtils",.combine="c") %do%
+			{
+				return(gdalsrsinfo(k,o="proj4"))	
+			}
+	
+	# We need to clean up the text?
+	# http://stackoverflow.com/questions/2261079/how-to-trim-leading-and-trailing-whitespace-in-r
+	trim.trailing <- function (x) sub("\\s+$", "", x)
+	gdalfile_proj4s <- trim.trailing(gsub("'","",gdalfile_proj4s))
+	
+	# browser()
+	
+	if(is.numeric(gdalwarp_index))
+	{
+		gdalwarp_params$t_srs <- gdalfile_proj4s[gdalwarp_index]
+		
+		# Match the resolution also:
+		temp_gdalfile_info <- gdalinfo(gdalfile[gdalwarp_index],raw_output=F)
+		gdalwarp_params$tr <- abs(c(temp_gdalfile_info$res.x,temp_gdalfile_info$res.y))
+	}
+		
+	if(!(all(gdalfile_proj4s==gdalfile_proj4s[1])))
+	{
+		if(verbose) message("Not all projections are identical...")
+		if(is.null(gdalwarp_params$t_srs) || is.na(gdalwarp_params$t_srs)) 
+		{
+			stop("Please set a valid gdalwarp_params$t_srs or gdalwarp_index...")
+		} else
+		{
+			# Make vrts for all files:
+			gdalfile_vrts <- foreach(k=seq(gdalfile),.combine="c") %dopar%
+					{
+						temp_vrt_name <- paste(tempfile(),".vrt",sep="")
+						gdalbuildvrt(gdalfile=gdalfile[k],
+								output.vrt=temp_vrt_name,
+								verbose=verbose)
+						if(gdalfile_proj4s[k] != gdalwarp_params$t_srs)
+						{
+							temp_vrt_warped_name <- paste(tempfile(),"_warped.vrt",sep="")
+							gdalwarp_params_temp <- gdalwarp_params
+							gdalwarp_params_temp$srcfile <- gdalfile[k]
+							gdalwarp_params_temp$dstfile <- temp_vrt_warped_name
+							gdalwarp_params_temp$of <- "VRT" 		
+							gdalwarp_params_temp$verbose = verbose
+							do.call(gdalwarp,gdalwarp_params_temp)
+							return(temp_vrt_warped_name)
+						} else
+						{
+							return(temp_vrt_name)
+						}
+						
+					}
+			
+		}
+		gdalfile <- gdalfile_vrts	
+	}
+	
+	
 	if(is.null(output.vrt))
 	{
 		output.vrt <- paste(tempfile(),".vrt",sep="")
 	}
-
+	
 	# Shrink 
 	if(!is.null(trim_margins))
 	{
@@ -100,6 +164,7 @@ mosaic_rasters <- function(gdalfile,dst_dataset,output.vrt=NULL,output_Raster=FA
 	#	creating a file list.
 	
 	temp_file_list_name <- paste(tempfile(),".txt",sep="")
+	print(gdalfile)
 	write.table(gdalfile,temp_file_list_name,row.names=F,col.names=F,quote=F)
 	
 	# Now pass the right arguments to each function:
@@ -114,7 +179,7 @@ mosaic_rasters <- function(gdalfile,dst_dataset,output.vrt=NULL,output_Raster=FA
 #	
 	gdalbuildvrt(input_file_list=temp_file_list_name,output.vrt=output.vrt,verbose=verbose,...)
 	outmosaic <- gdal_translate(src_dataset=output.vrt,dst_dataset=dst_dataset,
-		output_Raster=output_Raster,verbose=verbose,...)
+			output_Raster=output_Raster,verbose=verbose,...)
 	return(outmosaic)
 	
 }

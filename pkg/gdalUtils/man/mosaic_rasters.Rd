@@ -5,7 +5,8 @@
 \title{Mosaic raster files using GDAL Utilities}
 \usage{
 mosaic_rasters(gdalfile, dst_dataset, output.vrt = NULL,
-  output_Raster = FALSE, trim_margins = NULL, verbose = FALSE, ...)
+  output_Raster = FALSE, trim_margins = NULL, gdalwarp_index = 1,
+  gdalwarp_params = list(r = "near"), verbose = FALSE, ...)
 }
 \arguments{
 \item{gdalfile}{Character. Input files (as a character vector) or a wildcard search term (e.g. "*.tif")}
@@ -17,6 +18,10 @@ mosaic_rasters(gdalfile, dst_dataset, output.vrt = NULL,
 \item{output_Raster}{Logical. Return output dst_dataset as a RasterBrick?}
 
 \item{trim_margins}{Numeric. Pre-crop the input tiles by a fixed number of pixels before mosaicking.  Can be a single value or four values representing the left, top, right, and bottom margins, respectively.}
+
+\item{gdalwarp_index}{Numeric. If gdalwarp_index is numeric, the value is used as the index of the gdalfile to match projections and resolutions against when file projections don't match.  The default = 1 (the first input file).}
+
+\item{gdalwarp_params}{List.  Set gdalwarp parameters if input file projections don't match.  t_srs and tr set here will override those chosen by gdalwarp_index.  In general, the only thing you would set here is the resampling algorithm, which defaults to nearest neighbor ("near").}
 
 \item{verbose}{Logical. Enable verbose execution? Default is FALSE.}
 
