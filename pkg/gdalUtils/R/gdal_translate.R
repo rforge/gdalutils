@@ -26,7 +26,7 @@
 #' @param a_nodata Numeric. Assign a specified nodata value to output bands. Starting with GDAL 1.8.0, can be set to none to avoid setting a nodata value to the output file if one exists for the source file
 #' @param mo Character. ("META-TAG=VALUE").  Passes a metadata key and value to set on the output dataset if possible.
 #' @param co Character. ("NAME=VALUE"). Passes a creation option to the output format driver. Multiple -co options may be listed. See format specific documentation for legal creation options for each format.
-#' @param gcp Numeric. (c(pixel,line,easting,northing(,elevation))). Add the indicated ground control point to the output dataset. This option may be provided multiple times to provide a set of GCPs.
+#' @param gcp Matrix. Add the indicated ground control point to the output dataset. This option may be provided multiple times to provide a set of GCPs.  Columns represent pixel,line,easting,northing and (optionally) elevation, in that order, and rows represent each individual gcp.
 #' @param q Logical. Suppress progress monitor and other non-error output.
 #' @param sds Logical. Copy all subdatasets of this file to individual output files. Use with formats like HDF or OGDI that have subdatasets.
 #' @param stats Logical. (GDAL >= 1.8.0) Force (re)computation of statistics.
