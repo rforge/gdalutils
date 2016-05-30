@@ -59,7 +59,7 @@ gdal_translate(src_dataset, dst_dataset, ot, strict, of = "GTiff", b, mask,
 
 \item{co}{Character. ("NAME=VALUE"). Passes a creation option to the output format driver. Multiple -co options may be listed. See format specific documentation for legal creation options for each format.}
 
-\item{gcp}{Numeric. (c(pixel,line,easting,northing(,elevation))). Add the indicated ground control point to the output dataset. This option may be provided multiple times to provide a set of GCPs.}
+\item{gcp}{Matrix. Add the indicated ground control point to the output dataset. This option may be provided multiple times to provide a set of GCPs.  Columns represent pixel,line,easting,northing and (optionally) elevation, in that order, and rows represent each individual gcp.}
 
 \item{q}{Logical. Suppress progress monitor and other non-error output.}
 
