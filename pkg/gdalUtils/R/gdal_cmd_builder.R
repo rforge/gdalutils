@@ -274,6 +274,7 @@ gdal_cmd_builder <- function(executable,parameter_variables=c(),
 								flag=paste("-",X," ",sep="")
 							}
 						}
+						# browser()
 						parameter_variables_repeatable_string <- paste(
 								paste(flag,
 										qm(parameter_values[[which(names(parameter_values)==X)]]),

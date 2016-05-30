@@ -123,17 +123,27 @@ gdal_translate <- function(src_dataset,dst_dataset,ot,strict,of="GTiff",
 		parameter_values$src_dataset <- get_subdatasets(src_dataset,names_only=TRUE)[sd_index]
 	}
 	
+	# GCP FIX, IDd by Stuart Allen 30 May 2016
+	if(!missing(gcp))
+	{
+		if(is.matrix(gcp))
+		{
+			parameter_values$gcp <- apply(X=gcp,FUN=function(x) return(paste(as.character(x),collapse=" ")),MARGIN=2)
+			# browser()
+		}
+	}
+	
 	parameter_variables <- list(
 			logical = list(
 					varnames <- c("strict","unscale","epo","eco","q","sds","stats","norat")),
 			vector = list(
-					varnames <- c("outsize","tr","scale","exponent","srcwin","projwin","a_ullr","gcp")),
+					varnames <- c("outsize","tr","scale","exponent","srcwin","projwin","a_ullr")),
 			scalar = list(
 					varnames <- c("a_nodata")),
 			character = list(
-					varnames <- c("ot","of","mask","expand","r","projwin_srs","a_srs","oo","src_dataset","dst_dataset")),
+					varnames <- c("ot","of","mask","expand","r","projwin_srs","a_srs","oo","src_dataset","dst_dataset","gcp")),
 			repeatable = list(
-					varnames <- c("b","mo","co","config")))
+					varnames <- c("b","mo","co","config","gcp")))
 	
 	parameter_order <- c(
 			"strict","exponent","unscale","epo","eco","q","sds","stats",
