@@ -128,7 +128,7 @@ gdal_translate <- function(src_dataset,dst_dataset,ot,strict,of="GTiff",
 	{
 		if(is.matrix(gcp))
 		{
-			parameter_values$gcp <- apply(X=gcp,FUN=function(x) return(paste(as.character(x),collapse=" ")),MARGIN=2)
+			parameter_values$gcp <- apply(X=gcp,FUN=function(x) return(paste(as.character(x),collapse=" ")),MARGIN=1)
 			# browser()
 		}
 	}
