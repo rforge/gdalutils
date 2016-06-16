@@ -4,9 +4,11 @@
 #' @param dst_dataset Character. The destination file name.
 #' @param output.vrt Character. Output VRT file.  If NULL a temporary .vrt file will be created.
 #' @param output_Raster Logical. Return output dst_dataset as a RasterBrick?
+#' @param separate Logical. (starting with GDAL 1.7.0) Place each input file into a separate stacked band.  Unlike gdalbuildvrt, the full stack is placed in the mosaic, not just the first band.
 #' @param trim_margins Numeric. Pre-crop the input tiles by a fixed number of pixels before mosaicking.  Can be a single value or four values representing the left, top, right, and bottom margins, respectively.
 #' @param gdalwarp_index Numeric. If gdalwarp_index is numeric, the value is used as the index of the gdalfile to match projections and resolutions against when file projections don't match.  The default = 1 (the first input file).
 #' @param gdalwarp_params List.  Set gdalwarp parameters if input file projections don't match.  t_srs and tr set here will override those chosen by gdalwarp_index.  In general, the only thing you would set here is the resampling algorithm, which defaults to nearest neighbor ("near").
+#' @param force_ot Character. ("Byte"/"Int16"/"UInt16"/"UInt32"/"Int32"/"Float32"/"Float64"/"CInt16"/"CInt32"/"CFloat32"/"CFloat64") Forces all bands to be the same datatype. This is helpful if you are using input files of different data types and output formats (e.g. GTiff) that don't support mixed datatypes.
 #' @param verbose Logical. Enable verbose execution? Default is FALSE.  
 #' @param ... Parameters to pass to \code{\link{gdalbuildvrt}} or \code{\link{gdal_translate}}.
 #' 
@@ -38,9 +40,11 @@
 #' @export
 
 mosaic_rasters <- function(gdalfile,dst_dataset,output.vrt=NULL,output_Raster=FALSE,
+		separate=FALSE,
 		trim_margins = NULL,
 		gdalwarp_index=1,
 		gdalwarp_params=list(r="near"),
+		force_ot=NULL,
 		verbose=FALSE,
 		...)
 {
@@ -160,6 +164,49 @@ mosaic_rasters <- function(gdalfile,dst_dataset,output.vrt=NULL,output_Raster=FA
 		
 	}
 	
+	if(!is.null(force_ot))
+	{
+		if(verbose) message("Forcing output data type...")
+		gdalfile_vrts <- foreach(k = seq(gdalfile),.combine="c") %dopar%
+				{
+					temp_vrt_name <- paste(tempfile(),".vrt",sep="")
+					gdalbuildvrt(gdalfile=gdalfile[k],
+							output.vrt=temp_vrt_name,
+							verbose=verbose)
+					temp_vrt_forcedot_name <- paste(tempfile(),"_forcedot.vrt",sep="")
+					gdal_translate(src_dataset=temp_vrt_name,dst_dataset=temp_vrt_forcedot_name,ot=force_ot,of="VRT")
+					return(temp_vrt_forcedot_name)
+				}
+		gdalfile <- gdalfile_vrts
+	}
+	
+	# Finally, we need to fix the issue of there being multi-band files:
+	if(separate)
+	{
+		# browser()
+		if(verbose) message("Checking for multiband inputs...")
+		gdalfile_vrts <- foreach(k=gdalfile,.packages="gdalUtils",.combine="c") %do%
+				{
+					nbands <- gdalinfo(k,raw_output=F)$bands
+					if(nbands > 1)
+					{
+						gdalfile_singlebands <- foreach(b=seq(nbands),.packages="gdalUtils",.combine="c") %do%
+								{
+									temp_vrt_name <- paste(tempfile(),".vrt",sep="")
+									gdalbuildvrt(gdalfile=k,b=b,
+											output.vrt=temp_vrt_name,
+											verbose=verbose)
+									return(temp_vrt_name)
+								}
+						return(gdalfile_singlebands)
+					} else
+					{
+						return(k)
+					}
+				}
+		gdalfile <- gdalfile_vrts
+	}
+	
 	# There is an error that occurs with a lot of files.  We are going to fix this by
 	#	creating a file list.
 	
@@ -177,7 +224,7 @@ mosaic_rasters <- function(gdalfile,dst_dataset,output.vrt=NULL,output_Raster=FA
 #	gdal_translate_additional_args <- additional_arguments[names(additional_arguments) %in% gdal_translate_formals]
 #	
 #	
-	gdalbuildvrt(input_file_list=temp_file_list_name,output.vrt=output.vrt,verbose=verbose,...)
+	gdalbuildvrt(input_file_list=temp_file_list_name,separate=separate,output.vrt=output.vrt,verbose=verbose,...)
 	outmosaic <- gdal_translate(src_dataset=output.vrt,dst_dataset=dst_dataset,
 			output_Raster=output_Raster,verbose=verbose,...)
 	return(outmosaic)
