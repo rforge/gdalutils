@@ -112,15 +112,17 @@ gdal_cmd_builder <- function(executable,parameter_variables=c(),
 		# browser()
 		if(length(parameter_variables_logical_defined)>0)
 		{
-
 			
+#			browser()
 			parameter_variables_logical_defined_true <- sapply(parameter_variables_logical_defined,
 					function(X,parameter_values)
 					{
 						return(parameter_values[[which(names(parameter_values)==X)]])
 					},parameter_values=parameter_values)
 			
-			parameter_variables_logical_defined_true <- parameter_variables_logical_defined_true[parameter_variables_logical_defined_true==T]
+			# parameter_variables_logical_defined_true <- parameter_variables_logical_defined_true[parameter_variables_logical_defined_true==T]
+			
+#			browser()
 			
 			parameter_variables_logical_strings <- sapply(parameter_variables_logical_defined,
 					function(X,parameter_doubledash)
@@ -141,6 +143,9 @@ gdal_cmd_builder <- function(executable,parameter_variables=c(),
 						return(flag)
 					},parameter_doubledash=parameter_doubledash)	
 			names(parameter_variables_logical_strings) <- names(parameter_variables_logical_defined_true)
+			# Get rid of ones you don't need:
+			parameter_variables_logical_strings <- parameter_variables_logical_strings[parameter_variables_logical_defined_true==T]
+			
 		} else
 		{
 			parameter_variables_logical_strings <- NULL
