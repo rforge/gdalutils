@@ -24,4 +24,3 @@ qm(42)
 \author{
 Jonathan A. Greenberg
 }
-

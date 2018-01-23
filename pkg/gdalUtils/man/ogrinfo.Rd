@@ -97,10 +97,9 @@ ogrinfo(datasource_name)
 ogrinfo(datasource_name,"tahoe_highrez_training")
 }
 }
-\author{
-Jonathan A. Greenberg (\email{gdalUtils@estarcion.net}) (wrapper) and Frank Warmerdam (GDAL lead developer).
-}
 \references{
 \url{http://www.gdal.org/ogrinfo.html}
 }
-
+\author{
+Jonathan A. Greenberg (\email{gdalUtils@estarcion.net}) (wrapper) and Frank Warmerdam (GDAL lead developer).
+}

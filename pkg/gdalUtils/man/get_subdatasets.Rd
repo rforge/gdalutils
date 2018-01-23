@@ -38,10 +38,9 @@ hdf4_dataset <- system.file("external/test_modis.hdf", package="gdalUtils")
 get_subdatasets(hdf4_dataset)
 }
 }
-\author{
-Jonathan A. Greenberg (\email{gdalUtils@estarcion.net}) and Matteo Mattiuzzi (wrapper) and Frank Warmerdam (GDAL lead developer).
-}
 \references{
 \url{http://www.gdal.org/gdalinfo.html}
 }
-
+\author{
+Jonathan A. Greenberg (\email{gdalUtils@estarcion.net}) and Matteo Mattiuzzi (wrapper) and Frank Warmerdam (GDAL lead developer).
+}

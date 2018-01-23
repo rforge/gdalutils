@@ -92,10 +92,9 @@ if(valid_install)
 	gdallocationinfo(srcfile=src_dataset,coords=coords,valonly=TRUE,raw_output=FALSE)
 }
 }
-\author{
-Jonathan A. Greenberg (\email{gdalUtils@estarcion.net}) (wrapper) and Frank Warmerdam (GDAL lead developer).
-}
 \references{
 \url{http://www.gdal.org/gdallocationinfo.html}
 }
-
+\author{
+Jonathan A. Greenberg (\email{gdalUtils@estarcion.net}) (wrapper) and Frank Warmerdam (GDAL lead developer).
+}

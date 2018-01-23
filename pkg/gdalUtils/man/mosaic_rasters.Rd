@@ -61,10 +61,9 @@ mosaic_rasters(gdalfile=c(layer1,layer2),dst_dataset="test_mosaic.envi",separate
 gdalinfo("test_mosaic.envi")
 }
 }
-\author{
-Jonathan A. Greenberg (\email{gdalUtils@estarcion.net})
-}
 \seealso{
 \code{\link{gdalbuildvrt}}, \code{\link{gdal_translate}}
 }
-
+\author{
+Jonathan A. Greenberg (\email{gdalUtils@estarcion.net})
+}

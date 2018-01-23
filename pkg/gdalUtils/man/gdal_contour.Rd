@@ -89,10 +89,9 @@ contour_output <- gdal_contour(src_filename=input_dem,dst_filename=output_shapef
 spplot(contour_output["Elevation"],contour=TRUE)
 }
 }
-\author{
-Jonathan A. Greenberg (\email{gdalUtils@estarcion.net}) (wrapper) and Frank Warmerdam (GDAL lead developer).
-}
 \references{
 \url{http://www.gdal.org/gdal_contour.html}
 }
-
+\author{
+Jonathan A. Greenberg (\email{gdalUtils@estarcion.net}) (wrapper) and Frank Warmerdam (GDAL lead developer).
+}

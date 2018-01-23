@@ -32,10 +32,9 @@ getOption("gdalUtils_gdalPath")[[
 	gdal_chooseInstallation(hasDrivers=c("HDF4","HDF5"))]]$version
 }
 }
-\author{
-Jonathan A. Greenberg (\email{gdalUtils@estarcion.net})
-}
 \references{
 \url{http://www.gdal.org/gdal_translate.html}
 }
-
+\author{
+Jonathan A. Greenberg (\email{gdalUtils@estarcion.net})
+}

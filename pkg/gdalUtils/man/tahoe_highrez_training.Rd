@@ -21,4 +21,3 @@ spplot(tahoe_highrez_training_points,zcol="SPECIES")
 Jonathan A. Greenberg \email{gdalUtils@estarcion.net}
 }
 \keyword{data}
-

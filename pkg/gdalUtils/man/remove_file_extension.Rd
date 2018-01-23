@@ -22,4 +22,3 @@ remove_file_extension(myfilename,".file.gri")
 \author{
 Jonathan A. Greenberg \email{spatial.tools@estarcion.net}
 }
-

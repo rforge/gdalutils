@@ -157,10 +157,9 @@ gdalwarp(src_dataset,dstfile="tahoe_highrez_utm11.tif",
 		overwrite=TRUE,verbose=TRUE)
 }
 }
-\author{
-Jonathan A. Greenberg (\email{gdalUtils@estarcion.net}) (wrapper) and Frank Warmerdam (GDAL lead developer).
-}
 \references{
 \url{http://www.gdal.org/gdalwarp.html}
 }
-
+\author{
+Jonathan A. Greenberg (\email{gdalUtils@estarcion.net}) (wrapper) and Frank Warmerdam (GDAL lead developer).
+}

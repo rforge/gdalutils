@@ -133,10 +133,9 @@ hdf4_dataset <- system.file("external/test_modis.hdf", package="gdalUtils")
 gdal_translate(hdf4_dataset,"test_modis_sd1.tif",sd_index=1)
 }
 }
-\author{
-Jonathan A. Greenberg (\email{gdalUtils@estarcion.net}) (wrapper) and Frank Warmerdam (GDAL lead developer).
-}
 \references{
 \url{http://www.gdal.org/gdal_translate.html}
 }
-
+\author{
+Jonathan A. Greenberg (\email{gdalUtils@estarcion.net}) (wrapper) and Frank Warmerdam (GDAL lead developer).
+}

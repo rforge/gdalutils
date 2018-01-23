@@ -75,10 +75,9 @@ gdaltindex(output_shapefile,list.files(path=src_folder,pattern=glob2rx("*.tif"),
 	output_Vector=TRUE,verbose=TRUE)
 }
 }
-\author{
-Jonathan A. Greenberg (\email{gdalUtils@estarcion.net}) (wrapper) and Frank Warmerdam (GDAL lead developer).
-}
 \references{
 \url{http://www.gdal.org/gdaltindex.html}
 }
-
+\author{
+Jonathan A. Greenberg (\email{gdalUtils@estarcion.net}) (wrapper) and Frank Warmerdam (GDAL lead developer).
+}

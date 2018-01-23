@@ -18,4 +18,3 @@ plot(tahoe_lidar_highesthit)
 Jonathan A. Greenberg \email{gdalUtils@estarcion.net}
 }
 \keyword{data}
-

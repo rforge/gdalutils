@@ -29,4 +29,3 @@ is.Raster("character")
 \author{
 Jonathan A. Greenberg
 }
-

@@ -60,10 +60,9 @@ gdalsrsinfo(src_dataset,o="proj4",verbose=TRUE)
 gdalsrsinfo(src_dataset,as.CRS=TRUE,verbose=TRUE)
 }
 }
-\author{
-Jonathan A. Greenberg (\email{gdalUtils@estarcion.net}) and Matteo Mattiuzzi (wrapper) and Frank Warmerdam (GDAL lead developer).
-}
 \references{
 \url{http://www.gdal.org/gdalsrsinfo.html}
 }
-
+\author{
+Jonathan A. Greenberg (\email{gdalUtils@estarcion.net}) and Matteo Mattiuzzi (wrapper) and Frank Warmerdam (GDAL lead developer).
+}

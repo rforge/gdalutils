@@ -99,10 +99,9 @@ cmd
 system(cmd,intern=TRUE) 
 }
 }
-\author{
-Jonathan A. Greenberg (\email{gdalUtils@estarcion.net})
-}
 \references{
 \url{http://www.gdal.org/gdal_translate.html}
 }
-
+\author{
+Jonathan A. Greenberg (\email{gdalUtils@estarcion.net})
+}

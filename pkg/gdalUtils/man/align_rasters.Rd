@@ -37,10 +37,9 @@ matches the resolution of the reference raster.  This is helpful in
 preparing multiple files of different projections, resolutions, extents,
 and rotations for performing map algebra or change detection.
 }
-\author{
-Jonathan A. Greenberg (\email{gdalUtils@estarcion.net})
-}
 \seealso{
 \code{\link{gdalwarp}}
 }
-
+\author{
+Jonathan A. Greenberg (\email{gdalUtils@estarcion.net})
+}

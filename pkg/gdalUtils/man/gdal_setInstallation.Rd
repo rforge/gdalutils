@@ -60,10 +60,9 @@ getOption("gdalUtils_gdalPath")[[1]]
 getOption("gdalUtils_gdalPath")[[1]]$version
 }
 }
-\author{
-Jonathan A. Greenberg (\email{gdalUtils@estarcion.net}) and Matteo Mattiuzzi
-}
 \references{
 \url{http://www.gdal.org/gdal_translate.html}
 }
-
+\author{
+Jonathan A. Greenberg (\email{gdalUtils@estarcion.net}) and Matteo Mattiuzzi
+}

@@ -18,4 +18,3 @@ plot(tahoe_lidar_bareearth)
 Jonathan A. Greenberg \email{gdalUtils@estarcion.net}
 }
 \keyword{data}
-

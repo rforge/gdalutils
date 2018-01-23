@@ -51,13 +51,12 @@ list.files(output_folder,pattern="_converted.envi$")
 # sfQuickStop() # from package spatial.tools to stop a parallel PSOCK cluster
 }
 }
-\author{
-Jonathan A. Greenberg (\email{gdalUtils@estarcion.net})
-}
 \references{
 \url{http://www.gdal.org/gdal_translate.html}
 }
 \seealso{
 \code{\link{gdal_translate}}, \code{\link{list.files}}
 }
-
+\author{
+Jonathan A. Greenberg (\email{gdalUtils@estarcion.net})
+}

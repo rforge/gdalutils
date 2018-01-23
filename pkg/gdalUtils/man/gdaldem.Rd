@@ -119,10 +119,9 @@ plot(output_aspect,col=gray.colors(256))
 }
 }
 }
-\author{
-Jonathan A. Greenberg (\email{gdalUtils@estarcion.net}) (wrapper) and Matthew Perry, Even Rouault, Howard Butler, and Chris Yesson  (GDAL developers).
-}
 \references{
 \url{http://www.gdal.org/gdaldem.html}
 }
-
+\author{
+Jonathan A. Greenberg (\email{gdalUtils@estarcion.net}) (wrapper) and Matthew Perry, Even Rouault, Howard Butler, and Chris Yesson  (GDAL developers).
+}

@@ -16,4 +16,3 @@ gdalinfo(system.file("external/test_modis.hdf", package="gdalUtils"))
 Jonathan A. Greenberg \email{gdalUtils@estarcion.net}
 }
 \keyword{data}
-
