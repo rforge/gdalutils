@@ -49,7 +49,8 @@ mosaic_rasters <- function(gdalfile,dst_dataset,output.vrt=NULL,output_Raster=FA
 		...)
 {
 	# CRAN check to fix foreach variable errors:
-	k <- NULL	
+	k <- NULL
+	b <- NULL
 	
 	# Check to make sure all the input files exist on the system:
 	if(verbose) message("Checking to make sure all the input files exist...")
