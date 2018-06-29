@@ -10,7 +10,7 @@
 #' @param parameter_doubledash Character. Parameters which should have a double dash "--".
 #' @param parameter_noquotes Character. Parameters which should not be wrapped in quotes (vector parameters only, at present).
 #' @param gdal_installation_id Numeric. The ID of the GDAL installation to use.  Defaults to 1.
-#' 
+#' @param python_util Logical. Is the utility a python utility?  Default = FALSE.
 #' @return Formatted GDAL command for use with system() calls. 
 #' @author Jonathan A. Greenberg (\email{gdalUtils@@estarcion.net})
 #' 
@@ -90,7 +90,8 @@ gdal_cmd_builder <- function(executable,parameter_variables=c(),
 		parameter_values=c(),parameter_order=c(),parameter_noflags=c(),
 		parameter_doubledash=c(),
 		parameter_noquotes=c(),
-		gdal_installation_id=1)
+		gdal_installation_id=1,
+		python_util=FALSE)
 {
 	# path to executable check in here?
 	
@@ -353,8 +354,15 @@ gdal_cmd_builder <- function(executable,parameter_variables=c(),
 	
 	# Collapse multiple parameter entries:
 	parameter_vector <- sapply(parameter_vector,function(x) paste(x,collapse=" "))
-	
+
 	cmd <- paste(c(qm(executable),parameter_vector),collapse=" ")
+	
+	if(python_util)
+	{
+		py_check <- py_available(initialize=T)
+		if(!py_check) stop("Python not available, please fix.")
+		cmd <- paste(py_config()$python,cmd)
+	}
 	
 	return(cmd)
 	

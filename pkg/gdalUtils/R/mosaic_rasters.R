@@ -85,7 +85,7 @@ mosaic_rasters <- function(gdalfile,dst_dataset,output.vrt=NULL,output_Raster=FA
 	
 	# browser()
 	
-	if(is.numeric(gdalwarp_index))
+	if(is.numeric(gdalwarp_index) && (is.null(gdalwarp_params$t_srs) || is.na(gdalwarp_params$t_srs)))
 	{
 		gdalwarp_params$t_srs <- gdalfile_proj4s[gdalwarp_index]
 		
