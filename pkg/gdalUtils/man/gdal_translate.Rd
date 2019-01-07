@@ -4,10 +4,10 @@
 \alias{gdal_translate}
 \title{gdal_translate}
 \usage{
-gdal_translate(src_dataset, dst_dataset, ot, strict, of = "GTiff", b, mask,
-  expand, outsize, tr, r, scale, exponent, unscale, srcwin, projwin,
-  projwin_srs, epo, eco, a_srs, a_ullr, a_nodata, mo, co, gcp, q, sds, stats,
-  norat, oo, sd_index, config, output_Raster = FALSE,
+gdal_translate(src_dataset, dst_dataset, ot, strict, of = "GTiff", b,
+  mask, expand, outsize, tr, r, scale, exponent, unscale, srcwin, projwin,
+  projwin_srs, epo, eco, a_srs, a_ullr, a_nodata, mo, co, gcp, q, sds,
+  stats, norat, oo, sd_index, config, output_Raster = FALSE,
   ignore.full_scan = TRUE, verbose = FALSE, ...)
 }
 \arguments{

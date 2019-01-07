@@ -4,9 +4,10 @@
 \alias{gdalinfo}
 \title{gdalinfo}
 \usage{
-gdalinfo(datasetname, mm, stats, approx_stats, hist, nogcp, nomd, nrat, noct,
-  nofl, checksum, proj4, oo, mdd, sd, version, formats, format, optfile, config,
-  debug, raw_output = TRUE, ignore.full_scan = TRUE, verbose = FALSE)
+gdalinfo(datasetname, mm, stats, approx_stats, hist, nogcp, nomd, nrat,
+  noct, nofl, checksum, proj4, oo, mdd, sd, version, formats, format,
+  optfile, config, debug, raw_output = TRUE, ignore.full_scan = TRUE,
+  verbose = FALSE)
 }
 \arguments{
 \item{datasetname}{Character. A raster dataset name. It can be either file name.}
