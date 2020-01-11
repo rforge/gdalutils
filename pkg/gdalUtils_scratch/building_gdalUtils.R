@@ -2,7 +2,7 @@
 pathtopackage <- "D:\\Users\\jgrn\\workspace\\gdalutils\\pkg\\gdalUtils"
 
 # For jgrn/krypton:
-pathtopackage <- "/Users/jgrn307/Documents/workspace/gdalutils/pkg/gdalUtils"
+pathtopackage <- "/Users/jgrn307/git/gdalUtils"
 
 setwd(pathtopackage)
 
