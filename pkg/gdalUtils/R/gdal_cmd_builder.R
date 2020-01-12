@@ -79,6 +79,7 @@
 #' cmd
 #' system(cmd,intern=TRUE) 
 #' }
+#' @import reticulate
 #' @export
 
 #TODO: additional commands

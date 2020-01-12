@@ -4,6 +4,8 @@ pathtopackage <- "D:\\Users\\jgrn\\workspace\\gdalutils\\pkg\\gdalUtils"
 # For jgrn/krypton:
 pathtopackage <- "/Users/jgrn307/git/gdalUtils"
 
+pathtopackage <- "/Users/jgrn307/git/gdalUtils"
+
 setwd(pathtopackage)
 
 # This builds the man pages and updates the NAMESPACE.
